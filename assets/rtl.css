@@ -1,0 +1,189 @@
+/* RTL (Right-to-Left) Overrides for Hebrew */
+
+/* Base RTL settings */
+body {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Hero content - flip grid for RTL */
+.hero-content {
+    direction: rtl;
+}
+
+@media (min-width: 1025px) {
+    .hero-content {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .hero-video {
+        order: -1;
+    }
+}
+
+/* Flip arrows */
+.btn-ghost .arrow {
+    transform: scaleX(-1);
+}
+
+.btn-ghost:hover .arrow {
+    transform: scaleX(-1) translateX(-4px);
+}
+
+/* Feature list bullets - move to right */
+.feature-list li::before,
+.feature-col li::before,
+.usage-includes li::before {
+    left: auto;
+    right: 0;
+}
+
+.feature-list li,
+.feature-col li,
+.usage-includes li {
+    padding-left: 0;
+    padding-right: var(--space-lg);
+}
+
+/* Option card checkmarks */
+.option-card li::before {
+    left: auto;
+    right: 0;
+}
+
+.option-card li {
+    padding-left: 0;
+    padding-right: var(--space-md);
+}
+
+/* Radio and checkbox alignment */
+.radio-option,
+.checkbox-option {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.radio-label,
+.checkbox-label {
+    text-align: right;
+}
+
+/* Form inputs */
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"] {
+    text-align: right;
+}
+
+/* Sticky bar */
+.sticky-bar-content {
+    flex-direction: row-reverse;
+}
+
+/* Panel steps */
+.panel-step {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* Footer */
+.footer-links {
+    flex-direction: row-reverse;
+}
+
+/* Timeline - keep LTR for visual flow */
+.timeline-track {
+    direction: ltr;
+}
+
+.timeline-item {
+    direction: rtl;
+    text-align: center;
+}
+
+/* Rates grid text alignment */
+.rate-item {
+    text-align: right;
+}
+
+/* Card headers */
+.card-header {
+    flex-direction: row-reverse;
+}
+
+/* Option headers */
+.option-header {
+    flex-direction: row-reverse;
+}
+
+/* Pricing block headers */
+.pricing-block h3 {
+    flex-direction: row-reverse;
+}
+
+/* Badge alignment */
+.brand-badge {
+    flex-direction: row-reverse;
+}
+
+/* Footer brand */
+.footer-brand {
+    flex-direction: row-reverse;
+}
+
+/* Steps grid - maintain visual order */
+.steps-grid {
+    direction: rtl;
+}
+
+/* Included grid */
+.included-grid {
+    direction: rtl;
+}
+
+/* Management options */
+.management-options {
+    direction: rtl;
+}
+
+/* Rates grid */
+.rates-grid {
+    direction: rtl;
+}
+
+/* FAQ grid */
+.faq-grid {
+    direction: rtl;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+    direction: ltr;
+}
+
+/* Light beams - flip positions */
+.beam-cyan {
+    left: auto;
+    right: 10%;
+}
+
+.beam-pink {
+    right: auto;
+    left: 15%;
+}
+
+/* Panel CTA buttons */
+.panel-cta {
+    flex-direction: row-reverse;
+}
+
+/* Hero tags */
+.hero-tags {
+    justify-content: flex-start;
+}
+
+@media (max-width: 1024px) {
+    .hero-tags {
+        justify-content: center;
+    }
+}

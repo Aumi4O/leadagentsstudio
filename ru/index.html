@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Agents Studio — ИИ-агент для записи клиентов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <!-- Animated Light Beams -->
+    <div class="light-beams">
+        <div class="beam beam-cyan"></div>
+        <div class="beam beam-pink"></div>
+        <div class="beam beam-blue"></div>
+    </div>
+
+    <!-- Video Background (subtle) -->
+    <div class="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="/assets/bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Sticky Top Bar -->
+    <div class="sticky-bar">
+        <div class="sticky-bar-content">
+            <span class="sticky-text">Хватит платить за лиды, до которых не дозвониться.</span>
+            <span class="sticky-cta">Попробуйте агента на своём телефоне → WhatsApp / SMS / Звонок за 60 секунд.</span>
+            <button class="btn btn-sticky" onclick="scrollToDemo()">
+                <span class="btn-glow"></span>
+                Запустить демо
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="brand-badge">
+                    <span class="badge-icon">◆</span>
+                    <span>Lead Agents Studio</span>
+                </div>
+                <h1 class="hero-headline">
+                    <span class="line-1">Клиники теряют деньги не на рекламе.</span>
+                    <span class="line-2">Они теряют их в <em class="gradient-text">первые 15 минут</em> после заявки.</span>
+                </h1>
+                <p class="hero-subhead">
+                    Lead Agents Studio устанавливает агента, который <strong>отвечает мгновенно</strong>, <strong>вежливо квалифицирует</strong> и <strong>записывает на консультацию</strong> через WhatsApp, SMS и звонки — и продолжает напоминать, пока клиент не <strong>запишется</strong> или не <strong>откажется</strong>.
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">Инъекции</span>
+                    <span class="tag">Лазер</span>
+                    <span class="tag">Косметология</span>
+                    <span class="tag">Медспа</span>
+                    <span class="tag">Горячие лиды</span>
+                    <span class="tag">Клиники, уставшие от пропущенных</span>
+                </div>
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">▶</span>
+                        Запустить демо на своём телефоне
+                    </button>
+                    <p class="cta-microcopy">Вы получите демо-сообщения и/или демо-звонок. Отписаться можно в любой момент (STOP).<br>Демо только для записи и квалификации — <strong>не медицинская консультация</strong>.</p>
+                </div>
+                <button class="btn btn-ghost" onclick="scrollToMechanism()">
+                    Показать, как работает агент «за кулисами»
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+            <div class="hero-video hero-video-large">
+                <div class="video-container-hero">
+                    <!-- Видео 1: 9:16 Основное видео -->
+                    <video class="hero-main-video" autoplay muted loop playsinline controls>
+                        <source src="/videos/RUS/Strawberry RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Листайте вниз</span>
+        </div>
+    </section>
+
+    <!-- Video #1 Block: Product Placement -->
+    <section class="video-section" id="video-walkthrough">
+        <div class="container">
+            <h2 class="section-title center">Смотрите, как клиники перестают терять клиентов</h2>
+            <p class="section-subtitle center">90 секунд</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- Видео 2: Product Placement -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/RUS/PRODUCT PLACEMENT RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Короткий обзор того, как агент превращает заявки в записи — без вашего участия.</p>
+        </div>
+    </section>
+
+    <!-- Pain Story Section -->
+    <section class="pain-story" id="pain">
+        <div class="container">
+            <div class="story-content">
+                <p class="story-lead">Если вы управляете клиникой, вы знаете этот момент:</p>
+                <div class="story-block">
+                    <p>Приходит заявка. Клиент «тёплый». Хочет узнать сроки и цену.</p>
+                    <p class="then">А потом…</p>
+                    <p>Администратор занят. Или уже вечер. Или «ответим позже».</p>
+                </div>
+                <div class="story-block">
+                    <p>И клиент делает то, что делают все:</p>
+                    <p class="highlight">Пишет в следующую клинику. И в следующую. И записывается к тому, кто ответил первым.</p>
+                </div>
+                <div class="truth-box">
+                    <div class="truth-light"></div>
+                    <span class="truth-label">Главная истина:</span>
+                    <p class="truth-text">Скорость — это новое местоположение.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mechanism Section -->
+    <section class="mechanism" id="mechanism">
+        <div class="container">
+            <div class="mechanism-header">
+                <h2 class="section-title center">Мы не «добавляем чат-бота».</h2>
+                <p class="section-subtitle large center">Мы устанавливаем цикл follow-up.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">01</div>
+                    <h3>Мгновенный ответ</h3>
+                    <p>Каждый лид получает ответ сразу (WhatsApp/SMS) или звонок, когда это уместно.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">02</div>
+                    <h3>Квалификация (вежливо)</h3>
+                    <p>Агент спрашивает только важное: что нужно, когда, ограничения, готовность.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">03</div>
+                    <h3>Запись (без переписки)</h3>
+                    <p>Предлагает слоты, подтверждает, отправляет напоминания + лёгкий перенос.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">04</div>
+                    <h3>Тихие лиды не исчезают</h3>
+                    <p>Если клиент замолчал, система напоминает по разным каналам по-человечески — и останавливается.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">05</div>
+                    <h3>Передача человеку с контекстом</h3>
+                    <p>Когда нужен человек, агент передаёт с полным контекстом (без «а что он хотел?»).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-wrapper">
+                <div class="demo-header">
+                    <h2 class="section-title center">Попробуйте как настоящий клиент.</h2>
+                    <p class="section-subtitle center">А потом посмотрите как владелец.</p>
+                    <p class="demo-description">Введите телефон + email. Вы получите тот же опыт, что и ваши клиенты.<br>После демо увидите, что система записала, оценила и запланировала.</p>
+                </div>
+                <div class="demo-form-container">
+                    <div class="form-light"></div>
+                    <form class="demo-form" id="demoForm">
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" name="name" placeholder="Анна" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+7 999 123 4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="owner@clinic.ru" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Выберите канал для демо</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="whatsapp" checked>
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">WhatsApp <span class="recommended">(рекомендуем)</span></span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="sms">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">SMS</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="call">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">Телефонный звонок <span class="duration">(60 секунд)</span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="consent" required>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">Я согласен получить демо-сообщения и/или демо-звонок от Lead Agents Studio. Ответьте STOP для отписки. Это не медицинская консультация.</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-xl btn-full">
+                            <span class="btn-shine"></span>
+                            <span class="btn-icon">◆</span>
+                            Запустить демо
+                        </button>
+                        <p class="form-microcopy">Первое сообщение придёт менее чем за минуту. Отвечайте естественно — как настоящий клиент.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video #2 Section: Testimonial 1 (Maya) -->
+    <section class="video-section alt" id="video-ugc">
+        <div class="container">
+            <h2 class="section-title center">«Мы перестали гоняться за клиентами.»</h2>
+            <p class="section-subtitle center">История в стиле UGC, 60–75 сек</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- Видео 3: Отзыв 1 - Maya -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/RUS/Maya Rus.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Демонстрация на основе типичных сценариев работы клиник.</p>
+        </div>
+    </section>
+
+    <!-- Video #3 Section: Testimonial 2 (Patricia) -->
+    <section class="video-section" id="video-testimonial">
+        <div class="container">
+            <h2 class="section-title center">«Это стало нашей круглосуточной регистратурой.»</h2>
+            <p class="section-subtitle center">История + доказательства, 75–90 сек</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- Видео 4: Отзыв 2 - Patricia -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/RUS/Patricia RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Экраны скрыты для конфиденциальности. Только квалификация + запись (не медицинская консультация).</p>
+        </div>
+    </section>
+
+    <!-- What's Included Section -->
+    <section class="included" id="included">
+        <div class="container">
+            <h2 class="section-title center">Что входит в установку за $5,000</h2>
+            <div class="included-grid">
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">A</span>
+                        <h3>Установка агента follow-up</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Настройка WhatsApp + SMS + телефонных звонков</li>
+                        <li>Скрипты квалификации под ваши услуги + тон</li>
+                        <li>Логика записи (слоты, подтверждения, напоминания, перенос)</li>
+                        <li>Возврат «тихих» лидов (мультиканал)</li>
+                        <li>Встроенные сообщения об отписке + согласии</li>
+                        <li>Заметки для передачи человеку (ваш персонал сразу видит контекст)</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">B</span>
+                        <h3>Настройка креативов</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Хуки + углы + вариации коротких скриптов для вашего предложения</li>
+                        <li>Шаблоны скриптов в стиле аватар + UGC для повторного использования</li>
+                        <li>Скрипты «Вид владельца», которые помогают закрывать демо</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">C</span>
+                        <h3>Тестирование + Запуск</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Тестирование крайних случаев (нет ответа, возражение по цене, «кто врач?», «подумаю»)</li>
+                        <li>Мягкий запуск + настройка отчётности</li>
+                        <li>Чек-лист запуска для вашей команды</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2 class="section-title center">Запуск за 7 дней.</h2>
+            <div class="timeline-track">
+                <div class="timeline-item">
+                    <div class="day">День 1</div>
+                    <p>Фиксируем ваше предложение + тон + границы</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 2–3</div>
+                    <p>Подключаем каналы + правила записи</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 4–5</div>
+                    <p>Тестируем диалоги + крайние случаи</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 6</div>
+                    <p>Мягкий запуск</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 7</div>
+                    <p>Полный запуск + отчётность</p>
+                </div>
+            </div>
+            <p class="timeline-note">Без сбоев. Ваша команда продолжает работать. Система начинает ловить то, что вы сейчас упускаете.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="pricing-hero">
+                <div class="price-light"></div>
+                <h2 class="price-amount">$5,000</h2>
+                <p class="price-label">единоразовая установка</p>
+            </div>
+            <div class="pricing-cta">
+                <a href="{STRIPE_SETUP_LINK}" class="btn btn-primary btn-xxl">
+                    <span class="btn-shine"></span>
+                    <span class="btn-icon">◆</span>
+                    Оплатить $5,000 установку
+                </a>
+                <p class="bnpl-note">Рассрочка может быть доступна <strong>при оплате</strong> через <strong>Affirm / Afterpay / Klarna</strong> (зависит от страны, валюты и соответствия покупателя).</p>
+                <div class="escrow-option">
+                    <p>Предпочитаете максимальную безопасность?</p>
+                    <a href="{ESCROW_LINK}" class="btn btn-outline">Оплатить через Escrow</a>
+                </div>
+            </div>
+
+            <!-- Ongoing Monthly Cost -->
+            <div class="pricing-details">
+                <div class="pricing-block">
+                    <h3>Ежемесячные расходы <span class="badge-small">по факту использования</span></h3>
+                    <p class="pricing-intro">Ваши ежемесячные расходы зависят от использования и списываются с карты (платите только за то, что используете).</p>
+                    <div class="usage-includes">
+                        <h4>Что входит в биллинг использования</h4>
+                        <ul>
+                            <li>Сообщения + звонки (WhatsApp / SMS / минуты телефонии)</li>
+                            <li>Обработка ИИ-диалогов («мозг» + скриптинг сообщений)</li>
+                            <li>Секунды генерации видео (для новых креативов)</li>
+                            <li>Генерация аватар-видео ($1.20/мин)</li>
+                        </ul>
+                        <p class="margin-note"><strong>Важно:</strong> Все позиции тарифицируются по прайсу поставщика <strong>+ 20% маржа платформы</strong> (покрывает мониторинг, оркестрацию, обработку ошибок и консолидированный биллинг).</p>
+                    </div>
+                </div>
+
+                <!-- Optional Management -->
+                <div class="pricing-block">
+                    <h3>Опциональное управление <span class="badge-small">два варианта</span></h3>
+                    <div class="management-options">
+                        <div class="option-card">
+                            <div class="option-header">
+                                <span class="option-badge">Вариант 1</span>
+                                <span class="option-price">Включено</span>
+                            </div>
+                            <h4>Самоуправление</h4>
+                            <p>Вы получаете систему + скрипты + отчётность. Ваша команда управляет ежедневно.</p>
+                        </div>
+                        <div class="option-card featured">
+                            <div class="option-header">
+                                <span class="option-badge">Вариант 2</span>
+                                <span class="option-price">+$500/мес</span>
+                            </div>
+                            <h4>Управление нами</h4>
+                            <ul>
+                                <li>Еженедельная настройка вопросов, follow-up и путей конверсии</li>
+                                <li>Проверки доставляемости (сообщения доставлены vs заблокированы)</li>
+                                <li>Постоянное улучшение путей работы с возражениями</li>
+                                <li>Отчётность по производительности + исправления</li>
+                            </ul>
+                            <p class="option-note">Можно включить в любой момент после установки</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rate Card Section -->
+    <section class="rate-card" id="rates">
+        <div class="container">
+            <h2 class="section-title center">Тарифы использования</h2>
+            <p class="section-subtitle center">Просто + прозрачно (20% маржа платформы включена)</p>
+            
+            <div class="rates-grid">
+                <div class="rate-category">
+                    <h3>Сообщения и звонки</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Сообщения WhatsApp</span>
+                            <span class="rate-price">$0.006 <span class="rate-unit">за сообщение</span></span>
+                            <span class="rate-note">Отправленные или полученные. Сетевые сборы могут применяться вне сервисного окна.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">SMS (пример США)</span>
+                            <span class="rate-price">~$0.01 <span class="rate-unit">за сообщение</span></span>
+                            <span class="rate-note">Международные направления значительно отличаются.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Голосовые звонки (исходящие)</span>
+                            <span class="rate-price">~$0.017 <span class="rate-unit">за минуту</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Голосовые звонки (входящие)</span>
+                            <span class="rate-price">~$0.010 <span class="rate-unit">за минуту</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Обработка ИИ-диалогов</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Входящие токены</span>
+                            <span class="rate-price">$0.30 <span class="rate-unit">за 1М токенов</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Исходящие токены</span>
+                            <span class="rate-price">$2.40 <span class="rate-unit">за 1М токенов</span></span>
+                            <span class="rate-note">Токены = «единицы» для генерации ответов. Использование видно в дашборде.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Генерация видео</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">ИИ-видео (720p)</span>
+                            <span class="rate-price">$0.12 <span class="rate-unit">за секунду</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Высокое качество</span>
+                            <span class="rate-price">$0.36–$0.60 <span class="rate-unit">за секунду</span></span>
+                            <span class="rate-note">Зависит от выбранного качества.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Аватар-видео</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Генерация аватар-видео</span>
+                            <span class="rate-price">$1.20 <span class="rate-unit">за минуту</span></span>
+                            <span class="rate-note">Высококачественные аватар-видео с синхронизацией губ.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Optional Zoom Section -->
+    <section class="zoom-section" id="zoom">
+        <div class="container">
+            <h2 class="section-title center">Предпочитаете подтверждение от человека?</h2>
+            <p class="zoom-description">Забронируйте 15-минутный обзор внедрения (не продажа):<br>мы подтвердим ваши предложения, тон и правила записи.</p>
+            <a href="{BOOK_IMPLEMENTATION_REVIEW_URL}" class="btn btn-outline btn-lg">Забронировать обзор внедрения</a>
+            <p class="zoom-note">Только если хотите. Большинство клиник начинают после живого демо.</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title center">Частые вопросы</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Будет ли это звучать как робот?</h3>
+                    <p>Нет. Написано как отличная регистратура: коротко, ясно, вежливо. Передаёт человеку, когда нужно.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Даёт ли медицинские советы?</h3>
+                    <p>Нет. Только квалифицирует и записывает. Всё.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Может работать с несколькими услугами / языками?</h3>
+                    <p>Да. Скрипт разветвляется по услуге и языку.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Как мы узнаем, что это работает?</h3>
+                    <p>Вы увидите время ответа, стадию лида, конверсию в запись, возвращённых лидов и результаты передачи.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Можно контролировать расходы на использование?</h3>
+                    <p>Да. Мы можем установить месячный лимит и оповещения, и вы получите ежемесячную сводку использования.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Close Section -->
+    <section class="final-close" id="close">
+        <div class="container">
+            <div class="close-light"></div>
+            <h2 class="close-headline">Запустите демо сейчас.</h2>
+            <p class="close-subline">Если это не похоже на вашу будущую регистратуру — уходите.</p>
+            <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
+                <span class="btn-shine"></span>
+                <span class="btn-icon">▶</span>
+                Запустить демо
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand">
+                <span class="brand-icon">◆</span>
+                <span>Lead Agents Studio</span>
+            </div>
+            <div class="footer-links">
+                <a href="{PRIVACY_URL}">Конфиденциальность</a>
+                <a href="{TERMS_URL}">Условия</a>
+            </div>
+            <p class="footer-disclaimer">Это демонстрация процессов квалификации лидов и записи. Не медицинская консультация.</p>
+        </div>
+    </footer>
+
+    <!-- Post-Submit Demo Panel -->
+    <div class="demo-panel" id="demoPanel">
+        <div class="panel-content">
+            <button class="panel-close" onclick="closeDemoPanel()">×</button>
+            <div class="panel-icon">✅</div>
+            <h2>Демо запущено. Проверьте телефон.</h2>
+            <div class="panel-steps">
+                <div class="panel-step">
+                    <span class="step-num">1</span>
+                    <p>Проверьте WhatsApp/SMS (или ответьте на звонок). Первое сообщение придёт менее чем за минуту.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">2</span>
+                    <p>Отвечайте как настоящий клиент (короткие ответы — отлично).</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">3</span>
+                    <p>Когда запишет на слот, напишите <strong>ПОКАЗАТЬ ВИД ВЛАДЕЛЬЦА</strong>, чтобы увидеть, что система записала.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">4</span>
+                    <p>Если хотите начать: оплатите <strong>$5,000 установку</strong> (Stripe) или используйте <strong>Escrow</strong>.</p>
+                </div>
+            </div>
+            <div class="panel-cta">
+                <a href="{STRIPE_SETUP_LINK}" class="btn btn-primary btn-lg">Оплатить $5,000 установку</a>
+                <a href="{ESCROW_LINK}" class="btn btn-outline">Оплатить через Escrow</a>
+            </div>
+            <p class="panel-support">Поддержка: Если ничего не пришло, напишите <a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a></p>
+        </div>
+    </div>
+
+    <script src="/assets/script.js"></script>
+</body>
+</html>

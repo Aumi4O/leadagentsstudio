@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Agents Studio — סוכן AI לקביעת תורים</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="/assets/rtl.css">
+</head>
+<body>
+    <!-- Animated Light Beams -->
+    <div class="light-beams">
+        <div class="beam beam-cyan"></div>
+        <div class="beam beam-pink"></div>
+        <div class="beam beam-blue"></div>
+    </div>
+
+    <!-- Video Background (subtle) -->
+    <div class="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="/assets/bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Sticky Top Bar -->
+    <div class="sticky-bar">
+        <div class="sticky-bar-content">
+            <span class="sticky-text">תפסיקו לשלם על לידים שאתם לא מצליחים להגיע אליהם.</span>
+            <span class="sticky-cta">נסו את סוכן המעקב בטלפון שלכם → WhatsApp / SMS / שיחה תוך 60 שניות.</span>
+            <button class="btn btn-sticky" onclick="scrollToDemo()">
+                <span class="btn-glow"></span>
+                הפעילו את הדמו
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="brand-badge">
+                    <span class="badge-icon">◆</span>
+                    <span>Lead Agents Studio</span>
+                </div>
+                <h1 class="hero-headline">
+                    <span class="line-1">קליניקות לא מפסידות כסף על פרסום.</span>
+                    <span class="line-2">הן מפסידות אותו ב<em class="gradient-text">15 הדקות</em> אחרי הליד.</span>
+                </h1>
+                <p class="hero-subhead">
+                    Lead Agents Studio מתקין סוכן מעקב שפועל 24/7 ש<strong>עונה מהר</strong>, <strong>מסנן בנימוס</strong>, ו<strong>קובע תורים</strong> ב-WhatsApp, SMS ושיחות טלפון — וממשיך לעקוב עד שהליד <strong>קובע תור</strong> או <strong>מבקש להפסיק</strong>.
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">הזרקות</span>
+                    <span class="tag">לייזר</span>
+                    <span class="tag">טיפוח עור</span>
+                    <span class="tag">מדספא</span>
+                    <span class="tag">לידים חמים</span>
+                    <span class="tag">קליניקות שנמאס להן משיחות שלא נענו</span>
+                </div>
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">▶</span>
+                        הפעילו את הדמו בטלפון שלכם
+                    </button>
+                    <p class="cta-microcopy">תקבלו הודעות דמו ו/או שיחת דמו. ניתן להפסיק בכל עת (STOP).<br>הדמו מיועד לתהליכי קביעת תורים וסינון בלבד — <strong>לא ייעוץ רפואי</strong>.</p>
+                </div>
+                <button class="btn btn-ghost" onclick="scrollToMechanism()">
+                    הראו לי מה הסוכן עושה "מאחורי הקלעים"
+                    <span class="arrow">←</span>
+                </button>
+            </div>
+            <div class="hero-video hero-video-large">
+                <div class="video-container-hero">
+                    <!-- וידאו 1: 9:16 וידאו ראשי -->
+                    <video class="hero-main-video" autoplay muted loop playsinline controls>
+                        <source src="/videos/HEB/Strawberry  HEB 2.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>גללו למטה</span>
+        </div>
+    </section>
+
+    <!-- Video #1 Block: Product Placement -->
+    <section class="video-section" id="video-walkthrough">
+        <div class="container">
+            <h2 class="section-title center">צפו איך קליניקות עוצרות את הדליפה</h2>
+            <p class="section-subtitle center">90 שניות</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- וידאו 2: Product Placement -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/HEB/PRODUCT PLACEMENT HEW.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">סקירה קצרה של איך סוכן המעקב הופך פניות לתורים קבועים — בלי שתרדפו אחרי אנשים.</p>
+        </div>
+    </section>
+
+    <!-- Pain Story Section -->
+    <section class="pain-story" id="pain">
+        <div class="container">
+            <div class="story-content">
+                <p class="story-lead">אם אתם מנהלים קליניקה, אתם מכירים את הרגע הזה:</p>
+                <div class="story-block">
+                    <p>ליד נכנס. הוא חם. הוא רוצה לדעת על תזמון וטווח מחירים.</p>
+                    <p class="then">ואז…</p>
+                    <p>המזכירה עסוקה. או שזה אחרי שעות העבודה. או שמישהו "יענה אחר כך."</p>
+                </div>
+                <div class="story-block">
+                    <p>אז הליד עושה מה שבני אדם עושים:</p>
+                    <p class="highlight">הוא שולח הודעה לקליניקה הבאה. ולבאה אחריה. והוא קובע תור אצל מי שעונה ראשון.</p>
+                </div>
+                <div class="truth-box">
+                    <div class="truth-light"></div>
+                    <span class="truth-label">האמת בשורה אחת:</span>
+                    <p class="truth-text">מהירות היא המיקום החדש.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mechanism Section -->
+    <section class="mechanism" id="mechanism">
+        <div class="container">
+            <div class="mechanism-header">
+                <h2 class="section-title center">אנחנו לא "מוסיפים צ'אטבוט."</h2>
+                <p class="section-subtitle large center">אנחנו מתקינים מערכת מעקב.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">01</div>
+                    <h3>תגובה מיידית</h3>
+                    <p>כל ליד מקבל תשובה מיד (WhatsApp/SMS), או שיחה כשזה מתאים.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">02</div>
+                    <h3>סינון (בנימוס)</h3>
+                    <p>הסוכן שואל רק מה שחשוב: מה הם רוצים, תזמון, מגבלות, מוכנות.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">03</div>
+                    <h3>קביעת תור (בלי הלוך ושוב)</h3>
+                    <p>הוא מציע שעות פנויות, מאשר, ושולח תזכורות + אפשרות לשינוי קל.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">04</div>
+                    <h3>לידים שקטים לא נעלמים</h3>
+                    <p>אם הם נשתקים, המערכת עוקבת בערוצים שונים בצורה אנושית — ואז עוצרת.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">05</div>
+                    <h3>העברה לאדם עם הקשר</h3>
+                    <p>כשצריך אדם, הסוכן מעביר עם כל ההקשר (בלי "מה הוא רצה?").</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-wrapper">
+                <div class="demo-header">
+                    <h2 class="section-title center">נסו את זה כמו ליד אמיתי.</h2>
+                    <p class="section-subtitle center">ואז צפו בזה כמו בעלים.</p>
+                    <p class="demo-description">הזינו טלפון + אימייל. תקבלו בדיוק את החוויה שהלקוחות הפוטנציאליים שלכם מקבלים.<br>אחרי הדמו, תראו מה המערכת תיעדה, דירגה ותזמנה.</p>
+                </div>
+                <div class="demo-form-container">
+                    <div class="form-light"></div>
+                    <form class="demo-form" id="demoForm">
+                        <div class="form-group">
+                            <label for="name">שם</label>
+                            <input type="text" id="name" name="name" placeholder="אנה" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">טלפון</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+972 50 123 4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">אימייל</label>
+                            <input type="email" id="email" name="email" placeholder="owner@clinic.co.il" required>
+                        </div>
+                        <div class="form-group">
+                            <label>בחרו את ערוץ הדמו</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="whatsapp" checked>
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">WhatsApp <span class="recommended">(מומלץ)</span></span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="sms">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">SMS</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="call">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">שיחת טלפון <span class="duration">(60 שניות)</span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="consent" required>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">אני מסכים/ה לקבל הודעות דמו ו/או שיחת דמו מ-Lead Agents Studio. השיבו STOP להפסקה. זה לא ייעוץ רפואי.</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-xl btn-full">
+                            <span class="btn-shine"></span>
+                            <span class="btn-icon">◆</span>
+                            התחילו את הדמו
+                        </button>
+                        <p class="form-microcopy">תקבלו את ההודעה הראשונה תוך פחות מדקה. ענו באופן טבעי — כמו פנייה אמיתית של מטופל.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video #2 Section: Testimonial 1 (Maya) -->
+    <section class="video-section alt" id="video-ugc">
+        <div class="container">
+            <h2 class="section-title center">"הפסקנו לרדוף אחרי לידים."</h2>
+            <p class="section-subtitle center">סיפור בסגנון UGC, 60–75 שניות</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- וידאו 3: עדות 1 - Maya -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/HEB/Maya Hebrew.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">הדגמה מבוססת על תהליכי עבודה טיפוסיים של קליניקות.</p>
+        </div>
+    </section>
+
+    <!-- Video #3 Section: Testimonial 2 (Patricia) -->
+    <section class="video-section" id="video-testimonial">
+        <div class="container">
+            <h2 class="section-title center">"זה הפך לקבלה שלנו שעובדת 24/7."</h2>
+            <p class="section-subtitle center">סיפור + הוכחות, 75–90 שניות</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <!-- וידאו 4: עדות 2 - Patricia -->
+                    <video autoplay muted loop playsinline controls>
+                        <source src="/videos/HEB/Patricia HEB.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">מסכים הוסתרו לשמירה על פרטיות. סינון + קביעת תורים בלבד (לא ייעוץ רפואי).</p>
+        </div>
+    </section>
+
+    <!-- What's Included Section -->
+    <section class="included" id="included">
+        <div class="container">
+            <h2 class="section-title center">מה כלול בהתקנה של $5,000</h2>
+            <div class="included-grid">
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">א</span>
+                        <h3>התקנת סוכן מעקב</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>התקנת תהליכי WhatsApp + SMS + שיחות טלפון</li>
+                        <li>סקריפטים לסינון מותאמים לשירותים + טון שלכם</li>
+                        <li>לוגיקת קביעת תורים (שעות פנויות, אישורים, תזכורות, שינויים)</li>
+                        <li>רצפי החזרת לידים שקטים (מולטי-ערוצי)</li>
+                        <li>הודעות הסכמה + הפסקה מובנות</li>
+                        <li>הערות להעברה לאדם (כדי שהצוות יראה הקשר מיד)</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">ב</span>
+                        <h3>הקמת מנוע קריאייטיב</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>הוקים + זוויות + וריאציות סקריפט קצרות להצעה שלכם</li>
+                        <li>תבניות סקריפט בסגנון אווטאר + UGC לשימוש חוזר</li>
+                        <li>סקריפטים של "תצוגת בעלים" שעוזרים לסגור את הדמו</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">ג</span>
+                        <h3>בדיקות + השקה</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>בדיקת מקרי קצה (אין תשובה, התנגדות למחיר, "מי הרופא?", "אני אחשוב")</li>
+                        <li>השקה רכה + הגדרת דוחות</li>
+                        <li>רשימת בדיקה להשקה לצוות הניהול שלכם</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2 class="section-title center">עולים לאוויר תוך 7 ימים.</h2>
+            <div class="timeline-track">
+                <div class="timeline-item">
+                    <div class="day">יום 1</div>
+                    <p>לוכדים את ההצעה + הטון + הגבולות שלכם</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">יום 2–3</div>
+                    <p>מחברים ערוצים + כללי קביעת תורים</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">יום 4–5</div>
+                    <p>בודקים שיחות + מקרי קצה</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">יום 6</div>
+                    <p>השקה רכה</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">יום 7</div>
+                    <p>השקה מלאה + דוחות</p>
+                </div>
+            </div>
+            <p class="timeline-note">בלי הפרעה. הצוות שלכם ממשיך לעבוד. המערכת מתחילה לתפוס את מה שאתם כרגע מפספסים.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="pricing-hero">
+                <div class="price-light"></div>
+                <h2 class="price-amount">$5,000</h2>
+                <p class="price-label">התקנה חד-פעמית</p>
+            </div>
+            <div class="pricing-cta">
+                <a href="{STRIPE_SETUP_LINK}" class="btn btn-primary btn-xxl">
+                    <span class="btn-shine"></span>
+                    <span class="btn-icon">◆</span>
+                    שלמו $5,000 להתקנה
+                </a>
+                <p class="bnpl-note">תשלומים עשויים להיות זמינים <strong>בקופה</strong> דרך <strong>Affirm / Afterpay / Klarna</strong> (זמינות תלויה במדינה, מטבע וכשירות הקונה).</p>
+                <div class="escrow-option">
+                    <p>מעדיפים ביטחון מקסימלי?</p>
+                    <a href="{ESCROW_LINK}" class="btn btn-outline">שלמו דרך Escrow</a>
+                </div>
+            </div>
+
+            <!-- Ongoing Monthly Cost -->
+            <div class="pricing-details">
+                <div class="pricing-block">
+                    <h3>עלות חודשית שוטפת <span class="badge-small">לפי שימוש</span></h3>
+                    <p class="pricing-intro">העלויות החודשיות שלכם מבוססות שימוש ומחויבות לכרטיס בקובץ (משלמים רק על מה שמשתמשים).</p>
+                    <div class="usage-includes">
+                        <h4>מה כלול בחיוב השימוש</h4>
+                        <ul>
+                            <li>הודעות + שיחות (WhatsApp / SMS / דקות טלפון)</li>
+                            <li>עיבוד שיחות AI ("מוח" + כתיבת הודעות)</li>
+                            <li>שניות יצירת וידאו (לקריאייטיבים חדשים)</li>
+                            <li>יצירת וידאו אווטאר ($1.20/דקה)</li>
+                        </ul>
+                        <p class="margin-note"><strong>חשוב:</strong> כל פריטי השימוש מחויבים במחיר רשימה של הספק <strong>+ 20% מרווח פלטפורמה</strong> (מכסה ניטור, תזמור, טיפול בשגיאות וחיוב מאוחד).</p>
+                    </div>
+                </div>
+
+                <!-- Optional Management -->
+                <div class="pricing-block">
+                    <h3>ניהול אופציונלי <span class="badge-small">שתי דרכים</span></h3>
+                    <div class="management-options">
+                        <div class="option-card">
+                            <div class="option-header">
+                                <span class="option-badge">אפשרות 1</span>
+                                <span class="option-price">כלול</span>
+                            </div>
+                            <h4>ניהול עצמי</h4>
+                            <p>אתם מקבלים את המערכת + סקריפטים + דוחות. הצוות שלכם מנהל יום-יום.</p>
+                        </div>
+                        <div class="option-card featured">
+                            <div class="option-header">
+                                <span class="option-badge">אפשרות 2</span>
+                                <span class="option-price">+$500/חודש</span>
+                            </div>
+                            <h4>ניהול על ידינו</h4>
+                            <ul>
+                                <li>כיוונון שבועי של שאלות, מעקבים ונתיבי המרה</li>
+                                <li>בדיקות עבירות (הודעות נמסרו vs נחסמו)</li>
+                                <li>שיפור מתמשך של נתיבי התנגדויות</li>
+                                <li>דוחות ביצועים + תיקונים</li>
+                            </ul>
+                            <p class="option-note">ניתן להפעיל בכל עת אחרי ההתקנה</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rate Card Section -->
+    <section class="rate-card" id="rates">
+        <div class="container">
+            <h2 class="section-title center">תעריפי שימוש</h2>
+            <p class="section-subtitle center">פשוט + שקוף (20% מרווח פלטפורמה כלול)</p>
+            
+            <div class="rates-grid">
+                <div class="rate-category">
+                    <h3>הודעות ושיחות</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">הודעות WhatsApp</span>
+                            <span class="rate-price">$0.006 <span class="rate-unit">להודעה</span></span>
+                            <span class="rate-note">נשלחו או התקבלו. עמלות תבנית רשת עשויות לחול מחוץ לחלון השירות.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">SMS (דוגמה: ישראל)</span>
+                            <span class="rate-price">~$0.01 <span class="rate-unit">להודעה</span></span>
+                            <span class="rate-note">יעדים בינלאומיים משתנים משמעותית.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">שיחות קוליות (יוצאות)</span>
+                            <span class="rate-price">~$0.017 <span class="rate-unit">לדקה</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">שיחות קוליות (נכנסות)</span>
+                            <span class="rate-price">~$0.010 <span class="rate-unit">לדקה</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>עיבוד שיחות AI</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">טוקנים נכנסים</span>
+                            <span class="rate-price">$0.30 <span class="rate-unit">ל-1M טוקנים</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">טוקנים יוצאים</span>
+                            <span class="rate-price">$2.40 <span class="rate-unit">ל-1M טוקנים</span></span>
+                            <span class="rate-note">טוקנים = ה"יחידות" המשמשות ליצירת תשובות. תראו שימוש בדשבורד.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>יצירת וידאו</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">וידאו AI (720p)</span>
+                            <span class="rate-price">$0.12 <span class="rate-unit">לשנייה</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">רמות איכות גבוהות יותר</span>
+                            <span class="rate-price">$0.36–$0.60 <span class="rate-unit">לשנייה</span></span>
+                            <span class="rate-note">תלוי באיכות הפלט שנבחרה.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>וידאו אווטאר</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">יצירת וידאו אווטאר</span>
+                            <span class="rate-price">$1.20 <span class="rate-unit">לדקה</span></span>
+                            <span class="rate-note">וידאו אווטאר באיכות גבוהה עם סנכרון שפתיים.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Optional Zoom Section -->
+    <section class="zoom-section" id="zoom">
+        <div class="container">
+            <h2 class="section-title center">מעדיפים אישור מאדם?</h2>
+            <p class="zoom-description">קבעו סקירת יישום של 15 דקות (לא מכירה):<br>נאשר את ההצעות, הטון וכללי קביעת התורים שלכם.</p>
+            <a href="{BOOK_IMPLEMENTATION_REVIEW_URL}" class="btn btn-outline btn-lg">קבעו סקירת יישום</a>
+            <p class="zoom-note">רק אם אתם רוצים. רוב הקליניקות מתחילות אחרי הדמו החי.</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title center">שאלות נפוצות</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>האם זה ירגיש רובוטי?</h3>
+                    <p>לא. זה כתוב כמו קבלה מעולה: קצר, ברור, מנומס. זה מעביר לאדם כשצריך.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>האם זה נותן ייעוץ רפואי?</h3>
+                    <p>לא. זה מסנן וקובע תורים. זהו.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>האם זה יכול לטפל במספר שירותים / שפות?</h3>
+                    <p>כן. הסקריפט מתפצל לפי שירות ושפה.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>איך נדע שזה עובד?</h3>
+                    <p>תראו זמן תגובה, שלב ליד, שיעור קביעת תורים, לידים שהוחזרו ותוצאות העברה.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>האם אני יכול לשלוט בהוצאות השימוש?</h3>
+                    <p>כן. אנחנו יכולים להגדיר תקרת שימוש חודשית והתראות, ותקבלו סיכום שימוש חודשי.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Close Section -->
+    <section class="final-close" id="close">
+        <div class="container">
+            <div class="close-light"></div>
+            <h2 class="close-headline">הפעילו את הדמו עכשיו.</h2>
+            <p class="close-subline">אם זה לא מרגיש כמו הקבלה העתידית שלכם — לכו.</p>
+            <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
+                <span class="btn-shine"></span>
+                <span class="btn-icon">▶</span>
+                התחילו את הדמו
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand">
+                <span class="brand-icon">◆</span>
+                <span>Lead Agents Studio</span>
+            </div>
+            <div class="footer-links">
+                <a href="{PRIVACY_URL}">פרטיות</a>
+                <a href="{TERMS_URL}">תנאים</a>
+            </div>
+            <p class="footer-disclaimer">זוהי הדגמה של תהליכי סינון לידים וקביעת תורים. לא ייעוץ רפואי.</p>
+        </div>
+    </footer>
+
+    <!-- Post-Submit Demo Panel -->
+    <div class="demo-panel" id="demoPanel">
+        <div class="panel-content">
+            <button class="panel-close" onclick="closeDemoPanel()">×</button>
+            <div class="panel-icon">✅</div>
+            <h2>הדמו התחיל. עכשיו בדקו את הטלפון.</h2>
+            <div class="panel-steps">
+                <div class="panel-step">
+                    <span class="step-num">1</span>
+                    <p>בדקו WhatsApp/SMS (או ענו לשיחה). ההודעה הראשונה מגיעה תוך פחות מדקה.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">2</span>
+                    <p>ענו כמו פנייה אמיתית (תשובות קצרות מושלמות).</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">3</span>
+                    <p>כשהמערכת קובעת תור, הקלידו <strong>SHOW OWNER VIEW</strong> כדי לראות מה המערכת תיעדה.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">4</span>
+                    <p>אם אתם רוצים להתחיל: שלמו את <strong>$5,000 להתקנה</strong> (Stripe) או השתמשו ב-<strong>Escrow</strong>.</p>
+                </div>
+            </div>
+            <div class="panel-cta">
+                <a href="{STRIPE_SETUP_LINK}" class="btn btn-primary btn-lg">שלמו $5,000 להתקנה</a>
+                <a href="{ESCROW_LINK}" class="btn btn-outline">שלמו דרך Escrow</a>
+            </div>
+            <p class="panel-support">תמיכה: אם שום דבר לא מגיע, שלחו אימייל ל-<a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a></p>
+        </div>
+    </div>
+
+    <script src="/assets/script.js"></script>
+</body>
+</html>
