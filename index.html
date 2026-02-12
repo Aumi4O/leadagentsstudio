@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lead Agents Studio — AI Follow-Up That Books</title>
+    <title>Lead Agents Studio — AI Video Ads + AI Follow-Up That Books</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -56,6 +56,114 @@
                 font-size: 1.1rem;
             }
         }
+        /* Engine cards */
+        .engine-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .engine-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .engine-num {
+            background: linear-gradient(135deg, #00d4ff, #ff3b8b);
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .engine-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #1d1d1f;
+        }
+        .engine-content p {
+            font-size: 0.95rem;
+            color: #6e6e73;
+            margin: 0;
+        }
+        .pipeline-note {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        /* Pain moments */
+        .pain-moments {
+            display: grid;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .pain-moments {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .pain-moment {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .pain-moment h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        .pain-moment p {
+            color: #6e6e73;
+            line-height: 1.6;
+        }
+        .expensive-truth {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
+            border-radius: 16px;
+        }
+        .expensive-truth p {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+        /* AI character note */
+        .ai-character-note {
+            background: rgba(0,212,255,0.1);
+            border-left: 3px solid #00d4ff;
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #1d1d1f;
+        }
+        /* Customizations section */
+        .customizations-note {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+        .customizations-note h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .customizations-note p {
+            color: #6e6e73;
+        }
     </style>
 </head>
 <body>
@@ -84,11 +192,11 @@
     <!-- Sticky Top Bar -->
     <div class="sticky-bar">
         <div class="sticky-bar-content">
-            <span class="sticky-text">Stop paying for leads you can't reach.</span>
-            <span class="sticky-cta">Try the follow-up agent on your own phone → WhatsApp / SMS / Call in under 60 seconds.</span>
+            <span class="sticky-text">AI Video Ads + AI Follow‑Up that books consults.</span>
+            <span class="sticky-cta">Run the live system on your own phone → WhatsApp / SMS / Call.</span>
             <button class="btn btn-sticky" onclick="scrollToDemo()">
                 <span class="btn-glow"></span>
-                Run the live demo
+                Run the Live Demo ($5 credit)
             </button>
         </div>
     </div>
@@ -103,29 +211,55 @@
                 </div>
                 <h1 class="hero-headline">
                     <span class="line-1">Clinics don't lose money on ads.</span>
-                    <span class="line-2">They lose it in the <em class="gradient-text">15 minutes</em> after the lead.</span>
+                    <span class="line-2">They lose it when ads go stale — and in the <em class="gradient-text">first 15 minutes</em> after the lead.</span>
                 </h1>
                 <p class="hero-subhead">
-                    Lead Agents Studio installs an always-on follow-up agent that <strong>replies fast</strong>, <strong>qualifies politely</strong>, and <strong>books consultations</strong> on WhatsApp, SMS, and phone calls—then keeps following up until the lead <strong>books</strong> or <strong>opts out</strong>.
+                    Lead Agents Studio installs an <strong>AI Ads‑to‑Appointment system</strong> made for aesthetic clinics:
                 </p>
+                <div class="engine-list">
+                    <div class="engine-item">
+                        <span class="engine-num">1</span>
+                        <div class="engine-content">
+                            <h4>Owner‑Avatar Engine</h4>
+                            <p>Create a private AI avatar of the clinic owner/manager so you can publish <strong>unlimited owner‑style content</strong> without filming.</p>
+                        </div>
+                    </div>
+                    <div class="engine-item">
+                        <span class="engine-num">2</span>
+                        <div class="engine-content">
+                            <h4>UGC + Custom B‑Roll Engine</h4>
+                            <p>Generate fresh UGC‑style ad variations and custom b‑roll <strong>on demand</strong> (new hooks, angles, languages, product placement). <em>Not stock creators — fresh AI talent for every campaign.</em></p>
+                        </div>
+                    </div>
+                    <div class="engine-item">
+                        <span class="engine-num">3</span>
+                        <div class="engine-content">
+                            <h4>Follow‑Up + Booking Engine</h4>
+                            <p>Instant WhatsApp/SMS replies and phone calls that <strong>qualify politely</strong> and <strong>book consultations</strong> automatically.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pipeline-note">
+                    One pipeline: <strong>new creative → new leads → instant follow‑up → booked consults</strong>.
+                </div>
                 <div class="hero-tags">
                     <span class="tag">Injectables</span>
                     <span class="tag">Laser</span>
                     <span class="tag">Skincare</span>
                     <span class="tag">Medspa</span>
                     <span class="tag">High-intent Funnels</span>
-                    <span class="tag">Clinics tired of missed calls</span>
+                    <span class="tag">Clinics tired of missed calls and creative fatigue</span>
                 </div>
                 <div class="hero-cta-group">
                     <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
                         <span class="btn-shine"></span>
                         <span class="btn-icon">▶</span>
-                        Run the live demo on your phone
+                        Run the Live Demo — $5 demo credit
                     </button>
-                    <p class="cta-microcopy">You'll receive demo messages and/or a demo call. Opt out anytime (STOP).<br>Demo is for booking & qualification workflows only—<strong>not medical advice</strong>.</p>
+                    <p class="cta-microcopy">The demo triggers real messages and/or a demo call. Opt out anytime (STOP).<br>Booking + qualification only (not medical advice).<br><strong>Your $5 demo credit is not a subscription</strong> — it covers real delivery costs and prevents spam. If you proceed, we apply it to your installation.</p>
                 </div>
                 <button class="btn btn-ghost" onclick="scrollToMechanism()">
-                    Show me what the agent does "behind the scenes"
+                    Show me what the system does "behind the scenes"
                     <span class="arrow">→</span>
                 </button>
             </div>
@@ -146,10 +280,10 @@
         </div>
     </section>
 
-    <!-- Video #1 Block: Product Placement -->
+    <!-- Video #1 Block: System Overview -->
     <section class="video-section" id="video-walkthrough">
         <div class="container">
-            <h2 class="section-title center">Watch how clinics stop the leak</h2>
+            <h2 class="section-title center">See the full system in 90 seconds.</h2>
             <p class="section-subtitle center">90 seconds</p>
             <div class="video-container-large">
                 <div class="video-placeholder-large">
@@ -159,7 +293,7 @@
                     </video>
                 </div>
             </div>
-            <p class="video-caption">A short walkthrough of how the follow-up agent turns inquiries into booked consultations—without you chasing people.</p>
+            <p class="video-caption">A quick walkthrough of the three engines: owner‑avatar content, UGC creatives + custom b‑roll, and the follow‑up loop that turns inquiries into booked consultations.</p>
         </div>
     </section>
 
@@ -167,20 +301,19 @@
     <section class="pain-story" id="pain">
         <div class="container">
             <div class="story-content">
-                <p class="story-lead">If you run a clinic, you already know this moment:</p>
-                <div class="story-block">
-                    <p>A lead comes in. They're warm. They want timing and price range.</p>
-                    <p class="then">Then…</p>
-                    <p>Your admin is busy. Or it's after hours. Or someone "will reply later."</p>
+                <p class="story-lead">If you run a clinic, you know these two moments:</p>
+                <div class="pain-moments">
+                    <div class="pain-moment">
+                        <h3>Moment #1 — Ads get tired.</h3>
+                        <p>Your creatives start to look familiar. Cost per lead rises. You need fresh videos… but filming is slow, expensive, and never ends.</p>
+                    </div>
+                    <div class="pain-moment">
+                        <h3>Moment #2 — The lead comes in.</h3>
+                        <p>They're warm. They're curious. They ask timing and price range.<br><br>Then… your admin is busy. It's after hours. Someone replies "later."<br><br>So the lead does what every human does: <strong>they message the next clinic — and book whoever replies first.</strong></p>
+                    </div>
                 </div>
-                <div class="story-block">
-                    <p>So the lead does what humans do:</p>
-                    <p class="highlight">They message the next clinic. And the next. And they book whoever replies first.</p>
-                </div>
-                <div class="truth-box">
-                    <div class="truth-light"></div>
-                    <span class="truth-label">One-line truth:</span>
-                    <p class="truth-text">Speed is the new location.</p>
+                <div class="expensive-truth">
+                    <p>The expensive truth: <em>creative freshness and follow‑up speed are the new location.</em></p>
                 </div>
             </div>
         </div>
@@ -190,39 +323,39 @@
     <section class="mechanism" id="mechanism">
         <div class="container">
             <div class="mechanism-header">
-                <h2 class="section-title center">We don't "add a chatbot."</h2>
-                <p class="section-subtitle large center">We install a follow-up loop.</p>
+                <h2 class="section-title center">We don't sell "a chatbot."</h2>
+                <p class="section-subtitle large center">We install an Ads‑to‑Appointment pipeline.</p>
             </div>
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">01</div>
-                    <h3>Instant response</h3>
-                    <p>Every lead gets an answer immediately (WhatsApp/SMS), or a call when appropriate.</p>
+                    <h3>Fresh creative on demand (no filming)</h3>
+                    <p>Owner‑avatar videos + UGC‑style variations + custom b‑roll + product placement for any offer, any time.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">02</div>
-                    <h3>Qualification (politely)</h3>
-                    <p>The agent asks only what matters: what they want, timing, constraints, readiness.</p>
+                    <h3>Instant response (WhatsApp/SMS)</h3>
+                    <p>Every lead gets a reply immediately — day, night, weekends.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">03</div>
-                    <h3>Booking (no back-and-forth)</h3>
-                    <p>It offers time slots, confirms, and sends reminders + easy reschedule.</p>
+                    <h3>Qualification (polite, minimal)</h3>
+                    <p>The system asks only what matters: interest, timing, constraints, readiness.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">04</div>
-                    <h3>Quiet leads don't disappear</h3>
-                    <p>If they go silent, the system follows up across channels in a human way—then stops.</p>
+                    <h3>Booking (no back‑and‑forth)</h3>
+                    <p>It offers time windows, confirms, and sends reminders + easy reschedule.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">05</div>
-                    <h3>Human handoff with context</h3>
-                    <p>When a human is needed, the agent hands off with full context (no "what did they want?").</p>
+                    <h3>Quiet leads don't disappear</h3>
+                    <p>If they go silent, the system follows up across channels in a human way — then stops. When a human is needed, it hands off with full context.</p>
                 </div>
             </div>
         </div>
@@ -235,7 +368,7 @@
                 <div class="demo-header">
                     <h2 class="section-title center">Try it like a real lead.</h2>
                     <p class="section-subtitle center">Then view it like an owner.</p>
-                    <p class="demo-description">Enter your phone + email. You'll receive the exact experience your prospects get.<br>After the demo, you'll see what the system logged, scored, and scheduled.</p>
+                    <p class="demo-description">Enter your phone + email. You'll receive the exact experience your prospects get.<br>After the demo, you'll see the Owner View: what the system captured, tagged, scored, and scheduled.</p>
                 </div>
                 <div class="demo-form-container">
                     <div class="form-light"></div>
@@ -246,7 +379,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+1 555 123 4567" required>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 / +972 / etc." required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -271,31 +404,35 @@
                                     <span class="radio-label">Phone call <span class="duration">(60 seconds)</span></span>
                                 </label>
                             </div>
+                            <div class="ai-character-note">
+                                Every ad gets a newly generated AI character — never shared with other clinics.<br>
+                                <strong>Not stock creators. Fresh AI talent for every campaign.</strong>
+                            </div>
                         </div>
                         <div class="form-group checkbox-group">
                             <label class="checkbox-option">
                                 <input type="checkbox" name="consent" required>
                                 <span class="checkbox-custom"></span>
-                                <span class="checkbox-label">I consent to receive demo messages and/or a demo call from Lead Agents Studio. Reply STOP to opt out. This is not medical advice.</span>
+                                <span class="checkbox-label">I consent to receive demo messages and/or a demo call from Lead Agents Studio. Reply STOP to opt out. This is booking & qualification only (not medical advice).</span>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary btn-xl btn-full">
                             <span class="btn-shine"></span>
                             <span class="btn-icon">◆</span>
-                            Start the live demo
+                            Activate $5 demo credit & start the live demo
                         </button>
-                        <p class="form-microcopy">You'll get the first message in under a minute. Reply naturally—like a real patient inquiry.</p>
+                        <p class="form-microcopy">You'll get the first message in under a minute. Reply naturally — like a real inquiry.<br><br>If the demo pauses due to temporary channel limits, your demo is saved and your credit remains active. You can resume or switch channels without paying again.</p>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Video #2 Section: Testimonial 1 (Maya) -->
+    <!-- Video #2 Section: Owner Product Placement -->
     <section class="video-section alt" id="video-ugc">
         <div class="container">
-            <h2 class="section-title center">"We stopped chasing leads."</h2>
-            <p class="section-subtitle center">UGC-style story, 60–75 sec</p>
+            <h2 class="section-title center">"Here's how we generate new ads around our real products."</h2>
+            <p class="section-subtitle center">60–75 sec</p>
             <div class="video-container-large">
                 <div class="video-placeholder-large">
                     <!-- Video 3: Testimonial 1 - Maya -->
@@ -304,15 +441,15 @@
                     </video>
                 </div>
             </div>
-            <p class="video-caption">Dramatized demo based on typical clinic workflows.</p>
+            <p class="video-caption">Watch the owner drop products into new ad creatives, generate variations fast, and send every lead into the same booking pipeline.</p>
         </div>
     </section>
 
-    <!-- Video #3 Section: Testimonial 2 (Patricia) -->
+    <!-- Video #3 Section: UGC Client Story -->
     <section class="video-section" id="video-testimonial">
         <div class="container">
-            <h2 class="section-title center">"This became our always-on front desk."</h2>
-            <p class="section-subtitle center">Story + Proof, 75–90 sec</p>
+            <h2 class="section-title center">"This felt like concierge-level service."</h2>
+            <p class="section-subtitle center">UGC‑style, 60–75 sec</p>
             <div class="video-container-large">
                 <div class="video-placeholder-large">
                     <!-- Video 4: Testimonial 2 - Patricia -->
@@ -321,7 +458,7 @@
                     </video>
                 </div>
             </div>
-            <p class="video-caption">Screens redacted for privacy. Qualification + booking only (not medical advice).</p>
+            <p class="video-caption">Starts like a client story — then shows why it converts: fresh UGC creatives + instant follow‑up + quiet‑lead recovery.<br>UGC‑style creatives use AI-generated actors and dramatized scenarios (not real patients). Booking + qualification only (not medical advice).</p>
         </div>
     </section>
 
@@ -333,26 +470,27 @@
                 <div class="included-card">
                     <div class="card-header">
                         <span class="card-letter">A</span>
-                        <h3>Follow-Up Agent Installation</h3>
+                        <h3>Creative Engine Setup</h3>
                     </div>
                     <ul class="feature-list">
-                        <li>WhatsApp + SMS + phone call flows installed</li>
-                        <li>Qualification scripts tailored to your services + tone</li>
-                        <li>Booking offer logic (slots, confirmations, reminders, reschedules)</li>
-                        <li>Quiet-lead recovery sequences (multi-channel)</li>
-                        <li>Opt-out + consent messaging built-in</li>
-                        <li>Human handoff notes (so your staff sees context instantly)</li>
+                        <li>Private owner-avatar setup (your clinic's look + tone)</li>
+                        <li>UGC-style ad system + custom b‑roll generation</li>
+                        <li>Product placement templates (so ads look like YOUR clinic)</li>
+                        <li>Hook library + angles + variations for your offers</li>
                     </ul>
                 </div>
                 <div class="included-card">
                     <div class="card-header">
                         <span class="card-letter">B</span>
-                        <h3>Creative Engine Setup</h3>
+                        <h3>Follow‑Up + Booking Engine Setup</h3>
                     </div>
                     <ul class="feature-list">
-                        <li>Hooks + angles + short script variations for your offer</li>
-                        <li>Avatar + UGC-style script templates you can reuse</li>
-                        <li>"Owner View" reveal scripts that make the demo close</li>
+                        <li>WhatsApp + SMS + phone call flows installed</li>
+                        <li>Qualification scripts tailored to services + tone</li>
+                        <li>Booking logic (slots, confirmations, reminders, reschedules)</li>
+                        <li>Quiet-lead recovery sequences (multi-touch, then stop)</li>
+                        <li>Clean consent + opt-out messaging</li>
+                        <li>Owner View + handoff notes for your team</li>
                     </ul>
                 </div>
                 <div class="included-card">
@@ -361,7 +499,7 @@
                         <h3>Testing + Launch</h3>
                     </div>
                     <ul class="feature-list">
-                        <li>Edge-case testing (no reply, price objection, "who is the doctor?", "I'll think")</li>
+                        <li>Edge-case testing (no reply, price objection, "who is the doctor?", "I'll think about it")</li>
                         <li>Soft launch + reporting setup</li>
                         <li>Go-live checklist for your admin team</li>
                     </ul>
@@ -377,7 +515,7 @@
             <div class="timeline-track">
                 <div class="timeline-item">
                     <div class="day">Day 1</div>
-                    <p>Capture your offer + tone + boundaries</p>
+                    <p>Capture your offers + tone + boundaries</p>
                 </div>
                 <div class="timeline-item">
                     <div class="day">Day 2–3</div>
@@ -414,7 +552,7 @@
                     <span class="btn-icon">◆</span>
                     Pay $5,000 setup
                 </a>
-                <p class="bnpl-note">Installments may be available <strong>at checkout</strong> via <strong>Affirm / Afterpay / Klarna</strong> (availability depends on country, currency, and buyer eligibility).</p>
+                <p class="bnpl-note">Installments may be available <strong>at checkout</strong> via <strong>Affirm / Afterpay / Klarna</strong> (eligibility/region dependent).</p>
                 <div class="escrow-option">
                     <p>Prefer maximum safety?</p>
                     <a href="{ESCROW_LINK}" class="btn btn-outline">Pay via Escrow</a>
@@ -424,23 +562,23 @@
             <!-- Ongoing Monthly Cost -->
             <div class="pricing-details">
                 <div class="pricing-block">
-                    <h3>Ongoing monthly cost <span class="badge-small">pay-as-you-go</span></h3>
-                    <p class="pricing-intro">Your monthly running costs are usage-based and billed to the card on file (pay only for what you use).</p>
+                    <h3>Monthly running costs <span class="badge-small">pay-as-you-go</span></h3>
+                    <p class="pricing-intro">Monthly running costs are usage‑based (pay only for what you use).</p>
                     <div class="usage-includes">
-                        <h4>What's included in usage billing</h4>
+                        <h4>Included in usage billing</h4>
                         <ul>
                             <li>Messaging + calls (WhatsApp / SMS / phone minutes)</li>
-                            <li>AI conversation processing ("brain" + message scripting)</li>
-                            <li>Video generation seconds (for new creatives)</li>
-                            <li>Avatar video generation ($1.20/min)</li>
+                            <li>Conversation automation processing (qualification + scripting)</li>
+                            <li>Video generation seconds (new creatives)</li>
+                            <li>Avatar video generation (owner-avatar content)</li>
                         </ul>
-                        <p class="margin-note"><strong>Important:</strong> All usage items are billed at vendor list price <strong>+ 20% platform margin</strong> (covers monitoring, orchestration, error handling, and consolidated billing).</p>
+                        <p class="margin-note"><strong>Important:</strong> Usage items are billed at vendor list price <strong>+ 20% platform margin</strong> (covers orchestration, monitoring, error handling, and consolidated billing).</p>
                     </div>
                 </div>
 
-                <!-- Optional Management -->
+                <!-- Two ways to run it -->
                 <div class="pricing-block">
-                    <h3>Optional management <span class="badge-small">two ways</span></h3>
+                    <h3>Two ways to run it</h3>
                     <div class="management-options">
                         <div class="option-card">
                             <div class="option-header">
@@ -448,7 +586,7 @@
                                 <span class="option-price">Included</span>
                             </div>
                             <h4>Self-Managed</h4>
-                            <p>You get the system + scripts + reporting. Your team runs day-to-day.</p>
+                            <p>You get the system, scripts, and reporting. Your team runs day-to-day.</p>
                         </div>
                         <div class="option-card featured">
                             <div class="option-header">
@@ -458,13 +596,19 @@
                             <h4>Managed by us</h4>
                             <ul>
                                 <li>Weekly tuning of questions, follow-ups, and conversion paths</li>
-                                <li>Deliverability checks (messages delivered vs. blocked)</li>
-                                <li>Ongoing objection-path improvements</li>
-                                <li>Performance reporting + fixes</li>
+                                <li>Deliverability checks (delivered vs blocked)</li>
+                                <li>Continuous improvements for objections</li>
+                                <li>Reporting + fixes</li>
                             </ul>
-                            <p class="option-note">You can enable it any time after setup</p>
+                            <p class="option-note">You can enable Managed anytime after installation.</p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Customizations -->
+                <div class="customizations-note">
+                    <h3>Customizations (Add‑On)</h3>
+                    <p>Need CRM integration, special booking rules, multi-location routing, custom lead sources, or bespoke workflows?<br>We can build it as an add‑on (quoted based on complexity).</p>
                 </div>
             </div>
         </div>
@@ -474,7 +618,7 @@
     <section class="rate-card" id="rates">
         <div class="container">
             <h2 class="section-title center">Usage Rate Card</h2>
-            <p class="section-subtitle center">Simple + transparent (20% platform margin included)</p>
+            <p class="section-subtitle center">Simple + transparent (platform margin included)</p>
             
             <div class="rates-grid">
                 <div class="rate-category">
@@ -483,12 +627,12 @@
                         <div class="rate-item">
                             <span class="rate-name">WhatsApp messages</span>
                             <span class="rate-price">$0.006 <span class="rate-unit">per message</span></span>
-                            <span class="rate-note">Sent or received. Network template fees may apply outside service window.</span>
+                            <span class="rate-note">Sent or received. Network fees may apply outside service window; varies by country/use case.</span>
                         </div>
                         <div class="rate-item">
                             <span class="rate-name">SMS (US example)</span>
                             <span class="rate-price">~$0.01 <span class="rate-unit">per message</span></span>
-                            <span class="rate-note">International destinations vary significantly.</span>
+                            <span class="rate-note">International rates vary significantly.</span>
                         </div>
                         <div class="rate-item">
                             <span class="rate-name">Voice calls (outbound)</span>
@@ -502,7 +646,7 @@
                 </div>
 
                 <div class="rate-category">
-                    <h3>AI Conversation Processing</h3>
+                    <h3>Conversation Processing</h3>
                     <div class="rate-items">
                         <div class="rate-item">
                             <span class="rate-name">Input tokens</span>
@@ -511,7 +655,7 @@
                         <div class="rate-item">
                             <span class="rate-name">Output tokens</span>
                             <span class="rate-price">$2.40 <span class="rate-unit">per 1M tokens</span></span>
-                            <span class="rate-note">Tokens = the "units" used to generate replies. You'll see usage in your dashboard.</span>
+                            <span class="rate-note">Tokens are the units used to generate replies. Usage is visible in your dashboard.</span>
                         </div>
                     </div>
                 </div>
@@ -532,12 +676,11 @@
                 </div>
 
                 <div class="rate-category">
-                    <h3>Avatar Video</h3>
+                    <h3>Owner‑Avatar Video</h3>
                     <div class="rate-items">
                         <div class="rate-item">
                             <span class="rate-name">Avatar video generation</span>
                             <span class="rate-price">$1.20 <span class="rate-unit">per minute</span></span>
-                            <span class="rate-note">High-quality lip-sync avatar videos.</span>
                         </div>
                     </div>
                 </div>
@@ -550,7 +693,7 @@
         <div class="container">
             <h2 class="section-title center">Prefer a human confirmation?</h2>
             <p class="zoom-description">Book a 15-minute implementation review (not a sales pitch):<br>we'll confirm your offers, tone, and booking rules.</p>
-            <a href="{BOOK_IMPLEMENTATION_REVIEW_URL}" class="btn btn-outline btn-lg">Book implementation review</a>
+            <a href="{BOOK_REVIEW_LINK}" class="btn btn-outline btn-lg">Book implementation review</a>
             <p class="zoom-note">Only if you want it. Most clinics start after the live demo.</p>
         </div>
     </section>
@@ -561,24 +704,24 @@
             <h2 class="section-title center">FAQ</h2>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h3>Will it feel robotic?</h3>
-                    <p>No. It's written like a great front desk: short, clear, polite. It escalates to a human when needed.</p>
+                    <h3>Is this AI-generated?</h3>
+                    <p>Yes. The system uses AI for video generation (owner-avatar + UGC-style creatives) and for automated qualification/booking.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>Does it give medical advice?</h3>
-                    <p>No. It qualifies and books. That's it.</p>
+                    <h3>Are UGC videos real patients?</h3>
+                    <p>UGC-style creatives use AI-generated actors and dramatized scenarios — designed to feel real without being deceptive.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Will it feel robotic?</h3>
+                    <p>No. It's written like a great front desk: short, polite, clear — and escalates to humans when needed.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can we control usage spend?</h3>
+                    <p>Yes. We can set a monthly usage cap and alerts, and you'll get a monthly usage summary.</p>
                 </div>
                 <div class="faq-item">
                     <h3>Can it handle multiple services / languages?</h3>
-                    <p>Yes. The script branches by service and language.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>How do we know it's working?</h3>
-                    <p>You'll see response time, lead stage, booking rate, recovered leads, and handoff outcomes.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Can I control usage spend?</h3>
-                    <p>Yes. We can set a monthly usage cap and alerts, and you'll get a monthly usage summary.</p>
+                    <p>Yes. Scripts branch by service and language.</p>
                 </div>
             </div>
         </div>
@@ -589,11 +732,11 @@
         <div class="container">
             <div class="close-light"></div>
             <h2 class="close-headline">Run the demo now.</h2>
-            <p class="close-subline">If it doesn't feel like your future front desk—walk away.</p>
+            <p class="close-subline">If it doesn't feel like your future content team — and your future front desk — walk away.</p>
             <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
                 <span class="btn-shine"></span>
                 <span class="btn-icon">▶</span>
-                Start live demo
+                Run Live Demo ($5 credit)
             </button>
         </div>
     </section>
@@ -606,10 +749,11 @@
                 <span>Lead Agents Studio</span>
             </div>
             <div class="footer-links">
-                <a href="{PRIVACY_URL}">Privacy</a>
-                <a href="{TERMS_URL}">Terms</a>
+                <a href="{PRIVACY_LINK}">Privacy</a>
+                <a href="{TERMS_LINK}">Terms</a>
             </div>
-            <p class="footer-disclaimer">This is a demonstration of lead qualification and booking workflows. Not medical advice.</p>
+            <p class="footer-disclaimer">Demonstration of booking & qualification workflows only. Not medical advice.</p>
+            <p class="footer-support">Support: <a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a></p>
         </div>
     </footer>
 
@@ -618,7 +762,7 @@
         <div class="panel-content">
             <button class="panel-close" onclick="closeDemoPanel()">×</button>
             <div class="panel-icon">✅</div>
-            <h2>Demo started. Now check your phone.</h2>
+            <h2>Demo started. Check your phone.</h2>
             <div class="panel-steps">
                 <div class="panel-step">
                     <span class="step-num">1</span>
@@ -626,22 +770,23 @@
                 </div>
                 <div class="panel-step">
                     <span class="step-num">2</span>
-                    <p>Reply like a real inquiry (short answers are perfect).</p>
+                    <p>Reply like a real lead (short answers are perfect).</p>
                 </div>
                 <div class="panel-step">
                     <span class="step-num">3</span>
-                    <p>When it books a slot, type <strong>SHOW OWNER VIEW</strong> to see what the system captured.</p>
+                    <p>After the booking moment, type <strong>SHOW OWNER VIEW</strong>.</p>
                 </div>
                 <div class="panel-step">
                     <span class="step-num">4</span>
-                    <p>If you want to start: pay the <strong>$5,000 setup</strong> (Stripe) or use <strong>Escrow</strong>.</p>
+                    <p>Ready to start? Pay the <strong>$5,000 installation</strong> (Stripe) or use <strong>Escrow</strong>.</p>
                 </div>
             </div>
+            <p class="panel-pause-note">If the demo pauses due to temporary limits: your demo is saved. Resume or switch channels — you won't be charged twice.</p>
             <div class="panel-cta">
                 <a href="{STRIPE_SETUP_LINK}" class="btn btn-primary btn-lg">Pay $5,000 setup</a>
                 <a href="{ESCROW_LINK}" class="btn btn-outline">Pay via Escrow</a>
             </div>
-            <p class="panel-support">Support: If nothing arrives, email <a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a></p>
+            <p class="panel-support">Support: <a href="mailto:{SUPPORT_EMAIL}">{SUPPORT_EMAIL}</a></p>
         </div>
     </div>
 
