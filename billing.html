@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Policy — Lead Agents Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; color: #1d1d1f; background: #fafafa; line-height: 1.7; }
+        .policy-container { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+        .policy-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e5e7; }
+        .policy-nav a { color: #00d4ff; text-decoration: none; font-weight: 500; font-size: 0.9rem; }
+        .policy-nav a:hover { text-decoration: underline; }
+        .policy-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .last-updated { color: #6e6e73; font-size: 0.875rem; margin-bottom: 2.5rem; }
+        h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; color: #1d1d1f; }
+        h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        p { margin-bottom: 1rem; color: #424245; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #424245; }
+        li { margin-bottom: 0.5rem; }
+        strong { color: #1d1d1f; }
+        .highlight { background: rgba(0, 212, 255, 0.08); border-left: 3px solid #00d4ff; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+        th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #e5e5e7; font-size: 0.95rem; }
+        th { font-weight: 600; color: #1d1d1f; background: #f5f5f7; }
+        td { color: #424245; }
+        .footer-legal { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e5e7; text-align: center; color: #6e6e73; font-size: 0.875rem; }
+        .footer-legal a { color: #00d4ff; text-decoration: none; }
+        @media (max-width: 600px) { h1 { font-size: 1.5rem; } .policy-container { padding: 2rem 1rem 3rem; } table { font-size: 0.85rem; } th, td { padding: 0.5rem; } }
+    </style>
+</head>
+<body>
+    <div class="policy-container">
+        <nav class="policy-nav">
+            <a href="/">← Back to Lead Agents Studio</a>
+            <div class="policy-links">
+                <a href="/terms.html">Terms</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="/refund.html">Refund</a>
+            </div>
+        </nav>
+
+        <h1>Billing Policy</h1>
+        <p class="last-updated">Last updated: February 13, 2026</p>
+
+        <h2>1. One-Time Installation Fee</h2>
+        <ul>
+            <li>The installation fee is <strong>$5,000 USD</strong>, payable upfront via Stripe.</li>
+            <li>Installment options may be available at checkout via <strong>Affirm, Afterpay, or Klarna</strong> (subject to eligibility, region, and currency).</li>
+            <li>Alternatively, you may pay via <strong>Escrow</strong> for maximum payment protection.</li>
+            <li>The installation fee covers Creative Engine Setup, Follow-Up & Booking Engine Setup, Testing, and Launch.</li>
+        </ul>
+
+        <h2>2. Demo Credit ($5)</h2>
+        <ul>
+            <li>A $5 demo credit is required to run the live demo.</li>
+            <li>This covers real messaging/call costs and prevents spam.</li>
+            <li>The $5 is <strong>credited toward the installation fee</strong> if you proceed.</li>
+            <li>Demo credits are non-refundable once messages have been sent.</li>
+        </ul>
+
+        <h2>3. Monthly Usage Costs (Pay-As-You-Go)</h2>
+        <p>After installation, you pay only for what you use. There is no monthly subscription fee.</p>
+
+        <h3>What's included in usage billing:</h3>
+        <ul>
+            <li>Messaging + calls (WhatsApp, SMS, phone minutes)</li>
+            <li>Conversation processing (AI qualification + scripting)</li>
+            <li>Video generation seconds (new creatives)</li>
+            <li>Owner-avatar video generation</li>
+        </ul>
+
+        <div class="highlight">
+            <p><strong>Platform margin:</strong> All usage items are billed at vendor list price <strong>+ 20% platform margin</strong>. This covers orchestration, monitoring, error handling, and consolidated billing.</p>
+        </div>
+
+        <h3>Rate Card (including platform margin)</h3>
+        <table>
+            <tr><th>Item</th><th>Rate</th></tr>
+            <tr><td>WhatsApp message (in/out)</td><td>$0.006 per message</td></tr>
+            <tr><td>SMS (US example, in/out)</td><td>~$0.01 per message</td></tr>
+            <tr><td>Outbound calls</td><td>~$0.017 per minute</td></tr>
+            <tr><td>Inbound calls</td><td>~$0.010 per minute</td></tr>
+            <tr><td>AI input tokens</td><td>$0.30 per 1M tokens</td></tr>
+            <tr><td>AI output tokens</td><td>$2.40 per 1M tokens</td></tr>
+            <tr><td>AI video (720p)</td><td>$0.12 per second</td></tr>
+            <tr><td>AI video (higher quality)</td><td>$0.36–$0.60 per second</td></tr>
+            <tr><td>Owner-avatar video</td><td>$1.20 per minute</td></tr>
+        </table>
+        <p><em>International SMS/WhatsApp rates vary by country. Exact rates are visible in your dashboard.</em></p>
+
+        <h2>4. Payment Method</h2>
+        <ul>
+            <li>All payments are processed securely via <strong>Stripe</strong>.</li>
+            <li>We accept major credit/debit cards (Visa, Mastercard, Amex).</li>
+            <li>Monthly usage charges are billed to the card on file.</li>
+        </ul>
+
+        <h2>5. Usage Caps & Alerts</h2>
+        <ul>
+            <li>You can set a <strong>monthly usage cap</strong> to control spending.</li>
+            <li>We provide alerts when you approach your cap.</li>
+            <li>A <strong>monthly usage summary</strong> is sent by email.</li>
+        </ul>
+
+        <h2>6. Managed Service (Optional)</h2>
+        <ul>
+            <li><strong>Self-Managed</strong> (included): You run the system; we provide tools and reporting.</li>
+            <li><strong>Managed by us</strong> (+$500/month): Weekly tuning, deliverability checks, objection improvements, reporting + fixes.</li>
+            <li>You can enable or disable managed service at any time after installation.</li>
+        </ul>
+
+        <h2>7. Invoicing</h2>
+        <ul>
+            <li>Installation fee: Invoiced at time of purchase.</li>
+            <li>Monthly usage: Invoiced at the end of each calendar month.</li>
+            <li>Managed service: Invoiced monthly in advance.</li>
+            <li>All invoices are sent via email and available in your Stripe dashboard.</li>
+        </ul>
+
+        <h2>8. Late Payments</h2>
+        <p>If payment fails, we will retry up to 3 times over 7 days. If payment remains unsuccessful, the system may be paused until payment is resolved. We will notify you before any service interruption.</p>
+
+        <h2>9. Currency</h2>
+        <p>All prices are listed in <strong>USD</strong>. If you pay from a non-US card, your bank may apply exchange rates and fees.</p>
+
+        <h2>10. Contact</h2>
+        <p>For billing questions:</p>
+        <p><strong>AUMI 4</strong><br>
+        2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+        Email: <a href="mailto:support@aumi4.com">support@aumi4.com</a><br>
+        Phone: <a href="tel:+17605128491">+1 760-512-8491</a></p>
+
+        <div class="footer-legal">
+            <p><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms & Conditions</a> · <a href="/billing.html">Billing Policy</a> · <a href="/refund.html">Refund Policy</a></p>
+            <p style="margin-top: 0.5rem;">© 2026 Lead Agents Studio / AUMI 4. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
