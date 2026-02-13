@@ -60,8 +60,14 @@ function initFormHandling() {
         console.log('Form submitted:', data);
         
         // Validate phone number format
-        if (!data.phone.startsWith('+')) {
+        if (!data.phone || !data.phone.startsWith('+')) {
             showFormError('phone', 'Please include country code (e.g., +1 for US, +972 for Israel)');
+            return;
+        }
+        
+        // Validate email
+        if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            showFormError('email', 'Please enter a valid email address');
             return;
         }
         
@@ -72,19 +78,13 @@ function initFormHandling() {
         btn.disabled = true;
         
         try {
-            // Call the backend API
-            // In production: use HTTPS and your actual domain
-            // For local dev: use localhost:3001
-            const apiUrl = window.location.hostname === 'localhost' 
-                ? 'http://localhost:3001/api/demo/start'
-                : `${window.location.origin}/api/demo/start`;
-            
-            const response = await fetch(apiUrl, {
+            // API server on Render.com handles the demo
+            const API_URL = 'https://lead-agents-api.onrender.com';
+            const response = await fetch(`${API_URL}/api/demo/start`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                credentials: 'same-origin',  // Include cookies for same-origin requests
                 body: JSON.stringify(data)
             });
             
@@ -94,12 +94,18 @@ function initFormHandling() {
                 console.log('Demo started:', result);
                 showDemoPanel();
                 demoForm.reset();
+            } else if (response.status === 429) {
+                throw new Error('Too many requests. Please wait a few minutes.');
             } else {
                 throw new Error(result.error || 'Failed to start demo');
             }
         } catch (error) {
             console.error('Error starting demo:', error);
-            showFormError('general', error.message || 'Failed to start demo. Please try again.');
+            if (error.message === 'Failed to fetch') {
+                showFormError('general', 'Network error. Please check your connection and try again.');
+            } else {
+                showFormError('general', error.message || 'Failed to start demo. Please try again.');
+            }
         } finally {
             btn.innerHTML = originalHTML;
             btn.disabled = false;
