@@ -59,6 +59,13 @@ function initFormHandling() {
         
         console.log('Form submitted:', data);
         
+        // Validate consent checkbox
+        const consentCheckbox = demoForm.querySelector('input[name="consent"]');
+        if (consentCheckbox && !consentCheckbox.checked) {
+            showFormError('general', 'Please check the consent box to proceed.');
+            return;
+        }
+        
         // Validate phone number format
         if (!data.phone || !data.phone.startsWith('+')) {
             showFormError('phone', 'Please include country code (e.g., +1 for US, +972 for Israel)');
