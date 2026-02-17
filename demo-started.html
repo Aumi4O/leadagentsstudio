@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Started — Lead Agents Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #00d4ff, #ff3b8b);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --bg-light: #fafafa;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated background beams */
+        .beam {
+            position: fixed;
+            width: 600px;
+            height: 1200px;
+            opacity: 0.15;
+            filter: blur(100px);
+            z-index: 0;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .beam-1 {
+            background: linear-gradient(180deg, #00d4ff 0%, transparent 100%);
+            top: -30%;
+            left: -10%;
+            transform: rotate(-15deg);
+        }
+        
+        .beam-2 {
+            background: linear-gradient(180deg, #ff3b8b 0%, transparent 100%);
+            top: -20%;
+            right: -10%;
+            transform: rotate(15deg);
+            animation-delay: -5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-15deg); }
+            50% { transform: translateY(30px) rotate(-10deg); }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(0, 212, 255, 0); }
+        }
+        
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .channel-info {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .channel-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .channel-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .channel-icon {
+            font-size: 1.5rem;
+        }
+        
+        .instructions {
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .instructions ul {
+            list-style: none;
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+        
+        .instructions li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .instructions li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00d4ff;
+            font-weight: 700;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            color: var(--text-primary);
+        }
+        
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="beam beam-1"></div>
+    <div class="beam beam-2"></div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            
+            <h1>Payment received!</h1>
+            <p class="subtitle">Your <span class="gradient-text">$5 demo credit</span> is active.<br>Your demo is starting now.</p>
+            
+            <div class="channel-info">
+                <div class="channel-label">Demo channel</div>
+                <div class="channel-value">
+                    <span class="channel-icon" id="channelIcon">💬</span>
+                    <span id="channelName">WhatsApp</span>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>What happens next:</h3>
+                <ul>
+                    <li>You'll receive a message within 60 seconds</li>
+                    <li>Reply naturally — like a real lead</li>
+                    <li>Experience the full qualification flow</li>
+                    <li>Type OWNER VIEW to see what the system captured</li>
+                </ul>
+            </div>
+            
+            <a href="/" class="btn btn-primary">
+                ← Back to Lead Agents Studio
+            </a>
+            
+            <a href="mailto:support@aumi4.com" class="btn btn-secondary">
+                Need help? Contact support
+            </a>
+            
+            <p class="footer-note">
+                Your credit covers real delivery costs. Reply STOP anytime to opt out.<br>
+                Booking & qualification demo only — not medical advice.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Read channel preference from localStorage (set by the form before redirect)
+        document.addEventListener('DOMContentLoaded', () => {
+            const channel = localStorage.getItem('demo_channel') || 'whatsapp';
+            const channelIcon = document.getElementById('channelIcon');
+            const channelName = document.getElementById('channelName');
+            
+            const channelConfig = {
+                whatsapp: { icon: '💬', name: 'WhatsApp' },
+                sms: { icon: '📱', name: 'SMS' },
+                call: { icon: '📞', name: 'Phone Call' }
+            };
+            
+            const config = channelConfig[channel] || channelConfig.whatsapp;
+            channelIcon.textContent = config.icon;
+            channelName.textContent = config.name;
+            
+            // Clear localStorage after reading
+            localStorage.removeItem('demo_channel');
+            localStorage.removeItem('demo_name');
+            localStorage.removeItem('demo_phone');
+            
+            // Log for debugging
+            console.log('Demo started via:', channel);
+        });
+    </script>
+</body>
+</html>

@@ -41,7 +41,27 @@ function initStickyBar() {
     }, { passive: true });
 }
 
-// Form Handling
+// ============================================================================
+// STRIPE PAYMENT LINK CONFIGURATION
+// ============================================================================
+// Product ID: prod_TzpmTSfXzqLBvB ($5 demo credit)
+//
+// SETUP INSTRUCTIONS:
+// 1. Go to Stripe Dashboard > Payment Links
+// 2. Create a new Payment Link for product: prod_TzpmTSfXzqLBvB
+// 3. Under "After payment" set:
+//    - Success URL: https://leadagentsstudio.com/demo-started.html
+// 4. Under "Collect customer info":
+//    - Email: Required
+//    - Phone: Required (IMPORTANT for demo to work!)
+// 5. Copy the Payment Link URL and paste it below
+// 6. Configure webhook in Stripe Dashboard > Webhooks:
+//    - Endpoint: https://lead-agents-api.onrender.com/stripe/webhook
+//    - Events: checkout.session.completed
+// ============================================================================
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/9B64gydgs6jQcJlbuoaIM00';
+
+// Form Handling - Now redirects to Stripe Payment Link
 function initFormHandling() {
     const demoForm = document.getElementById('demoForm');
     if (!demoForm) return;
@@ -54,7 +74,7 @@ function initFormHandling() {
             name: formData.get('name'),
             phone: formData.get('phone'),
             email: formData.get('email'),
-            channel: formData.get('channel')
+            channel: formData.get('channel') || 'whatsapp'
         };
         
         console.log('Form submitted:', data);
@@ -81,42 +101,26 @@ function initFormHandling() {
         // Show loading
         const btn = demoForm.querySelector('button[type="submit"]');
         const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<span class="btn-shine"></span>Starting demo...';
+        btn.innerHTML = '<span class="btn-shine"></span>Redirecting to payment...';
         btn.disabled = true;
         
-        try {
-            // API server on Render.com handles the demo
-            const API_URL = 'https://lead-agents-api.onrender.com';
-            const response = await fetch(`${API_URL}/api/demo/start`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                console.log('Demo started:', result);
-                showDemoPanel();
-                demoForm.reset();
-            } else if (response.status === 429) {
-                throw new Error('Too many requests. Please wait a few minutes.');
-            } else {
-                throw new Error(result.error || 'Failed to start demo');
-            }
-        } catch (error) {
-            console.error('Error starting demo:', error);
-            if (error.message === 'Failed to fetch') {
-                showFormError('general', 'Network error. Please check your connection and try again.');
-            } else {
-                showFormError('general', error.message || 'Failed to start demo. Please try again.');
-            }
-        } finally {
-            btn.innerHTML = originalHTML;
-            btn.disabled = false;
-        }
+        // Build Stripe Payment Link URL with prefilled data
+        // The phone number is passed as client_reference_id so the webhook can use it
+        // Email is prefilled in the checkout form
+        // Channel is encoded in the URL for the success page to use
+        const paymentUrl = new URL(STRIPE_PAYMENT_LINK);
+        paymentUrl.searchParams.set('prefilled_email', data.email);
+        paymentUrl.searchParams.set('client_reference_id', data.phone);
+        
+        // Store channel preference in localStorage so the success page knows which channel to display
+        localStorage.setItem('demo_channel', data.channel);
+        localStorage.setItem('demo_name', data.name);
+        localStorage.setItem('demo_phone', data.phone);
+        
+        console.log('Redirecting to Stripe:', paymentUrl.toString());
+        
+        // Redirect to Stripe Payment Link
+        window.location.href = paymentUrl.toString();
     });
 }
 
