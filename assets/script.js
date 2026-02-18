@@ -42,8 +42,9 @@ function initStickyBar() {
 }
 
 // ============================================================================
-// STRIPE PAYMENT LINK CONFIGURATION
+// STRIPE PAYMENT LINK CONFIGURATION (DISABLED - FREE DEMO FOR NOW)
 // ============================================================================
+// Uncomment and use this when ready to enable $5 paid demo
 // Product ID: prod_TzpmTSfXzqLBvB ($5 demo credit)
 //
 // SETUP INSTRUCTIONS:
@@ -59,9 +60,12 @@ function initStickyBar() {
 //    - Endpoint: https://lead-agents-api.onrender.com/stripe/webhook
 //    - Events: checkout.session.completed
 // ============================================================================
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/9B64gydgs6jQcJlbuoaIM00';
+// const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/9B64gydgs6jQcJlbuoaIM00';
 
-// Form Handling - Now redirects to Stripe Payment Link
+// Demo API endpoint
+const DEMO_API_URL = 'https://lead-agents-api.onrender.com/api/demo/start';
+
+// Form Handling - FREE demo (calls API directly)
 function initFormHandling() {
     const demoForm = document.getElementById('demoForm');
     if (!demoForm) return;
@@ -101,28 +105,95 @@ function initFormHandling() {
         // Show loading
         const btn = demoForm.querySelector('button[type="submit"]');
         const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<span class="btn-shine"></span>Starting demo...';
+        btn.disabled = true;
+        
+        try {
+            const response = await fetch(DEMO_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+                // Show success panel
+                showDemoPanel();
+                btn.innerHTML = '<span class="btn-shine"></span>Demo started!';
+            } else {
+                throw new Error(result.error || 'Failed to start demo');
+            }
+        } catch (error) {
+            console.error('Error starting demo:', error);
+            showFormError('general', error.message || 'Failed to start demo. Please try again.');
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }
+    });
+}
+
+/* ============================================================================
+   STRIPE PAYMENT VERSION (COMMENTED OUT FOR LATER)
+   ============================================================================
+   To enable $5 paid demo:
+   1. Uncomment the STRIPE_PAYMENT_LINK constant above
+   2. Replace initFormHandling() with this version:
+
+function initFormHandling_PAID() {
+    const demoForm = document.getElementById('demoForm');
+    if (!demoForm) return;
+    
+    demoForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(demoForm);
+        const data = {
+            name: formData.get('name'),
+            phone: formData.get('phone'),
+            email: formData.get('email'),
+            channel: formData.get('channel') || 'whatsapp'
+        };
+        
+        // Validate consent checkbox
+        const consentCheckbox = demoForm.querySelector('input[name="consent"]');
+        if (consentCheckbox && !consentCheckbox.checked) {
+            showFormError('general', 'Please check the consent box to proceed.');
+            return;
+        }
+        
+        // Validate phone number format
+        if (!data.phone || !data.phone.startsWith('+')) {
+            showFormError('phone', 'Please include country code (e.g., +1 for US, +972 for Israel)');
+            return;
+        }
+        
+        // Validate email
+        if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            showFormError('email', 'Please enter a valid email address');
+            return;
+        }
+        
+        // Show loading
+        const btn = demoForm.querySelector('button[type="submit"]');
         btn.innerHTML = '<span class="btn-shine"></span>Redirecting to payment...';
         btn.disabled = true;
         
-        // Build Stripe Payment Link URL with prefilled data
-        // The phone number is passed as client_reference_id so the webhook can use it
-        // Email is prefilled in the checkout form
-        // Channel is encoded in the URL for the success page to use
+        // Build Stripe Payment Link URL
         const paymentUrl = new URL(STRIPE_PAYMENT_LINK);
         paymentUrl.searchParams.set('prefilled_email', data.email);
         paymentUrl.searchParams.set('client_reference_id', data.phone);
         
-        // Store channel preference in localStorage so the success page knows which channel to display
+        // Store for success page
         localStorage.setItem('demo_channel', data.channel);
         localStorage.setItem('demo_name', data.name);
         localStorage.setItem('demo_phone', data.phone);
         
-        console.log('Redirecting to Stripe:', paymentUrl.toString());
-        
-        // Redirect to Stripe Payment Link
+        // Redirect to Stripe
         window.location.href = paymentUrl.toString();
     });
 }
+============================================================================ */
 
 // Show form error
 function showFormError(field, message) {
