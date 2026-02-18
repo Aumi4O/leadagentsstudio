@@ -1973,45 +1973,6 @@ h1, h2, h3, h4 {
     justify-content: center;
 }
 
-/* Support Section */
-.support-section {
-    padding: var(--space-3xl) 0;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(255, 59, 139, 0.05) 100%);
-}
-
-.support-card {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    padding: var(--space-2xl);
-    background: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
-.support-icon {
-    font-size: 3rem;
-    margin-bottom: var(--space-md);
-}
-
-.support-text {
-    color: var(--gray-600);
-    font-size: 1.125rem;
-    margin-bottom: var(--space-xl);
-    line-height: 1.6;
-}
-
-.support-section .btn {
-    display: inline-flex;
-    margin-bottom: var(--space-md);
-}
-
-.support-response {
-    color: var(--gray-500);
-    font-size: 0.875rem;
-    margin: 0;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .sticky-bar-content {
