@@ -1,6 +1,7 @@
 // Lead Agents Studio V3 — Light Theme with Animated Lighting
 
 document.addEventListener('DOMContentLoaded', () => {
+    initLangSwitcher();
     initStickyBar();
     initFormHandling();
     initScrollAnimations();
@@ -8,6 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     initPhoneParallax();
     initMouseGlow();
 });
+
+// Lang switcher: hide Hebrew/Israeli on USA version (main domain), show on he. subdomain
+function initLangSwitcher() {
+    const host = window.location.hostname.toLowerCase();
+    const isHebrewSubdomain = host.startsWith('he.') || host.startsWith('hebrew.');
+    if (!isHebrewSubdomain) {
+        document.querySelectorAll('.lang-he').forEach(el => el.remove());
+    }
+}
 
 // Smooth Scroll
 function scrollToDemo() {
