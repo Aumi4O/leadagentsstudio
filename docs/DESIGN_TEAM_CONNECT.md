@@ -3,13 +3,16 @@
 Use this iframe to add the voice demo wherever it should appear (Hero, Demo section, etc.):
 
 ```html
-<iframe
-  src="https://lead-agents-api.onrender.com/smartline-embed"
-  title="Talk to Strawberry"
-  width="100%"
-  height="280"
-  style="border: none; border-radius: 12px; max-width: 480px; min-height: 280px;"
-></iframe>
+<div class="embed-wrapper" style="max-width:480px;margin:0 auto;overflow:hidden;border-radius:12px;">
+  <iframe
+    src="https://lead-agents-api.onrender.com/smartline-embed"
+    title="Talk to Strawberry"
+    allow="microphone"
+    width="100%"
+    height="340"
+    style="border: none; border-radius: 12px; display: block;"
+  ></iframe>
+</div>
 ```
 
 The embed includes the **full design** (agent window, header, waveform, button) — just place the iframe.

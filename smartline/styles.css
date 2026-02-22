@@ -1,6 +1,19 @@
 /* SmartLine Agent — Sales Page Overrides */
 /* Extends main styles.css */
 
+/* Embed wrapper: fixed size, no scroll, centered */
+.embed-wrapper {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.embed-wrapper iframe {
+    min-height: 340px;
+}
+
 /* Agent Demo Window */
 .agent-window {
     background: var(--white);
