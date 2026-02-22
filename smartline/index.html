@@ -47,22 +47,35 @@
                 SmartLine Agent keeps that moment from slipping away. It picks up with a steady, professional voice — every time — and moves the conversation forward when a human moment would quietly drop it.
             </p>
 
-            <!-- Agent Demo Window (static placeholder — no backend required) -->
+            <!-- Agent Demo Window -->
             <div class="agent-window">
                 <div class="agent-window-header">
-                    <div class="agent-avatar talking">🍓</div>
+                    <div class="agent-avatar talking" id="agentAvatar">🍓</div>
                     <div class="agent-info">
                         <h3>Strawberry</h3>
-                        <span>SmartLine Agent • Voice demo</span>
+                        <span>SmartLine Agent • Ready to talk</span>
                     </div>
                 </div>
-                <div class="agent-window-body demo-placeholder">
-                    <p class="demo-placeholder-text">Talk to Strawberry — any language, any time.</p>
-                    <p class="demo-placeholder-sub">Want a live demo? Book a call and we'll walk you through it.</p>
-                    <a href="https://calendly.com/aumi4-support/30min" class="btn btn-primary">Book a live demo</a>
+                <div class="agent-waveform talking" id="agentWaveform">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </div>
+                <div class="agent-window-body">
+                    <p class="agent-status" id="agentStatus">Enter your phone — we'll call you. Answer to talk to Strawberry.</p>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <input type="tel" id="smartline-phone" placeholder="+1 555 123 4567" required
+                            style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200); font-size: 1rem;">
+                    </div>
+                    <div class="agent-cta-inline">
+                        <button type="button" class="btn btn-primary btn-lg" id="talkBtn" onclick="startSmartlineCall()">
+                            <span class="btn-shine"></span>
+                            Talk to Strawberry right here
+                        </button>
+                    </div>
                 </div>
             </div>
-            <p class="trust-line" style="margin-top: 1rem;">Just start speaking. Any language. She'll follow.</p>
+            <p class="trust-line" style="margin-top: 1rem;">Include country code (e.g., +1 US, +972 Israel). Any language.</p>
 
             <!-- CTAs -->
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
@@ -120,19 +133,31 @@
                 Don't "test features." Have the conversation your customers actually have: "How much does it cost?" "Do you have availability this week?" "I'm comparing a few options…" "Can I reschedule?" "I need this urgently." Just start speaking. SmartLine Agent responds in your language automatically.
             </p>
 
-            <!-- Agent window (static placeholder — no backend required) -->
+            <!-- Agent window repeat -->
             <div class="agent-window" style="margin-bottom: 2rem;">
                 <div class="agent-window-header">
                     <div class="agent-avatar talking">🍓</div>
                     <div class="agent-info">
                         <h3>Strawberry</h3>
-                        <span>Voice demo — any language</span>
+                        <span>We call you — any language</span>
                     </div>
                 </div>
-                <div class="agent-window-body demo-placeholder">
-                    <p class="demo-placeholder-text">Talk to Strawberry — any language, any time.</p>
-                    <p class="demo-placeholder-sub">Want a live demo? Book a call and we'll walk you through it.</p>
-                    <a href="https://calendly.com/aumi4-support/30min" class="btn btn-primary">Book a live demo</a>
+                <div class="agent-waveform talking">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </div>
+                <div class="agent-window-body">
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <input type="tel" id="smartline-phone-demo" placeholder="+1 555 123 4567" required
+                            style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200); font-size: 1rem;">
+                    </div>
+                    <div class="agent-cta-inline">
+                        <button type="button" class="btn btn-primary btn-lg" id="talkBtnDemo" onclick="startSmartlineCallFromDemo()">
+                            <span class="btn-shine"></span>
+                            Talk to Strawberry right here
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -317,8 +342,52 @@
     </footer>
 
     <script>
-        // Browser-embedded demo: iframe loads smartline-embed from API
-        // WebRTC direct to OpenAI — no phone, no Twilio
+        // Replace with your API base URL — see docs/SMARTLINE_CONNECT_INSTRUCTIONS.md
+        const API_BASE = 'https://lead-agents-api.onrender.com';
+
+        async function startSmartlineCall(fromDemo) {
+            const phoneInput = fromDemo ? document.getElementById('smartline-phone-demo') : document.getElementById('smartline-phone');
+            const phone = phoneInput?.value?.trim() || '';
+            const btn = fromDemo ? document.getElementById('talkBtnDemo') : document.getElementById('talkBtn');
+            if (!btn) return;
+
+            if (!phone) {
+                alert('Please enter your phone number with country code (e.g., +1 555 123 4567)');
+                return;
+            }
+            if (!phone.startsWith('+')) {
+                alert('Please include country code (e.g., +1 for US, +972 for Israel)');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-shine"></span>Calling...';
+
+            try {
+                const res = await fetch(API_BASE + '/api/demo/smartline/call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    btn.innerHTML = '<span class="btn-shine"></span>Answer your phone!';
+                } else {
+                    alert(data.error || 'Failed to start call');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="btn-shine"></span>Talk to Strawberry right here';
+                }
+            } catch (err) {
+                alert('Could not connect. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-shine"></span>Talk to Strawberry right here';
+            }
+        }
+
+        function startSmartlineCallFromDemo() {
+            startSmartlineCall(true);
+        }
     </script>
 </body>
 </html>
