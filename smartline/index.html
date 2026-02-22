@@ -62,16 +62,20 @@
                     <span class="bar"></span><span class="bar"></span><span class="bar"></span>
                 </div>
                 <div class="agent-window-body">
-                    <p class="agent-status speaking" id="agentStatus">Listening... speak now. Any language.</p>
+                    <p class="agent-status" id="agentStatus">Enter your phone — we'll call you. Answer to talk to Strawberry.</p>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <input type="tel" id="smartline-phone" placeholder="+1 555 123 4567" required
+                            style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200); font-size: 1rem;">
+                    </div>
                     <div class="agent-cta-inline">
-                        <a href="#demo" class="btn btn-primary btn-lg" id="talkBtn">
+                        <button type="button" class="btn btn-primary btn-lg" id="talkBtn" onclick="startSmartlineCall()">
                             <span class="btn-shine"></span>
                             Talk to Strawberry right here
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
-            <p class="trust-line" style="margin-top: 1rem;">Just start speaking. Any language. She'll follow.</p>
+            <p class="trust-line" style="margin-top: 1rem;">Include country code (e.g., +1 US, +972 Israel). Any language.</p>
 
             <!-- CTAs -->
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
@@ -135,7 +139,7 @@
                     <div class="agent-avatar talking">🍓</div>
                     <div class="agent-info">
                         <h3>Strawberry</h3>
-                        <span>Speak now — any language</span>
+                        <span>We call you — any language</span>
                     </div>
                 </div>
                 <div class="agent-waveform talking">
@@ -144,9 +148,15 @@
                     <span class="bar"></span><span class="bar"></span><span class="bar"></span>
                 </div>
                 <div class="agent-window-body">
-                    <p class="agent-status speaking">Listening... Just start speaking.</p>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <input type="tel" id="smartline-phone-demo" placeholder="+1 555 123 4567" required
+                            style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200); font-size: 1rem;">
+                    </div>
                     <div class="agent-cta-inline">
-                        <a href="#demo" class="btn btn-primary btn-lg">Talk to Strawberry right here</a>
+                        <button type="button" class="btn btn-primary btn-lg" id="talkBtnDemo" onclick="startSmartlineCallFromDemo()">
+                            <span class="btn-shine"></span>
+                            Talk to Strawberry right here
+                        </button>
                     </div>
                 </div>
             </div>
@@ -332,19 +342,51 @@
     </footer>
 
     <script>
-        // Agent animation: simulate "talking" state on interaction
-        document.querySelectorAll('#talkBtn, .agent-window .btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const status = document.getElementById('agentStatus');
-                if (status) {
-                    status.textContent = 'Listening... speak now. Any language.';
-                    status.classList.add('speaking');
+        const API_BASE = 'https://lead-agents-api.onrender.com';
+
+        async function startSmartlineCall(fromDemo) {
+            const phoneInput = fromDemo ? document.getElementById('smartline-phone-demo') : document.getElementById('smartline-phone');
+            const phone = phoneInput?.value?.trim() || '';
+            const btn = fromDemo ? document.getElementById('talkBtnDemo') : document.getElementById('talkBtn');
+            if (!btn) return;
+
+            if (!phone) {
+                alert('Please enter your phone number with country code (e.g., +1 555 123 4567)');
+                return;
+            }
+            if (!phone.startsWith('+')) {
+                alert('Please include country code (e.g., +1 for US, +972 for Israel)');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-shine"></span>Calling...';
+
+            try {
+                const res = await fetch(API_BASE + '/api/demo/smartline/call', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    btn.innerHTML = '<span class="btn-shine"></span>Answer your phone!';
+                } else {
+                    alert(data.error || 'Failed to start call');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="btn-shine"></span>Talk to Strawberry right here';
                 }
-                const avatar = document.getElementById('agentAvatar');
-                if (avatar) avatar.classList.add('talking');
-            });
-        });
+            } catch (err) {
+                alert('Could not connect. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<span class="btn-shine"></span>Talk to Strawberry right here';
+            }
+        }
+
+        function startSmartlineCallFromDemo() {
+            startSmartlineCall(true);
+        }
     </script>
 </body>
 </html>
