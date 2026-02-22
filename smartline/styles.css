@@ -100,6 +100,31 @@
     min-height: 120px;
 }
 
+/* Demo placeholder (no backend — static) */
+.demo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    text-align: center;
+    min-height: 180px;
+    background: var(--gray-50);
+}
+
+.demo-placeholder-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.demo-placeholder-sub {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    margin: 0;
+}
+
 .agent-status {
     text-align: center;
     color: var(--gray-500);
