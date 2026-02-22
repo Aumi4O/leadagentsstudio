@@ -79,7 +79,10 @@
         btn.classList.add('recording');
         setStatus('Speak now. Click to end.');
       } catch (err) {
-        setStatus(err.message || 'Connection failed', true);
+        const msg = err.message || 'Connection failed';
+        setStatus(msg === 'Failed to get token' 
+          ? 'Voice API unavailable — try again in a moment' 
+          : msg, true);
         btn.disabled = false;
       }
     }
