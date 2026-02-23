@@ -11,7 +11,7 @@
 }
 
 .embed-wrapper iframe {
-    min-height: 340px;
+    min-height: 420px;
     /* Let embed document control its own overflow for mobile scroll */
 }
 
