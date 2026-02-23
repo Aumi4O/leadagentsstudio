@@ -1,17 +1,18 @@
 /* SmartLine Agent — Sales Page Overrides */
 /* Extends main styles.css */
 
-/* Embed wrapper: fixed size, no scroll, centered */
+/* Embed wrapper: full height so content + button visible, allows internal scroll */
 .embed-wrapper {
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 12px;
 }
 
 .embed-wrapper iframe {
     min-height: 340px;
+    /* Let embed document control its own overflow for mobile scroll */
 }
 
 /* Agent Demo Window */
@@ -23,6 +24,15 @@
     max-width: 480px;
     margin: 0 auto;
     position: relative;
+    z-index: 1;
+    isolation: isolate;
+}
+
+/* Ensure iframe is fully interactive on mobile (no touch blocking) */
+.agent-window iframe {
+    min-height: 220px;
+    pointer-events: auto;
+    touch-action: manipulation;
 }
 
 .agent-window-header {
