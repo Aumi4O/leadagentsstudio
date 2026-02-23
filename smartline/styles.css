@@ -187,6 +187,13 @@
     color: var(--gray-600);
 }
 
+.cost-rate {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-top: 0.15rem;
+}
+
 .cost-note {
     margin-top: 1rem;
     font-size: 0.8rem;
