@@ -1,6 +1,21 @@
 /* SmartLine Agent — Sales Page Overrides */
 /* Extends main styles.css */
 
+/* Trust badge icon (replaces strawberry) */
+.brand-badge .badge-icon,
+.footer-brand .badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
 /* Embed wrapper: full height so content + button visible, allows internal scroll */
 .embed-wrapper {
     max-width: 480px;
