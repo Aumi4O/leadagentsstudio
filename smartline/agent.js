@@ -27,6 +27,10 @@
           <span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </div>
         <div class="agent-window-body">
+          <div class="agent-mode-pills">
+            <span class="mode-pill active" data-mode="chat">Chat</span>
+            <span class="mode-pill" data-mode="voice">Voice</span>
+          </div>
           <div class="agent-messages sl-messages"></div>
           <div class="agent-mic-notice sl-mic-notice">
             <p><strong>Voice mode:</strong> Your browser will ask for microphone access so you can speak to SmartLine. This is for security—only you hear your conversation. We never record without your consent.</p>
@@ -75,6 +79,7 @@
     const micNotice = root.querySelector('.sl-mic-notice');
     const waveform = root.querySelector('.sl-waveform');
     const avatar = root.querySelector('.agent-avatar');
+    const modePills = root.querySelectorAll('.mode-pill');
 
     let conversationId = null;
     let session = null;
@@ -85,12 +90,26 @@
       statusEl.className = 'agent-status' + (isError ? ' error' : '');
     }
 
-    function addMessageToUI(role, content) {
+    function setMode(mode) {
+      modePills.forEach(p => {
+        p.classList.toggle('active', p.dataset.mode === mode);
+      });
+    }
+
+    function addMessageToUI(role, content, fromVoice = false) {
+      if (!content || !content.trim()) return;
       const div = document.createElement('div');
       div.className = 'agent-msg ' + (role === 'user' ? 'agent-msg-user' : 'agent-msg-assistant');
+      if (fromVoice) div.classList.add('agent-msg-voice');
       const p = document.createElement('p');
       p.textContent = content;
       div.appendChild(p);
+      if (fromVoice) {
+        const badge = document.createElement('span');
+        badge.className = 'agent-msg-badge';
+        badge.textContent = 'voice';
+        div.insertBefore(badge, p);
+      }
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
@@ -108,6 +127,7 @@
       if (!text) return;
       chatInput.value = '';
       addMessageToUI('user', text);
+      setMode('chat');
       chatInput.disabled = true;
       setStatus('Thinking...');
       try {
@@ -162,6 +182,41 @@
         });
 
         session = new RealtimeSession(agent, { transport: 'webrtc', model: 'gpt-realtime', config: { audio: { output: { voice: 'shimmer' } } } });
+
+        const voiceTranscript = [];
+        const onTranscript = (ev) => {
+            try {
+              const r = ev?.response ?? ev;
+              if (!r) return;
+              if (r.role === 'user' && r.content) {
+                const text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.find(c => c.type === 'input_transcript')?.transcript ?? r.content[0]?.text : null) ?? '';
+                if (text.trim()) { addMessageToUI('user', text, true); voiceTranscript.push({ role: 'user', content: text }); }
+              }
+              if (r.role === 'assistant' && r.content) {
+                const text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.find(c => c.type === 'output_text')?.text ?? r.content.find(c => c.type === 'output_audio')?.transcript : null) ?? (r.content[0]?.text ?? r.content[0]?.transcript ?? '');
+                if (text.trim()) { addMessageToUI('assistant', text, true); voiceTranscript.push({ role: 'assistant', content: text }); }
+              }
+            } catch (_) {}
+        };
+        const bind = (emitter, ev, fn) => { if (emitter?.on) emitter.on(ev, fn); else if (emitter?.addEventListener) emitter.addEventListener(ev, fn); };
+        ['response', 'agent_end', 'history_added'].forEach(ev => bind(session, ev, onTranscript));
+        bind(session, 'history_updated', (ev) => {
+          try {
+            const items = ev?.history ?? ev?.items ?? (Array.isArray(ev) ? ev : []);
+            for (const it of items) {
+              if (it?.role === 'user' && it?.content) {
+                const text = typeof it.content === 'string' ? it.content : it.content?.find?.(c => c.type === 'input_transcript')?.transcript ?? it.content?.[0]?.text ?? '';
+                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('user', text, true); voiceTranscript.push({ role: 'user', content: text }); }
+              }
+              if (it?.role === 'assistant' && it?.content) {
+                const text = typeof it.content === 'string' ? it.content : it.content?.find?.(c => c.type === 'output_text')?.text ?? it.content?.find?.(c => c.type === 'output_audio')?.transcript ?? it.content?.[0]?.text ?? '';
+                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('assistant', text, true); voiceTranscript.push({ role: 'assistant', content: text }); }
+              }
+            }
+          } catch (_) {}
+        });
+        window.__sl_voiceTranscript = voiceTranscript;
+
         await session.connect({ apiKey: token });
         isVoiceActive = true;
         voiceBtn.hidden = true;
@@ -170,7 +225,8 @@
         waveform.classList.remove('idle');
         waveform.classList.add('talking');
         if (avatar) avatar.classList.add('talking');
-        setStatus('Speak now. Click Stop when done.');
+        setMode('voice');
+        setStatus('Speak now. Transcript appears in chat. Click Stop when done.');
       } catch (err) {
         const msg = err.message || '';
         const isApiError = /token|fetch|network|connection|unavailable/i.test(msg);
@@ -179,13 +235,24 @@
       }
     }
 
-    function endVoice() {
+    async function endVoice() {
+      const transcript = window.__sl_voiceTranscript || [];
       try {
         if (session) {
           try { session.close(); } catch (e) { console.warn('Session close:', e); }
           session = null;
         }
+        if (conversationId && transcript.length > 0) {
+          try {
+            await fetch(`${apiBase}/api/smartline/transcript`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ conversationId, messages: transcript })
+            });
+          } catch (_) {}
+        }
       } finally {
+        window.__sl_voiceTranscript = [];
         isVoiceActive = false;
         voiceBtn.hidden = false;
         voiceBtn.disabled = false;

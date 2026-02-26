@@ -85,6 +85,42 @@
     border: 1px solid var(--gray-200);
 }
 
+.agent-msg-voice .agent-msg-badge {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+}
+
+.agent-msg-voice.agent-msg-user .agent-msg-badge { color: rgba(255,255,255,0.9); }
+.agent-msg-voice.agent-msg-assistant .agent-msg-badge { color: var(--gray-500); }
+
+/* Mode pills — Chat / Voice */
+.agent-mode-pills {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+}
+
+.mode-pill {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: default;
+    background: var(--gray-100);
+    color: var(--gray-500);
+    border: 1px solid var(--gray-200);
+}
+
+.mode-pill.active {
+    background: linear-gradient(135deg, var(--cyan) 0%, #0ea5e9 100%);
+    color: white;
+    border-color: transparent;
+}
+
 .agent-mic-notice {
     padding: 0.75rem 1rem;
     margin-bottom: var(--space-md);
