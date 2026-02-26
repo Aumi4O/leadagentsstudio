@@ -497,3 +497,123 @@
     left: 0;
     color: var(--cyan);
 }
+
+/* Mobile — 2026 responsive */
+@media (max-width: 540px) {
+    .embed-wrapper {
+        padding: 0 0.75rem;
+    }
+
+    .smartline-agent-widget {
+        max-width: 100%;
+    }
+
+    .agent-window {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .agent-window-header {
+        padding: 1rem 1rem;
+    }
+
+    .agent-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+    }
+
+    .agent-info h3 {
+        font-size: 0.9rem;
+    }
+
+    .agent-info span {
+        font-size: 0.75rem;
+    }
+
+    .agent-waveform {
+        height: 36px;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .agent-window-body {
+        padding: 1rem;
+    }
+
+    .smartline-native .agent-messages {
+        max-height: 160px;
+        min-height: 60px;
+    }
+
+    .agent-msg {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.85rem;
+    }
+
+    .agent-mic-notice {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+    }
+
+    .agent-controls {
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+        border-radius: 16px;
+    }
+
+    .agent-input-row {
+        flex-wrap: nowrap;
+        gap: 0.4rem;
+    }
+
+    .agent-input-row input {
+        flex: 1;
+        min-width: 0;
+        padding: 0.75rem 1rem;
+        font-size: 16px; /* prevents iOS zoom on focus */
+    }
+
+    .agent-input-row .btn-send {
+        flex-shrink: 0;
+        padding: 0.75rem 1rem;
+    }
+
+    .agent-input-row .btn-send .btn-label {
+        display: none;
+    }
+
+    .agent-input-row .btn-send .btn-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .agent-voice-row {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.5rem;
+    }
+
+    .agent-voice-row .btn-voice,
+    .agent-voice-row .btn-stop {
+        flex: 1;
+        min-width: 0;
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+    }
+
+    .agent-voice-row .btn-voice .btn-label,
+    .agent-voice-row .btn-stop .btn-label {
+        font-size: 0.85rem;
+    }
+
+    .agent-status {
+        font-size: 0.85rem;
+    }
+
+    .agent-input-row .btn-send,
+    .agent-voice-row .btn-voice,
+    .agent-voice-row .btn-stop {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
