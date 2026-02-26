@@ -110,19 +110,26 @@
     color: var(--gray-800);
 }
 
-/* Input row — chat + Send */
+/* Controls wrapper — 2026 grouped bar */
+.agent-controls {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: 20px;
+}
+
+/* Input row — 2026 pill layout */
 .agent-input-row {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    margin-top: var(--space-sm);
 }
 
 .agent-input-row input {
     flex: 1;
-    padding: 0.85rem 1.1rem;
-    border: 2px solid var(--gray-200);
-    border-radius: 14px;
+    padding: 0.9rem 1.25rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-full);
     font-size: 0.95rem;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -131,23 +138,23 @@
 .agent-input-row input:focus {
     outline: none;
     border-color: var(--cyan);
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
 }
 
-/* Great buttons — Send, Voice, Stop */
+/* Buttons — brand gradient, pill shape, 2026 */
 .agent-input-row .btn-send,
 .agent-voice-row .btn-voice,
 .agent-voice-row .btn-stop {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    padding: 0.85rem 1.25rem;
-    border-radius: 14px;
+    gap: 0.5rem;
+    padding: 0.9rem 1.35rem;
+    border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s;
+    transition: all 0.25s ease;
 }
 
 .agent-input-row .btn-send .btn-icon,
@@ -158,53 +165,59 @@
     flex-shrink: 0;
 }
 
+/* Send — gradient accent (cyan→pink) */
 .agent-input-row .btn-send {
-    background: linear-gradient(135deg, var(--cyan) 0%, #0ea5e9 100%);
+    background: var(--gradient-accent);
     color: white;
     border: none;
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.3);
 }
 
 .agent-input-row .btn-send:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--cyan-glow), 0 4px 16px var(--pink-glow);
 }
 
 .agent-input-row .btn-send:active {
     transform: translateY(0);
 }
 
-/* Voice row — Start Voice + Stop */
+/* Voice row — inline pills */
 .agent-voice-row {
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    margin-top: 0.75rem;
+    margin-top: 0.65rem;
 }
 
+/* Start Voice — ghost with gradient border */
 .agent-voice-row .btn-voice {
-    background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+    background: var(--white);
     color: var(--gray-800);
-    border: 2px solid var(--gray-200);
+    border: 1px solid var(--gray-200);
 }
 
 .agent-voice-row .btn-voice:hover {
-    background: linear-gradient(135deg, var(--gray-200) 0%, var(--gray-100) 100%);
-    border-color: var(--gray-300);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.06) 0%, rgba(255, 59, 139, 0.06) 100%);
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.3);
 }
 
+/* Stop — pink accent (brand-aligned urgency) */
 .agent-voice-row .btn-stop {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    background: var(--pink);
     color: white;
     border: none;
+    box-shadow: 0 2px 12px var(--pink-glow);
 }
 
 .agent-voice-row .btn-stop:hover {
-    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+    background: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--pink-glow);
 }
 
+.agent-voice-row .btn-voice:active,
 .agent-voice-row .btn-stop:active {
     transform: translateY(0);
 }

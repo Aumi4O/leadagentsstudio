@@ -31,22 +31,24 @@
           <div class="agent-mic-notice sl-mic-notice">
             <p><strong>Voice mode:</strong> Your browser will ask for microphone access so you can speak to SmartLine. This is for security—only you hear your conversation. We never record without your consent.</p>
           </div>
-          <div class="agent-input-row">
-            <input type="text" class="sl-chat-input" placeholder="Type your message..." autocomplete="off">
-            <button type="button" class="btn-send sl-send-btn" title="Send">
-              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-              <span class="btn-label">Send</span>
-            </button>
-          </div>
-          <div class="agent-voice-row">
-            <button type="button" class="btn-voice sl-voice-btn" title="Start voice">
-              ${micSvg}
-              <span class="btn-label">Start Voice</span>
-            </button>
-            <button type="button" class="btn-stop sl-stop-btn" title="Stop voice" aria-hidden="true" hidden>
-              ${stopSvg}
-              <span class="btn-label">Stop</span>
-            </button>
+          <div class="agent-controls">
+            <div class="agent-input-row">
+              <input type="text" class="sl-chat-input" placeholder="Type your message..." autocomplete="off">
+              <button type="button" class="btn-send sl-send-btn" title="Send">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                <span class="btn-label">Send</span>
+              </button>
+            </div>
+            <div class="agent-voice-row">
+              <button type="button" class="btn-voice sl-voice-btn" title="Start voice">
+                ${micSvg}
+                <span class="btn-label">Start Voice</span>
+              </button>
+              <button type="button" class="btn-stop sl-stop-btn" title="Stop voice" aria-hidden="true" hidden>
+                ${stopSvg}
+                <span class="btn-label">Stop</span>
+              </button>
+            </div>
           </div>
           <p class="agent-status sl-status"></p>
         </div>
