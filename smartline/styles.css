@@ -29,41 +29,67 @@
     min-height: 420px;
 }
 
-/* Native SmartLine Agent (no iframe) */
+/* Native SmartLine Agent — Redesigned Chat Window */
 .smartline-agent-widget {
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
 }
 
+/* Chat messages — bubble design */
 .smartline-native .agent-messages {
-    max-height: 200px;
+    max-height: 220px;
     overflow-y: auto;
     padding: var(--space-md) 0;
     margin-bottom: var(--space-sm);
-    min-height: 60px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.smartline-native .agent-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.smartline-native .agent-messages::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
 }
 
 .agent-msg {
-    padding: 0.5rem 0;
+    padding: 0.6rem 1rem;
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.55;
+    border-radius: 16px;
+    max-width: 88%;
+}
+
+.agent-msg p {
+    margin: 0;
 }
 
 .agent-msg-user {
-    text-align: right;
-    color: var(--gray-800);
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 100%);
+    color: white;
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.25);
 }
 
 .agent-msg-assistant {
-    color: var(--gray-700);
+    align-self: flex-start;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border: 1px solid var(--gray-200);
 }
 
 .agent-mic-notice {
-    padding: var(--space-sm);
+    padding: 0.75rem 1rem;
     margin-bottom: var(--space-md);
-    background: rgba(168, 85, 247, 0.08);
-    border: 1px solid rgba(168, 85, 247, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.06) 0%, rgba(255, 59, 139, 0.06) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.25);
     border-radius: var(--radius-md);
     font-size: 0.8rem;
     color: var(--gray-600);
@@ -74,6 +100,7 @@
     color: var(--gray-800);
 }
 
+/* Input row — chat + Send */
 .agent-input-row {
     display: flex;
     gap: 0.5rem;
@@ -83,77 +110,118 @@
 
 .agent-input-row input {
     flex: 1;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-md);
+    padding: 0.85rem 1.1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 14px;
     font-size: 0.95rem;
     font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .agent-input-row input:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+}
+
+/* Great buttons — Send, Voice, Stop */
+.agent-input-row .btn-send,
+.agent-voice-row .btn-voice,
+.agent-voice-row .btn-stop {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.85rem 1.25rem;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.agent-input-row .btn-send .btn-icon,
+.agent-voice-row .btn-voice .btn-icon,
+.agent-voice-row .btn-stop .btn-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 .agent-input-row .btn-send {
-    padding: 0.75rem 1rem;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--cyan) 0%, #0ea5e9 100%);
     color: white;
     border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
 }
 
 .agent-input-row .btn-send:hover {
-    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.4);
 }
 
-.agent-input-row .btn-voice {
+.agent-input-row .btn-send:active {
+    transform: translateY(0);
+}
+
+/* Voice row — Start Voice + Stop */
+.agent-voice-row {
     display: flex;
+    gap: 0.5rem;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.75rem 1rem;
-    background: var(--gray-100);
+    margin-top: 0.75rem;
+}
+
+.agent-voice-row .btn-voice {
+    background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
     color: var(--gray-800);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
+    border: 2px solid var(--gray-200);
 }
 
-.agent-input-row .btn-voice:hover {
-    background: var(--gray-200);
+.agent-voice-row .btn-voice:hover {
+    background: linear-gradient(135deg, var(--gray-200) 0%, var(--gray-100) 100%);
+    border-color: var(--gray-300);
+    transform: translateY(-1px);
 }
 
-.agent-input-row .btn-voice.recording {
-    background: #dc2626;
+.agent-voice-row .btn-stop {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
-    border-color: #dc2626;
+    border: none;
 }
 
-.agent-waveform.talking .bar {
-    animation: waveform 0.8s ease-in-out infinite;
+.agent-voice-row .btn-stop:hover {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+}
+
+.agent-voice-row .btn-stop:active {
+    transform: translateY(0);
+}
+
+.agent-waveform.idle .bar {
+    animation: waveform-idle 2s ease-in-out infinite;
 }
 
 .agent-status.error {
     color: #dc2626;
 }
 
-/* Agent Demo Window */
+/* Agent Demo Window — Premium chat card */
 .agent-window {
     background: var(--white);
     border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06), 0 0 80px -20px rgba(0, 212, 255, 0.15);
     overflow: hidden;
     max-width: 480px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
     isolation: isolate;
+}
+
+.smartline-native.agent-window {
+    border: 1px solid rgba(0, 212, 255, 0.12);
 }
 
 /* Ensure iframe is fully interactive on mobile (no touch blocking) */
@@ -219,7 +287,6 @@
     min-height: 8px;
     background: var(--gradient-accent);
     border-radius: 2px;
-    animation: waveform 0.8s ease-in-out infinite;
 }
 
 .agent-waveform .bar:nth-child(1) { animation-delay: 0s; }
@@ -239,6 +306,10 @@
 
 .agent-waveform.idle .bar {
     animation: waveform-idle 2s ease-in-out infinite;
+}
+
+.agent-waveform.talking .bar {
+    animation: waveform 0.8s ease-in-out infinite;
 }
 
 @keyframes waveform-idle {

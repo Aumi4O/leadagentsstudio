@@ -10,6 +10,8 @@
     const apiBase = container.dataset.apiBase || API_BASE;
     const root = document.createElement('div');
     root.className = 'smartline-agent-widget';
+    const micSvg = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>';
+    const stopSvg = '<svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
     root.innerHTML = `
       <div class="agent-window smartline-native">
         <div class="agent-window-header">
@@ -19,7 +21,7 @@
             <span>Chat or talk — same conversation</span>
           </div>
         </div>
-        <div class="agent-waveform sl-waveform">
+        <div class="agent-waveform sl-waveform idle">
           <span class="bar"></span><span class="bar"></span><span class="bar"></span>
           <span class="bar"></span><span class="bar"></span><span class="bar"></span>
           <span class="bar"></span><span class="bar"></span><span class="bar"></span>
@@ -31,10 +33,19 @@
           </div>
           <div class="agent-input-row">
             <input type="text" class="sl-chat-input" placeholder="Type your message..." autocomplete="off">
-            <button type="button" class="btn-send sl-send-btn" title="Send">Send</button>
+            <button type="button" class="btn-send sl-send-btn" title="Send">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              <span class="btn-label">Send</span>
+            </button>
+          </div>
+          <div class="agent-voice-row">
             <button type="button" class="btn-voice sl-voice-btn" title="Start voice">
-              <span class="mic-icon">🎤</span>
-              <span class="btn-label">Voice</span>
+              ${micSvg}
+              <span class="btn-label">Start Voice</span>
+            </button>
+            <button type="button" class="btn-stop sl-stop-btn" title="Stop voice" aria-hidden="true" hidden>
+              ${stopSvg}
+              <span class="btn-label">Stop</span>
             </button>
           </div>
           <p class="agent-status sl-status"></p>
@@ -58,10 +69,12 @@
     const chatInput = root.querySelector('.sl-chat-input');
     const sendBtn = root.querySelector('.sl-send-btn');
     const voiceBtn = root.querySelector('.sl-voice-btn');
+    const stopBtn = root.querySelector('.sl-stop-btn');
     const messagesEl = root.querySelector('.sl-messages');
     const statusEl = root.querySelector('.sl-status');
     const micNotice = root.querySelector('.sl-mic-notice');
     const waveform = root.querySelector('.sl-waveform');
+    const avatar = root.querySelector('.agent-avatar');
 
     let conversationId = null;
     let session = null;
@@ -151,10 +164,13 @@
         session = new RealtimeSession(agent, { transport: 'webrtc', model: 'gpt-realtime', config: { audio: { output: { voice: 'shimmer' } } } });
         await session.connect({ apiKey: token });
         isVoiceActive = true;
-        voiceBtn.classList.add('recording');
-        voiceBtn.querySelector('.btn-label').textContent = 'End voice';
+        voiceBtn.hidden = true;
+        stopBtn.hidden = false;
+        stopBtn.removeAttribute('aria-hidden');
+        waveform.classList.remove('idle');
         waveform.classList.add('talking');
-        setStatus('Speak now. Click End when done.');
+        if (avatar) avatar.classList.add('talking');
+        setStatus('Speak now. Click Stop when done.');
       } catch (err) {
         const msg = err.message || '';
         const isApiError = /token|fetch|network|connection|unavailable/i.test(msg);
@@ -171,25 +187,23 @@
         }
       } finally {
         isVoiceActive = false;
-        voiceBtn.classList.remove('recording');
-        voiceBtn.querySelector('.btn-label').textContent = 'Voice';
+        voiceBtn.hidden = false;
         voiceBtn.disabled = false;
+        stopBtn.hidden = true;
+        stopBtn.setAttribute('aria-hidden', 'true');
+        waveform.classList.add('idle');
         waveform.classList.remove('talking');
+        if (avatar) avatar.classList.remove('talking');
         setStatus('');
       }
     }
 
-    function toggleVoice(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isVoiceActive) endVoice();
-      else startVoice();
-    }
-
     chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChat(); });
     sendBtn.addEventListener('click', sendChat);
-    voiceBtn.addEventListener('click', toggleVoice);
-    voiceBtn.addEventListener('touchend', (e) => { e.preventDefault(); toggleVoice(e); }, { passive: false });
+    voiceBtn.addEventListener('click', (e) => { e.preventDefault(); startVoice(); });
+    voiceBtn.addEventListener('touchend', (e) => { e.preventDefault(); startVoice(); }, { passive: false });
+    stopBtn.addEventListener('click', (e) => { e.preventDefault(); endVoice(); });
+    stopBtn.addEventListener('touchend', (e) => { e.preventDefault(); endVoice(); }, { passive: false });
   }
 
   if (document.readyState === 'loading') {
