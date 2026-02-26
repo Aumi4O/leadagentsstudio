@@ -27,7 +27,120 @@
 
 .embed-wrapper iframe {
     min-height: 420px;
-    /* Let embed document control its own overflow for mobile scroll */
+}
+
+/* Native SmartLine Agent (no iframe) */
+.smartline-agent-widget {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.smartline-native .agent-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: var(--space-md) 0;
+    margin-bottom: var(--space-sm);
+    min-height: 60px;
+}
+
+.agent-msg {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.agent-msg-user {
+    text-align: right;
+    color: var(--gray-800);
+}
+
+.agent-msg-assistant {
+    color: var(--gray-700);
+}
+
+.agent-mic-notice {
+    padding: var(--space-sm);
+    margin-bottom: var(--space-md);
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+}
+
+.agent-mic-notice strong {
+    color: var(--gray-800);
+}
+
+.agent-input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: var(--space-sm);
+}
+
+.agent-input-row input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.agent-input-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+}
+
+.agent-input-row .btn-send {
+    padding: 0.75rem 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.agent-input-row .btn-send:hover {
+    background: var(--accent-dark);
+}
+
+.agent-input-row .btn-voice {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.agent-input-row .btn-voice:hover {
+    background: var(--gray-200);
+}
+
+.agent-input-row .btn-voice.recording {
+    background: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+
+.agent-waveform.talking .bar {
+    animation: waveform 0.8s ease-in-out infinite;
+}
+
+.agent-status.error {
+    color: #dc2626;
 }
 
 /* Agent Demo Window */
