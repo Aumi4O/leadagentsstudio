@@ -85,51 +85,25 @@
     border: 1px solid var(--gray-200);
 }
 
-.agent-msg-voice .agent-msg-badge {
-    display: block;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 0.35rem;
+.agent-msg p.streaming::after {
+    content: '▌';
+    animation: caret-blink 0.7s step-end infinite;
+    color: var(--cyan);
+    margin-left: 1px;
 }
 
-.agent-msg-voice.agent-msg-user .agent-msg-badge { color: rgba(255,255,255,0.9); }
-.agent-msg-voice.agent-msg-assistant .agent-msg-badge { color: var(--gray-500); }
-
-/* Mode pills — Chat / Voice */
-.agent-mode-pills {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: var(--space-sm);
-}
-
-.mode-pill {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 999px;
-    cursor: default;
-    background: var(--gray-100);
-    color: var(--gray-500);
-    border: 1px solid var(--gray-200);
-}
-
-.mode-pill.active {
-    background: linear-gradient(135deg, var(--cyan) 0%, #0ea5e9 100%);
-    color: white;
-    border-color: transparent;
+@keyframes caret-blink {
+    50% { opacity: 0; }
 }
 
 .agent-mic-notice {
-    padding: 0.75rem 1rem;
-    margin-bottom: var(--space-md);
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.06) 0%, rgba(255, 59, 139, 0.06) 100%);
-    border: 1px solid rgba(0, 212, 255, 0.25);
-    border-radius: var(--radius-md);
-    font-size: 0.8rem;
-    color: var(--gray-600);
-    line-height: 1.5;
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 1rem;
+    background: var(--gray-50);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    line-height: 1.45;
 }
 
 .agent-mic-notice strong {
@@ -243,21 +217,22 @@
     color: #dc2626;
 }
 
-/* Agent Demo Window — Premium chat card */
+/* Agent Demo Window — First-class chat (light, clean) */
 .agent-window {
     background: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06), 0 0 80px -20px rgba(0, 212, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04);
     overflow: hidden;
     max-width: 480px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
     isolation: isolate;
+    font-family: var(--font-body);
 }
 
 .smartline-native.agent-window {
-    border: 1px solid rgba(0, 212, 255, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Ensure iframe is fully interactive on mobile (no touch blocking) */
@@ -268,23 +243,26 @@
 }
 
 .agent-window-header {
-    background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
-    padding: var(--space-lg);
-    color: var(--white);
+    background: var(--white);
+    padding: 1.25rem 1.5rem;
+    color: var(--gray-900);
     display: flex;
     align-items: center;
     gap: var(--space-md);
+    border-bottom: 1px solid var(--gray-100);
 }
 
 .agent-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--gradient-accent);
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 100%);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
     flex-shrink: 0;
 }
 
@@ -298,24 +276,27 @@
 }
 
 .agent-info h3 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 700;
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 0.2rem 0;
+    color: var(--gray-900);
 }
 
 .agent-info span {
     font-size: 0.8rem;
-    opacity: 0.8;
+    color: var(--gray-500);
 }
 
-/* Waveform animation - speaking indicator */
+/* Waveform — speaking indicator */
 .agent-waveform {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
-    height: 48px;
-    padding: var(--space-md);
+    height: 40px;
+    padding: 0.75rem 1rem;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-100);
 }
 
 .agent-waveform .bar {
@@ -354,8 +335,9 @@
 }
 
 .agent-window-body {
-    padding: var(--space-xl);
-    min-height: 120px;
+    padding: 1.25rem 1.5rem;
+    min-height: 140px;
+    background: var(--white);
 }
 
 .agent-status {

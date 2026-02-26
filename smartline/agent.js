@@ -27,10 +27,6 @@
           <span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </div>
         <div class="agent-window-body">
-          <div class="agent-mode-pills">
-            <span class="mode-pill active" data-mode="chat">Chat</span>
-            <span class="mode-pill" data-mode="voice">Voice</span>
-          </div>
           <div class="agent-messages sl-messages"></div>
           <div class="agent-mic-notice sl-mic-notice">
             <p><strong>Voice mode:</strong> Your browser will ask for microphone access so you can speak to SmartLine. This is for security—only you hear your conversation. We never record without your consent.</p>
@@ -79,7 +75,6 @@
     const micNotice = root.querySelector('.sl-mic-notice');
     const waveform = root.querySelector('.sl-waveform');
     const avatar = root.querySelector('.agent-avatar');
-    const modePills = root.querySelectorAll('.mode-pill');
 
     let conversationId = null;
     let session = null;
@@ -90,27 +85,37 @@
       statusEl.className = 'agent-status' + (isError ? ' error' : '');
     }
 
-    function setMode(mode) {
-      modePills.forEach(p => {
-        p.classList.toggle('active', p.dataset.mode === mode);
-      });
+    function streamTextIntoEl(el, text, onTick, speed = 12) {
+      el.textContent = '';
+      let i = 0;
+      function tick() {
+        if (i < text.length) {
+          el.textContent = text.slice(0, i + 1);
+          i++;
+          if (onTick) onTick();
+          setTimeout(tick, speed);
+        } else {
+          el.classList.remove('streaming');
+        }
+      }
+      el.classList.add('streaming');
+      tick();
     }
 
-    function addMessageToUI(role, content, fromVoice = false) {
+    function addMessageToUI(role, content, options = {}) {
       if (!content || !content.trim()) return;
+      const stream = options.stream ?? (role === 'assistant');
       const div = document.createElement('div');
       div.className = 'agent-msg ' + (role === 'user' ? 'agent-msg-user' : 'agent-msg-assistant');
-      if (fromVoice) div.classList.add('agent-msg-voice');
       const p = document.createElement('p');
-      p.textContent = content;
       div.appendChild(p);
-      if (fromVoice) {
-        const badge = document.createElement('span');
-        badge.className = 'agent-msg-badge';
-        badge.textContent = 'voice';
-        div.insertBefore(badge, p);
-      }
       messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      if (stream && role === 'assistant') {
+        streamTextIntoEl(p, content, () => { messagesEl.scrollTop = messagesEl.scrollHeight; });
+      } else {
+        p.textContent = content;
+      }
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
@@ -127,7 +132,6 @@
       if (!text) return;
       chatInput.value = '';
       addMessageToUI('user', text);
-      setMode('chat');
       chatInput.disabled = true;
       setStatus('Thinking...');
       try {
@@ -190,11 +194,11 @@
               if (!r) return;
               if (r.role === 'user' && r.content) {
                 const text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.find(c => c.type === 'input_transcript')?.transcript ?? r.content[0]?.text : null) ?? '';
-                if (text.trim()) { addMessageToUI('user', text, true); voiceTranscript.push({ role: 'user', content: text }); }
+                if (text.trim()) { addMessageToUI('user', text); voiceTranscript.push({ role: 'user', content: text }); }
               }
               if (r.role === 'assistant' && r.content) {
                 const text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.find(c => c.type === 'output_text')?.text ?? r.content.find(c => c.type === 'output_audio')?.transcript : null) ?? (r.content[0]?.text ?? r.content[0]?.transcript ?? '');
-                if (text.trim()) { addMessageToUI('assistant', text, true); voiceTranscript.push({ role: 'assistant', content: text }); }
+                if (text.trim()) { addMessageToUI('assistant', text); voiceTranscript.push({ role: 'assistant', content: text }); }
               }
             } catch (_) {}
         };
@@ -206,11 +210,11 @@
             for (const it of items) {
               if (it?.role === 'user' && it?.content) {
                 const text = typeof it.content === 'string' ? it.content : it.content?.find?.(c => c.type === 'input_transcript')?.transcript ?? it.content?.[0]?.text ?? '';
-                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('user', text, true); voiceTranscript.push({ role: 'user', content: text }); }
+                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('user', text); voiceTranscript.push({ role: 'user', content: text }); }
               }
               if (it?.role === 'assistant' && it?.content) {
                 const text = typeof it.content === 'string' ? it.content : it.content?.find?.(c => c.type === 'output_text')?.text ?? it.content?.find?.(c => c.type === 'output_audio')?.transcript ?? it.content?.[0]?.text ?? '';
-                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('assistant', text, true); voiceTranscript.push({ role: 'assistant', content: text }); }
+                if (text.trim() && !voiceTranscript.some(m => m.content === text)) { addMessageToUI('assistant', text); voiceTranscript.push({ role: 'assistant', content: text }); }
               }
             }
           } catch (_) {}
@@ -225,7 +229,6 @@
         waveform.classList.remove('idle');
         waveform.classList.add('talking');
         if (avatar) avatar.classList.add('talking');
-        setMode('voice');
         setStatus('Speak now. Transcript appears in chat. Click Stop when done.');
       } catch (err) {
         const msg = err.message || '';
