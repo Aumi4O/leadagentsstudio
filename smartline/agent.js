@@ -8,6 +8,8 @@
 
   function createWidget(container) {
     const apiBase = container.dataset.apiBase || API_BASE;
+    const agentName = container.dataset.agentName || 'SmartLine Enterprise Agent';
+    const agentAvatar = container.dataset.agentAvatar || (agentName === 'Strawberry' ? 'S' : 'SL');
     const root = document.createElement('div');
     root.className = 'smartline-agent-widget';
     const micSvg = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 1 3 3v8a3 3 0 0 1-6 0V4a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>';
@@ -15,9 +17,9 @@
     root.innerHTML = `
       <div class="agent-window smartline-native">
         <div class="agent-window-header">
-          <div class="agent-avatar" aria-hidden="true">SL</div>
+          <div class="agent-avatar" aria-hidden="true">${agentAvatar}</div>
           <div class="agent-info">
-            <h3>SmartLine Enterprise Agent</h3>
+            <h3>${agentName}</h3>
             <span>Chat or talk — same conversation</span>
           </div>
         </div>
@@ -54,6 +56,7 @@
         </div>
       </div>
     `;
+    root.dataset.agentName = agentName;
     container.appendChild(root);
     return root;
   }
@@ -175,9 +178,10 @@
             body: JSON.stringify({ toolName: name, args })
           }).then(r => r.json()).then(r => JSON.stringify(r));
 
+        const agentDisplayName = root.dataset.agentName || 'SmartLine Enterprise Agent';
         const agent = new RealtimeAgent({
-          name: 'SmartLine Enterprise Agent',
-          instructions: 'You are SmartLine Enterprise Agent. Professional, trusted. Use your tools. 2-3 sentences max.',
+          name: agentDisplayName,
+          instructions: `You are ${agentDisplayName}. Professional, trusted. Use your tools. 2-3 sentences max.`,
           tools: [
             tool({ name: 'lookup_services', description: 'Look up SmartLine services, pricing.', parameters: z.object({ query: z.string(), category: z.string().optional() }), execute: ({ query, category }) => toolFetch('lookup_services', { query, category }) }),
             tool({ name: 'lookup_faq', description: 'Look up FAQs.', parameters: z.object({ question: z.string(), topic: z.string().optional() }), execute: ({ question, topic }) => toolFetch('lookup_faq', { question, topic }) }),
