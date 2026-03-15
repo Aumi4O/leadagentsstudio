@@ -1,326 +1,2055 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartLine Enterprise Agent — The Conversation That Never Happens</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/styles.css">
-    <link rel="stylesheet" href="/smartline/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLine — AI Sales Agent for Calls, SMS & WhatsApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:          #060B16;
+      --surface:     #0F1728;
+      --surface-2:   #152136;
+      --surface-3:   #1C2D45;
+      --text-1:      #F8FAFC;
+      --text-2:      #A9B4C6;
+      --text-3:      #6B7A90;
+      --cyan:        #68E1FD;
+      --lime:        #B8FF5C;
+      --violet:      #A78BFA;
+      --rose:        #FF7A90;
+      --line:        #24324A;
+      --radius:      12px;
+      --radius-lg:   20px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img, video { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; font-family: inherit; }
+
+    /* ── TYPOGRAPHY ── */
+    h1, h2, h3, h4 { font-family: 'Sora', sans-serif; line-height: 1.08; }
+    h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; }
+    h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 600; }
+    .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--cyan); text-transform: uppercase;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 100px 0; }
+    section + section { border-top: 1px solid var(--line); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 8px;
+      font-size: 15px; font-weight: 600; line-height: 1;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--lime); color: #07111F;
+      box-shadow: 0 0 24px rgba(184,255,92,.25);
+    }
+    .btn-primary:hover { box-shadow: 0 0 36px rgba(184,255,92,.45); }
+    .btn-ghost {
+      background: transparent; color: var(--text-1);
+      border: 1.5px solid var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn-cyan {
+      background: transparent; color: var(--cyan);
+      border: 1.5px solid var(--cyan);
+    }
+    .btn-cyan:hover { background: rgba(104,225,253,.08); }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 32px;
+    }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      background: rgba(6,11,22,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700;
+    }
+    .nav-logo span { color: var(--cyan); }
+    .nav-cta { display: flex; gap: 12px; align-items: center; }
+    @media(max-width:600px) { .nav-cta .btn-ghost { display: none; } }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    #hero {
+      padding: 180px 0 100px;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(104,225,253,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    @media(max-width:768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .hero-label { margin-bottom: 20px; }
+    .hero-h1 {
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #F8FAFC 60%, #68E1FD 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 18px; color: var(--text-2); line-height: 1.65;
+      margin-bottom: 36px; max-width: 480px;
+    }
+    .hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .proof-bar {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      font-size: 12px; color: var(--text-3);
+    }
+    .proof-pill {
+      background: var(--surface); border: 1px solid var(--line);
+      padding: 5px 12px; border-radius: 100px;
+      color: var(--text-2); font-size: 12px;
+    }
+    .proof-pill strong { color: var(--cyan); }
+    .hero-microcopy {
+      margin-top: 16px; font-size: 13px; font-style: italic; color: var(--text-3);
+    }
+
+    /* Hero phone mockup */
+    .hero-visual {
+      position: relative; display: flex; justify-content: center;
+    }
+    .phone-frame {
+      width: 260px; background: var(--surface);
+      border: 1.5px solid var(--line); border-radius: 32px;
+      padding: 20px 16px; box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(104,225,253,.06);
+    }
+    .phone-notch {
+      width: 80px; height: 8px; background: var(--bg);
+      border-radius: 100px; margin: 0 auto 20px;
+    }
+    .phone-msgs { display: flex; flex-direction: column; gap: 10px; }
+    .msg { padding: 10px 14px; border-radius: 16px; font-size: 13px; max-width: 85%; }
+    .msg-in  { background: var(--surface-2); color: var(--text-2); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg-out { background: var(--cyan); color: #060B16; font-weight: 600; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .typing-dots {
+      display: flex; gap: 4px; align-items: center; padding: 10px 14px;
+      background: var(--surface-2); border-radius: 16px; border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+    .typing-dots span {
+      width: 6px; height: 6px; background: var(--text-3);
+      border-radius: 50%; animation: bounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce {
+      0%,80%,100% { transform: translateY(0); }
+      40%         { transform: translateY(-6px); }
+    }
+    .phone-indicator {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 14px; font-size: 11px; color: var(--lime);
+      font-weight: 600;
+    }
+    .indicator-dot {
+      width: 6px; height: 6px; background: var(--lime);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(1.5); }
+    }
+
+    /* ─────────────────────────────────────────
+       VIDEOS SECTION
+    ───────────────────────────────────────── */
+    #videos .section-header { text-align: center; margin-bottom: 56px; }
+    .section-sub { color: var(--text-2); margin-top: 12px; font-size: 17px; }
+
+    .video-single { width: 100%; }
+
+    .video-card {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .video-wrapper {
+      position: relative; background: #000;
+      aspect-ratio: 9/16;   /* desktop: full portrait, shows full person */
+    }
+    @media(max-width: 600px) {
+      .video-wrapper {
+        aspect-ratio: 9/16;  /* mobile: full portrait */
+      }
+    }
+    .video-wrapper video {
+      width: 100%; height: 100%; object-fit: cover; object-position: center 15%;
+    }
+    .video-overlay {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(6,11,22,.35);
+      cursor: pointer; transition: background .2s;
+    }
+    .video-overlay:hover { background: rgba(6,11,22,.15); }
+    .play-btn {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(184,255,92,.9);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 40px rgba(184,255,92,.4);
+      transition: transform .2s;
+    }
+    .video-overlay:hover .play-btn { transform: scale(1.1); }
+    .play-icon {
+      width: 0; height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 20px solid #07111F;
+      margin-left: 4px;
+    }
+    .video-meta { padding: 24px; }
+    .video-meta h3 { margin-bottom: 8px; color: var(--text-1); }
+    .video-meta p { font-size: 14px; color: var(--text-2); }
+    .video-tag {
+      display: inline-flex; gap: 6px; align-items: center;
+      background: rgba(184,255,92,.1); border: 1px solid rgba(184,255,92,.25);
+      color: var(--lime); font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 100px; margin-bottom: 12px;
+    }
+    .video-transcript {
+      margin-top: 16px; padding: 14px 16px;
+      background: var(--surface-2); border-radius: var(--radius);
+      border-left: 3px solid var(--cyan);
+      font-size: 13px; color: var(--text-2); font-style: italic;
+    }
+    .video-transcript strong { color: var(--cyan); font-style: normal; }
+
+    /* ─────────────────────────────────────────
+       LIVE DEMO SECTION
+    ───────────────────────────────────────── */
+    #demo { background: linear-gradient(180deg, var(--bg) 0%, rgba(15,23,40,.5) 100%); }
+    #demo .section-header { text-align: center; margin-bottom: 16px; }
+    .demo-sub { text-align: center; color: var(--text-2); font-size: 17px; max-width: 600px; margin: 0 auto 40px; }
+
+    .prompt-chips {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-bottom: 40px;
+    }
+    .chip {
+      padding: 10px 18px; border-radius: 100px;
+      background: var(--surface-2); border: 1px solid var(--line);
+      font-size: 13px; color: var(--text-2);
+      cursor: pointer; transition: all .2s;
+    }
+    .chip:hover {
+      border-color: var(--cyan); color: var(--cyan);
+      background: rgba(104,225,253,.06);
+    }
+
+    .demo-embed-wrapper {
+      max-width: 700px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5);
+    }
+    .demo-bar {
+      padding: 14px 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .demo-bar-dots { display: flex; gap: 6px; }
+    .demo-bar-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--line);
+    }
+    .demo-bar-dots span:first-child  { background: #FF5F57; }
+    .demo-bar-dots span:nth-child(2) { background: #FEBC2E; }
+    .demo-bar-dots span:nth-child(3) { background: #28C840; }
+    .demo-bar-title {
+      font-size: 13px; font-weight: 600; color: var(--text-2);
+      margin-left: 8px;
+    }
+    .demo-status {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--lime); font-weight: 600;
+    }
+    /* video placeholder */
+    .video-placeholder {
+      position: absolute; inset: 0;
+      background: var(--surface-2);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-lg);
+    }
+    .video-placeholder.hidden { display: none; }
+    .placeholder-inner { text-align: center; }
+    .placeholder-icon {
+      width: 64px; height: 64px; background: var(--line);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: var(--text-3); margin: 0 auto 16px;
+    }
+    .placeholder-label { font-size: 15px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+    .placeholder-sub { font-size: 12px; color: var(--text-3); }
+    .placeholder-sub code { background: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+    .demo-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--text-3);
+    }
+    .demo-footer a { color: var(--cyan); }
+
+
+    /* ─────────────────────────────────────────
+       PRICING BUILDER
+    ───────────────────────────────────────── */
+    #pricing .section-header { text-align: center; margin-bottom: 56px; }
+
+    .builder-layout {
+      display: grid; grid-template-columns: 1fr 380px; gap: 28px;
+    }
+    @media(max-width:860px) { .builder-layout { grid-template-columns: 1fr; } }
+
+    .builder-form .card { padding: 36px; }
+    .form-group { margin-bottom: 24px; }
+    .form-label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--text-2); margin-bottom: 10px;
+    }
+    .form-select, .form-input {
+      width: 100%; background: var(--surface-2);
+      border: 1px solid var(--line); border-radius: 8px;
+      color: var(--text-1); padding: 12px 16px; font-size: 14px;
+      font-family: inherit; appearance: none; outline: none;
+      transition: border-color .2s;
+    }
+    .form-select:focus, .form-input:focus { border-color: var(--cyan); }
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+    .checkbox-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 8px;
+      background: var(--surface-2); border: 1px solid var(--line);
+      cursor: pointer; transition: border-color .2s;
+    }
+    .checkbox-item:has(input:checked) { border-color: var(--cyan); background: rgba(104,225,253,.05); }
+    .checkbox-item input { accent-color: var(--cyan); width: 16px; height: 16px; }
+    .checkbox-item label { font-size: 14px; cursor: pointer; }
+
+    .range-wrapper { position: relative; }
+    input[type=range] {
+      width: 100%; accent-color: var(--cyan); height: 4px;
+      background: var(--surface-2);
+    }
+    .range-labels {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: var(--text-3); margin-top: 6px;
+    }
+    .range-value {
+      font-size: 22px; font-weight: 700; color: var(--cyan);
+      font-family: 'Sora', sans-serif; margin-bottom: 4px;
+    }
+
+    /* Estimate card */
+    .estimate-card {
+      background: var(--surface-2); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 32px;
+      position: sticky; top: 90px;
+    }
+    .estimate-card h3 { margin-bottom: 24px; color: var(--text-1); }
+    .estimate-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid var(--line);
+    }
+    .estimate-row:last-of-type { border-bottom: none; }
+    .estimate-label { font-size: 13px; color: var(--text-2); max-width: 65%; }
+    .estimate-value { font-weight: 700; color: var(--text-1); font-size: 15px; text-align: right; }
+    .estimate-value.cyan { color: var(--cyan); }
+    .estimate-value.lime { color: var(--lime); font-size: 22px; }
+    .estimate-total-block {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 20px; margin: 20px 0;
+    }
+    .estimate-total-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
+    .estimate-cta-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .estimate-cta-stack .btn { justify-content: center; }
+    .trust-line {
+      text-align: center; font-size: 12px; color: var(--text-3);
+      margin-top: 14px;
+    }
+
+
+    /* ─────────────────────────────────────────
+       CASE STORIES
+    ───────────────────────────────────────── */
+    #stories .section-header { text-align: center; margin-bottom: 56px; }
+    .stories-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    @media(max-width:900px) { .stories-grid { grid-template-columns: 1fr; } }
+
+    .story-card {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 32px;
+      display: flex; flex-direction: column; gap: 20px;
+      transition: border-color .2s, transform .2s;
+    }
+    .story-card:hover { border-color: var(--violet); transform: translateY(-3px); }
+    .story-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.2);
+      color: var(--violet); font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 100px; width: fit-content;
+    }
+    .story-card h3 { font-size: 16px; color: var(--text-1); }
+    .story-timeline { display: flex; flex-direction: column; gap: 12px; }
+    .story-step {
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .story-step-label {
+      font-size: 10px; font-weight: 700; color: var(--cyan);
+      background: rgba(104,225,253,.1); border: 1px solid rgba(104,225,253,.2);
+      padding: 3px 8px; border-radius: 100px; white-space: nowrap; margin-top: 2px;
+      letter-spacing: .05em;
+    }
+    .story-step-text { font-size: 13px; color: var(--text-2); }
+    .story-outcome {
+      padding: 14px 16px; background: var(--surface-2);
+      border-radius: var(--radius); border-left: 3px solid var(--lime);
+      font-size: 13px; color: var(--text-1); font-weight: 500;
+    }
+
+
+    /* ─────────────────────────────────────────
+       FAQ
+    ───────────────────────────────────────── */
+    #faq .section-header { text-align: center; margin-bottom: 16px; }
+    .faq-intro { text-align: center; color: var(--text-2); margin-bottom: 48px; font-style: italic; }
+
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-item:first-child { border-top: 1px solid var(--line); }
+    .faq-q {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 0; background: none; color: var(--text-1);
+      font-size: 16px; font-weight: 600; text-align: left; gap: 16px;
+    }
+    .faq-q:hover { color: var(--cyan); }
+    .faq-chevron {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 1.5px solid var(--line); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-2); font-size: 12px; transition: transform .2s, border-color .2s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); border-color: var(--cyan); color: var(--cyan); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .35s ease;
+      color: var(--text-2); font-size: 15px; line-height: 1.7;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 22px; }
+    .faq-cta-row { text-align: center; margin-top: 48px; }
+
+    /* ─────────────────────────────────────────
+       CLOSE / FINAL CTA
+    ───────────────────────────────────────── */
+    #close {
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(15,23,40,.8) 100%);
+      text-align: center;
+    }
+    .close-eyebrow { margin-bottom: 20px; }
+    #close h2 { max-width: 700px; margin: 0 auto 20px; }
+    .close-sub { color: var(--text-2); max-width: 540px; margin: 0 auto 40px; font-size: 17px; }
+    .close-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .trust-pills { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .trust-pill {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-3);
+    }
+    .trust-pill .icon { color: var(--lime); font-size: 16px; }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--line); padding: 40px 24px;
+      text-align: center; color: var(--text-3); font-size: 13px;
+    }
+    footer a { color: var(--cyan); }
+    .footer-policy-links {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 4px 0; align-items: center;
+      margin-top: 18px;
+    }
+    .footer-policy-link {
+      font-size: 12px; color: var(--text-2);
+      padding: 3px 10px; cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .footer-policy-link:hover { color: var(--cyan); border-bottom-color: var(--cyan); }
+    .footer-sep { color: var(--line); font-size: 12px; }
+
+    /* ─────────────────────────────────────────
+       STICKY MOBILE BAR
+    ───────────────────────────────────────── */
+    .sticky-mobile {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+      background: var(--surface-2); border-top: 1px solid var(--line);
+      padding: 12px 16px; display: none;
+      gap: 10px;
+      transform: translateY(100%);
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+    }
+    .sticky-mobile.visible { transform: translateY(0); }
+    @media(max-width:768px) { .sticky-mobile { display: flex; } }
+    .sticky-mobile .btn { flex: 1; justify-content: center; padding: 13px 12px; font-size: 14px; }
+
+    /* ─────────────────────────────────────────
+       SCROLL ANIMATIONS
+    ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ─────────────────────────────────────────
+       SECTION DIVIDERS
+    ───────────────────────────────────────── */
+    .section-rule {
+      width: 40px; height: 3px; background: var(--cyan);
+      border-radius: 100px; margin: 0 auto 16px;
+    }
+
+    /* ─────────────────────────────────────────
+       MISC UTILITIES
+    ───────────────────────────────────────── */
+    .text-center { text-align: center; }
+    .mt-8  { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    /* ─────────────────────────────────────────
+       PAY AS YOU GO — USAGE RATES
+    ───────────────────────────────────────── */
+    #usage .section-header { max-width: 680px; }
+
+    .usage-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      margin-bottom: 32px;
+    }
+    @media(max-width:760px) { .usage-grid { grid-template-columns: 1fr; } }
+
+    .usage-group {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .usage-group-header {
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-2);
+    }
+    .usage-group-icon { font-size: 20px; display: block; margin-bottom: 10px; }
+    .usage-group-header h3 { font-size: 16px; margin-bottom: 4px; }
+    .usage-group-note { font-size: 12px; color: var(--text-3); margin: 0; }
+
+    .usage-rows { padding: 8px 0; }
+    .usage-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(36,50,74,.5);
+      gap: 16px;
+    }
+    .usage-row:last-child { border-bottom: none; }
+    .usage-row-left { display: flex; flex-direction: column; gap: 2px; }
+    .usage-item { font-size: 14px; color: var(--text-1); font-weight: 500; }
+    .usage-direction { font-size: 11px; color: var(--text-3); }
+    .usage-price {
+      font-size: 15px; font-weight: 700; color: var(--cyan);
+      white-space: nowrap; font-family: 'Sora', sans-serif;
+      flex-shrink: 0;
+    }
+    .usage-unit { font-size: 11px; font-weight: 400; color: var(--text-3); }
+
+    .usage-row-note { display: block; }
+    .usage-row-note .usage-note-text {
+      font-size: 12px; color: var(--text-3); font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* Example strip */
+    .usage-example {
+      background: var(--surface-2); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 28px 32px;
+      text-align: center;
+    }
+    .usage-example-label {
+      font-size: 12px; font-weight: 600; color: var(--text-3);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .usage-example-pills {
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: center; gap: 8px; margin-bottom: 14px;
+    }
+    .usage-eg-pill {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 10px 18px;
+      font-size: 13px; color: var(--text-2);
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+    .usage-eg-pill strong { color: var(--text-1); font-size: 16px; font-family: 'Sora', sans-serif; }
+    .usage-eg-sep { font-size: 18px; color: var(--text-3); font-weight: 300; }
+    .usage-eg-total {
+      background: rgba(184,255,92,.08); border-color: rgba(184,255,92,.3);
+    }
+    .usage-eg-total strong { color: var(--lime); font-size: 20px; }
+    .usage-example-sub { font-size: 12px; color: var(--text-3); }
+
+    /* ─────────────────────────────────────────
+       SIMPLE PAYMENT SECTION
+    ───────────────────────────────────────── */
+    #payment {
+      background: linear-gradient(135deg, rgba(184,255,92,.04) 0%, rgba(104,225,253,.04) 100%);
+    }
+    .payment-inner {
+      display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: center;
+    }
+    @media(max-width:860px) { .payment-inner { grid-template-columns: 1fr; gap: 40px; } }
+
+    .payment-body {
+      font-size: 17px; color: var(--text-2); line-height: 1.7;
+      margin: 20px 0 28px;
+    }
+    .payment-list {
+      list-style: none; display: flex; flex-direction: column; gap: 12px;
+      margin-bottom: 36px;
+    }
+    .payment-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 15px; color: var(--text-1);
+    }
+    .check-icon { color: var(--lime); font-weight: 700; flex-shrink: 0; }
+    .payment-btn { padding: 16px 36px; font-size: 16px; }
+    .payment-microcopy {
+      margin-top: 14px; font-size: 13px; color: var(--text-3); font-style: italic;
+    }
+
+    .payment-card {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 36px;
+      box-shadow: 0 0 40px rgba(184,255,92,.06);
+    }
+    .payment-card-price {
+      text-align: center; margin-bottom: 24px;
+    }
+    .price-amount {
+      display: block; font-size: 48px; font-weight: 800;
+      font-family: 'Sora', sans-serif; color: var(--lime);
+      line-height: 1;
+    }
+    .price-label {
+      font-size: 13px; color: var(--text-3); margin-top: 4px; display: block;
+    }
+    .payment-card-divider {
+      height: 1px; background: var(--line); margin: 20px 0;
+    }
+    .payment-card-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; font-size: 14px; color: var(--text-2);
+      border-bottom: 1px solid rgba(36,50,74,.5);
+    }
+    .payment-card-row:last-of-type { border-bottom: none; }
+
+    /* ─────────────────────────────────────────
+       ROI CALCULATOR
+    ───────────────────────────────────────── */
+    #roi { background: var(--surface); }
+    #roi .section-header { text-align: center; margin-bottom: 56px; }
+
+    .roi-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
+    }
+    @media(max-width:768px) { .roi-layout { grid-template-columns: 1fr; } }
+
+    .roi-inputs { display: flex; flex-direction: column; gap: 24px; }
+    .roi-result-card {
+      background: var(--bg); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); padding: 40px;
+    }
+    .roi-result-card h3 { margin-bottom: 8px; }
+    .roi-result-card .roi-sub { color: var(--text-2); font-size: 14px; margin-bottom: 32px; }
+    .roi-stat {
+      padding: 20px 0; border-bottom: 1px solid var(--line);
+    }
+    .roi-stat:last-of-type { border-bottom: none; }
+    .roi-stat-label { font-size: 13px; color: var(--text-3); margin-bottom: 4px; }
+    .roi-stat-value { font-size: 28px; font-weight: 800; font-family: 'Sora', sans-serif; }
+    .roi-stat-value.red   { color: var(--rose); }
+    .roi-stat-value.green { color: var(--lime); }
+    .roi-disclaimer { font-size: 11px; color: var(--text-3); margin-top: 16px; }
+
+    /* ─────────────────────────────────────────
+       COMPARISON
+    ───────────────────────────────────────── */
+    #comparison .section-header { text-align: center; margin-bottom: 56px; }
+
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+      background: var(--surface); border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .compare-table th, .compare-table td {
+      padding: 18px 24px; text-align: left;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .compare-table th {
+      background: var(--surface-2); font-family: 'Sora', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--text-2);
+    }
+    .compare-table td:first-child { color: var(--text-2); font-weight: 500; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .col-voicemail { color: var(--text-3); }
+    .compare-table .col-human     { color: var(--text-2); }
+    .compare-table .col-smartline { color: var(--lime); font-weight: 600; }
+    .compare-table .col-header-sl { color: var(--lime); }
+    .checkmark  { color: var(--lime); }
+    .crossmark  { color: var(--rose); }
+    .partialmark { color: var(--text-3); }
+    @media(max-width:600px) {
+      .compare-table th:nth-child(2),
+      .compare-table td:nth-child(2) { display: none; }
+    }
+
+    /* ─────────────────────────────────────────
+       CAPABILITY SYSTEM — 6 JOBS
+    ───────────────────────────────────────── */
+    .capabilities-bridge {
+      text-align: center; font-size: 14px; color: var(--text-3);
+      font-style: italic; margin: -24px 0 48px; max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    @media(max-width:860px) { .capabilities-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width:520px)  { .capabilities-grid { grid-template-columns: 1fr; } }
+
+    .capability-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: border-color .2s, transform .2s;
+    }
+    .capability-card:hover {
+      border-color: rgba(104,225,253,.35);
+      transform: translateY(-3px);
+    }
+    .cap-icon {
+      font-size: 22px; line-height: 1;
+      width: 44px; height: 44px;
+      background: var(--surface-2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .capability-card h3 {
+      font-size: 15px; font-weight: 700; color: var(--text-1);
+      line-height: 1.3;
+    }
+    .capability-card p {
+      font-size: 13px; color: var(--text-2); line-height: 1.65;
+      margin: 0;
+    }
+
+    .capabilities-footer {
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .capabilities-closing {
+      font-size: 16px; color: var(--text-2);
+      margin-bottom: 16px; line-height: 1.6;
+    }
+    .capabilities-agent-link {
+      font-size: 14px; color: var(--cyan);
+      cursor: pointer; text-decoration: none;
+      border-bottom: 1px solid rgba(104,225,253,.3);
+      padding-bottom: 2px;
+      transition: border-color .2s, opacity .2s;
+    }
+    .capabilities-agent-link:hover { border-color: var(--cyan); opacity: .8; }
+
+    /* payment usage note */
+    .payment-usage-note {
+      margin-top: 12px; font-size: 12px;
+      color: var(--text-3); line-height: 1.6;
+    }
+
+    /* ─────────────────────────────────────────
+       POLICY MODAL
+    ───────────────────────────────────────── */
+    #policies-modal {
+      position: fixed; inset: 0; z-index: 200;
+    }
+    #policies-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(6,11,22,.75);
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+    #policies-drawer {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: min(760px, 100vw);
+      background: var(--surface);
+      border-left: 1px solid var(--line);
+      overflow-y: auto;
+      padding: 48px 40px 80px;
+      animation: drawerIn .3s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes drawerIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+    @media(max-width:600px) {
+      #policies-drawer { padding: 32px 20px 60px; }
+    }
+    #policies-close {
+      position: sticky; top: 0; float: right;
+      background: var(--surface-2); border: 1px solid var(--line);
+      color: var(--text-2); font-size: 20px; line-height: 1;
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      transition: background .15s, color .15s;
+      margin-bottom: 20px;
+    }
+    #policies-close:hover { background: var(--line); color: var(--text-1); }
+
+    .policy-tabs {
+      display: flex; flex-wrap: wrap; gap: 0;
+      margin-bottom: 40px; border-bottom: 1px solid var(--line);
+      clear: both;
+    }
+    .policy-tab {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--text-3); font-size: 13px; font-weight: 600; font-family: inherit;
+      padding: 10px 16px; cursor: pointer; transition: color .2s, border-color .2s;
+      margin-bottom: -1px;
+    }
+    .policy-tab:hover { color: var(--text-2); }
+    .policy-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+    .policy-panel { display: none; }
+    .policy-panel.active { display: block; }
+
+    .policy-title {
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem); margin-bottom: 4px; color: var(--text-1);
+    }
+    .policy-updated { font-size: 12px; color: var(--text-3); margin-bottom: 28px; }
+
+    #policies-drawer h3 {
+      font-size: 14px; font-weight: 700; color: var(--text-1);
+      margin: 24px 0 8px; font-family: 'Sora', sans-serif;
+    }
+    #policies-drawer p { color: var(--text-2); font-size: 14px; line-height: 1.75; margin-bottom: 10px; }
+    #policies-drawer a { color: var(--cyan); }
+
+    .policy-list { color: var(--text-2); font-size: 14px; line-height: 1.75; padding-left: 20px; margin-bottom: 12px; }
+    .policy-list li { margin-bottom: 5px; }
+
+    .policy-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 12px; margin-bottom: 16px;
+      background: var(--bg); border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .policy-table th {
+      background: var(--surface-2); color: var(--text-2); font-weight: 600;
+      padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line);
+    }
+    .policy-table td {
+      padding: 9px 12px; color: var(--text-2);
+      border-bottom: 1px solid rgba(36,50,74,.5);
+    }
+    .policy-table tr:last-child td { border-bottom: none; }
+  </style>
 </head>
 <body>
-    <!-- Video Background (subtle) -->
-    <div class="video-bg-container">
-        <video class="video-bg" autoplay muted loop playsinline>
-            <source src="/assets/bg-video.mp4" type="video/mp4">
-        </video>
-        <div class="video-overlay"></div>
+
+<!-- ═══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">Smart<span>Line</span></div>
+  <div class="nav-cta">
+    <a href="#payment" class="btn btn-ghost">Start $1,000 Setup</a>
+    <a href="#demo" class="btn btn-primary">Test the Agent</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="eyebrow hero-label">AI Sales Agent for Calls, SMS &amp; WhatsApp</p>
+        <h1 class="hero-h1">When the conversation never starts, the sale never gets a chance.</h1>
+        <p class="hero-sub">SmartLine answers, qualifies, follows up, books, and hands the conversation to your team when needed — so warm leads do not disappear while your staff is busy, closed, or off the clock.</p>
+        <div class="hero-cta-row">
+          <a href="#demo" class="btn btn-primary">Test the Agent</a>
+        </div>
+        <div class="proof-bar">
+          <span class="proof-pill"><strong>Calls + SMS + WhatsApp</strong></span>
+          <span class="proof-pill">Any language</span>
+          <span class="proof-pill">Your voice or a custom voice</span>
+          <span class="proof-pill">Trained on your business</span>
+          <span class="proof-pill"><strong>Setup starts at $1,000</strong></span>
+        </div>
+        <p class="hero-microcopy">Push back. Ask about price. Ask about objections. That is the test.</p>
+      </div>
+
+      <div class="hero-visual reveal reveal-delay-2">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-msgs">
+            <div class="msg msg-in">Hi, I called earlier about your pricing…</div>
+            <div class="msg msg-out">Hey! I'm SmartLine — the sales agent for this business. Ask me anything.</div>
+            <div class="msg msg-in">Are you a bot?</div>
+            <div class="msg msg-out">I'm an AI trained on this offer. Ask me price, timing, how it compares to hiring staff.</div>
+            <div class="msg msg-in">Ok, what does it cost?</div>
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="phone-indicator">
+            <div class="indicator-dot"></div>
+            Agent is live
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     VIDEOS
+═══════════════════════════════════════════ -->
+<section id="videos">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">Sales Proof</p>
+      <h2>Watch it handle the exact questions that usually kill a sale.</h2>
+      <p class="section-sub">These are not polished product tours. They are short sales tests.</p>
     </div>
 
-    <!-- Light Beams -->
-    <div class="light-beams">
-        <div class="beam beam-cyan"></div>
-        <div class="beam beam-pink"></div>
-        <div class="beam beam-blue"></div>
+    <div class="video-single reveal reveal-delay-1">
+      <div class="video-card" style="max-width:720px;margin:0 auto;">
+        <div class="video-wrapper">
+          <video id="vid1" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" preload="metadata" playsinline></video>
+          <div class="video-overlay" id="vid1-overlay" onclick="toggleVideo('vid1','vid1-overlay')">
+            <div class="play-btn"><div class="play-icon"></div></div>
+          </div>
+        </div>
+        <div class="video-meta">
+          <span class="video-tag">▶ Agent demo</span>
+          <h3>Watch the SmartLine agent handle a real buyer conversation</h3>
+          <p>Price questions, objections, language switching, and human handoff — all in one call.</p>
+          <div class="video-transcript">
+            <strong>Buyer:</strong> "What happens when I want a real person?" &nbsp;·&nbsp;
+            <strong>SmartLine:</strong> "I hand the conversation to your team with full context — they start informed, not from zero."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     LIVE DEMO
+═══════════════════════════════════════════ -->
+<section id="demo">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">Live Challenge</p>
+      <h2>Let the agent sell you.</h2>
+    </div>
+    <p class="demo-sub reveal reveal-delay-1">Ask what real buyers ask: price, timing, objections, languages, human handoff. If it handles you well, it can handle your leads.</p>
+
+    <div class="prompt-chips reveal reveal-delay-2">
+      <button class="chip" onclick="sendPrompt(this)">Sell me this system</button>
+      <button class="chip" onclick="sendPrompt(this)">I'm comparing you to hiring a receptionist</button>
+      <button class="chip" onclick="sendPrompt(this)">What would this cost for my business?</button>
+      <button class="chip" onclick="sendPrompt(this)">I don't trust bots. Change my mind.</button>
+      <button class="chip" onclick="sendPrompt(this)">What happens when a customer wants a human?</button>
     </div>
 
-    <!-- Hero — chat above the fold -->
-    <section class="hero" id="hero" style="padding-top: 5rem; padding-bottom: 3rem;">
-        <div class="container">
-            <div class="brand-badge" style="margin-bottom: 1rem;">
-                <span class="badge-icon" aria-hidden="true">✓</span>
-                <span>SmartLine Enterprise Agent</span>
-            </div>
-            <h1 class="hero-headline" style="max-width: 720px; margin: 0 auto 0.75rem; font-size: clamp(2rem, 5vw, 3.5rem);">
-                The easiest way to lose a customer is to have a <em class="gradient-text">conversation that never happens</em>.
-            </h1>
-            <p class="hero-subhead" style="max-width: 600px; margin: 0 auto 1.25rem; font-size: 1.05rem; line-height: 1.6; color: var(--gray-700);">
-                It doesn't take a bad service. It doesn't take a bad price. Sometimes it's just… the wrong moment.
-            </p>
+    <div class="demo-embed-wrapper reveal reveal-delay-3">
+      <div class="demo-bar">
+        <div class="demo-bar-dots"><span></span><span></span><span></span></div>
+        <span class="demo-bar-title">SmartLine — Live Agent</span>
+        <div class="demo-status"><div class="indicator-dot" style="background:var(--lime);width:7px;height:7px;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0"></div> Agent is live</div>
+      </div>
+      <div style="padding:24px">
+        <div data-smartline-agent data-api-base="https://lead-agents-api.onrender.com" id="smartline-chat-widget"></div>
+      </div>
+      <div class="demo-footer">
+        <span>Type or click <strong>Start Voice</strong> to talk. Any language.</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <!-- Agent Demo: above the fold -->
-            <div class="embed-wrapper" data-smartline-agent data-api-base="https://lead-agents-api.onrender.com"></div>
-            <p class="trust-line" style="margin-top: 0.75rem;">Type or click <strong>Start Voice</strong> to talk. Click <strong>Stop</strong> when done. Same conversation—switch anytime. Any language.</p>
+<!-- ═══════════════════════════════════════════
+     CASE STORIES
+═══════════════════════════════════════════ -->
+<section id="stories">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">What It Looks Like</p>
+      <h2>What a saved conversation actually looks like</h2>
+    </div>
 
-            <!-- CTAs -->
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1.25rem;">
-                <a href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" class="btn btn-primary btn-lg">Buy Now</a>
-                <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book a Call</a>
-            </div>
-            <p class="trust-line">Calls + SMS + WhatsApp • Any language • Your voice or a custom voice • Trained on your business</p>
-            <p class="footnote">Demo: US (EN/RU/ES) • Israel (EN/RU/HE). Production can be configured for your customers' languages.</p>
+    <div class="stories-grid">
+      <div class="story-card reveal reveal-delay-1">
+        <span class="story-badge">🌙 After-hours lead</span>
+        <h3>The after-hours lead that would have died quietly</h3>
+        <div class="story-timeline">
+          <div class="story-step">
+            <span class="story-step-label">BEFORE</span>
+            <span class="story-step-text">A buyer reaches out when nobody is free. Voicemail. No callback until morning. Lead goes cold overnight.</span>
+          </div>
+          <div class="story-step">
+            <span class="story-step-label">SMARTLINE</span>
+            <span class="story-step-text">SmartLine answers immediately, handles the first questions, and keeps the lead alive with a booked callback for 9 AM.</span>
+          </div>
         </div>
-    </section>
+        <div class="story-outcome">Warm leads don't wait for business hours. Neither should your front line.</div>
+      </div>
 
-    <!-- Core Problem -->
-    <section class="section" style="padding: var(--space-3xl) 0; background: var(--gray-50);">
-        <div class="container">
-            <p style="max-width: 580px; margin: 0 auto 1.5rem; color: var(--gray-600); line-height: 1.7; text-align: center;">
-                You're tired. They're impatient. Neither of you is "in the mood." So the call ends early — politely — and you never hear from them again.
-            </p>
-            <p style="max-width: 580px; margin: 0 auto 1.5rem; font-weight: 600; color: var(--gray-800); text-align: center;">
-                SmartLine Agent keeps that moment from slipping away. It picks up with a steady, professional voice — every time — and moves the conversation forward when a human moment would quietly drop it.
-            </p>
-            <p class="section-punchline" style="max-width: 640px; margin: 0 auto 1.5rem; font-size: 1.1rem; font-weight: 600; color: var(--gray-800); line-height: 1.6; text-align: center;">
-                SmartLine: No limits, no lock-ins—your AI agent that integrates anywhere, exactly as your business demands.
-            </p>
-            <h2 class="section-title center">Most lost leads don't leave a complaint. They leave quietly.</h2>
-            <p style="max-width: 640px; margin: 0 auto; text-align: center; color: var(--gray-600); line-height: 1.8;">
-                They don't announce it. They don't "break up" with your business. They simply move on — because reaching someone else takes one tap. And the hardest part is this: You may never even know the call almost became a sale.
-            </p>
+      <div class="story-card reveal reveal-delay-2">
+        <span class="story-badge">🤔 Comparison shopper</span>
+        <h3>The comparison shopper who needed answers before trusting</h3>
+        <div class="story-timeline">
+          <div class="story-step">
+            <span class="story-step-label">BEFORE</span>
+            <span class="story-step-text">Buyer asks price, timing, alternatives, and objections. Receptionist says "I'll have someone call you back." Lead goes dark.</span>
+          </div>
+          <div class="story-step">
+            <span class="story-step-label">SMARTLINE</span>
+            <span class="story-step-text">SmartLine handles the hesitation calmly, answers every comparison question, and moves the prospect to a booked next step.</span>
+          </div>
         </div>
-    </section>
+        <div class="story-outcome">The question is not whether you miss leads. It's how many disappear quietly before anyone answers.</div>
+      </div>
 
-    <!-- Wrong Moment -->
-    <section class="section" style="padding: var(--space-3xl) 0;">
-        <div class="container">
-            <h2 class="section-title center">Automation didn't win because it's flashy. It won because it doesn't have moods.</h2>
-            <p style="max-width: 640px; margin: 1rem auto; text-align: center; color: var(--gray-600); line-height: 1.8;">
-                People do. A client calls at the end of their day. They're short. A business owner answers between tasks. They're rushed. The tone slips — just a little — and the conversation doesn't land. No drama. No argument. Just an opportunity that evaporates.
-            </p>
-            <p style="max-width: 640px; margin: 1.5rem auto; text-align: center; font-weight: 600; color: var(--gray-800); line-height: 1.8;">
-                SmartLine Agent doesn't get tired. It doesn't sound annoyed. It doesn't "drop the energy." It holds the standard of your best day — even on your worst day.
-            </p>
+      <div class="story-card reveal reveal-delay-3">
+        <span class="story-badge">📋 Filled cancellation</span>
+        <h3>The cancellation slot that got filled instead of wasted</h3>
+        <div class="story-timeline">
+          <div class="story-step">
+            <span class="story-step-label">BEFORE</span>
+            <span class="story-step-text">A customer cancels Friday at 6 PM. Slot stays empty. No one on the team sees it until Monday.</span>
+          </div>
+          <div class="story-step">
+            <span class="story-step-label">SMARTLINE</span>
+            <span class="story-step-text">SmartLine follows up fast, reaches the waitlist, fills the slot within the hour. Revenue gets a second chance.</span>
+          </div>
         </div>
-    </section>
+        <div class="story-outcome">Start with one leak. Expand once it earns the right to.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Silent Loss -->
-    <section class="section" style="padding: var(--space-3xl) 0; background: var(--gray-50);">
-        <div class="container">
-            <h2 class="section-title center">Here's where businesses quietly lose money — without realizing it:</h2>
-            <ul style="max-width: 560px; margin: 2rem auto; padding-left: 1.5rem; color: var(--gray-600); line-height: 2;">
-                <li>A warm lead calls, asks one question, and doesn't feel "taken care of."</li>
-                <li>A caller hears a ring… and a ring… and decides not to wait.</li>
-                <li>Someone says "text me," and nobody texts them first.</li>
-                <li>A cancellation creates an empty slot — and the slot stays empty.</li>
-                <li>A happy client never gets asked for feedback — and your reputation grows slower than it should.</li>
-            </ul>
-            <p style="text-align: center; font-weight: 600; color: var(--gray-800);">None of these feel like emergencies. That's why they keep happening.</p>
+<!-- ═══════════════════════════════════════════
+     SIMPLE PAYMENT SECTION
+═══════════════════════════════════════════ -->
+<section id="payment">
+  <div class="container">
+    <div class="payment-inner reveal">
+      <div class="payment-left">
+        <p class="eyebrow" style="margin-bottom:16px">Fastest Way to Start</p>
+        <h2>Start with the $1,000 setup.</h2>
+        <p class="payment-body">If you already know you need SmartLine, start simple. We'll set up the first revenue-saving flow, train the agent on your business, and launch the use case that stops the most expensive silence first.</p>
+        <ul class="payment-list">
+          <li><span class="check-icon">✓</span> One focused launch</li>
+          <li><span class="check-icon">✓</span> Follow-up logic included when relevant</li>
+          <li><span class="check-icon">✓</span> Multilingual if your workflow needs it</li>
+          <li><span class="check-icon">✓</span> Human handoff when needed</li>
+        </ul>
+        <a href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" class="btn btn-primary payment-btn">Start with the $1,000 Setup</a>
+        <p class="payment-microcopy">Simple checkout. Add deeper customization after launch.</p>
+        <p class="payment-usage-note">Ongoing call, SMS, WhatsApp, and voice usage is billed separately based on actual usage.</p>
+      </div>
+      <div class="payment-right reveal reveal-delay-2">
+        <div class="payment-card">
+          <div class="payment-card-price">
+            <span class="price-amount">$1,000</span>
+            <span class="price-label">one-time setup</span>
+          </div>
+          <div class="payment-card-divider"></div>
+          <div class="payment-card-row">
+            <span>First workflow mapped &amp; trained</span>
+            <span class="check-icon">✓</span>
+          </div>
+          <div class="payment-card-row">
+            <span>Channels connected</span>
+            <span class="check-icon">✓</span>
+          </div>
+          <div class="payment-card-row">
+            <span>Real buyer scenario testing</span>
+            <span class="check-icon">✓</span>
+          </div>
+          <div class="payment-card-row">
+            <span>Go live with focused automation</span>
+            <span class="check-icon">✓</span>
+          </div>
+          <div class="payment-card-row">
+            <span>Usage-based billing after launch</span>
+            <span class="check-icon">✓</span>
+          </div>
+          <div class="payment-card-divider"></div>
+          <p style="font-size:12px;color:var(--text-3);text-align:center">Pay over time with Affirm, Klarna, or Afterpay</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Demo Section -->
-    <section class="section" id="demo" style="padding: var(--space-3xl) 0;">
-        <div class="container">
-            <h2 class="section-title center">Try it like a customer would.</h2>
-            <p style="max-width: 600px; margin: 0 auto 2rem; text-align: center; color: var(--gray-600); line-height: 1.7;">
-                Don't "test features." Have the conversation your customers actually have: "How much does it cost?" "Do you have availability this week?" "I'm comparing a few options…" "Can I reschedule?" "I need this urgently." Click <strong>Start conversation</strong>, then speak — SmartLine Enterprise Agent responds in your language automatically.
-            </p>
+<!-- ═══════════════════════════════════════════
+     PAY AS YOU GO — USAGE RATES
+═══════════════════════════════════════════ -->
+<section id="usage">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="margin-bottom:12px">After Setup</p>
+      <h2>Pay only for what you use.</h2>
+      <p class="section-sub">No monthly subscription. Usage is billed at vendor list price + 20% platform margin — covers orchestration, monitoring, and consolidated billing.</p>
+    </div>
 
-            <!-- Agent demo is in the Hero above — or use the one below -->
-            <div class="embed-wrapper" style="margin-bottom: 2rem;" data-smartline-agent data-api-base="https://lead-agents-api.onrender.com"></div>
+    <div class="usage-grid reveal reveal-delay-1">
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-                <a href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" class="btn btn-primary btn-lg">Buy Now</a>
-                <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book a Call</a>
+      <!-- MESSAGING & CALLS -->
+      <div class="usage-group">
+        <div class="usage-group-header">
+          <span class="usage-group-icon">📱</span>
+          <h3>Messaging &amp; Calls</h3>
+          <p class="usage-group-note">Powered by Twilio</p>
+        </div>
+        <div class="usage-rows">
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">WhatsApp message</span>
+              <span class="usage-direction">sent or received</span>
             </div>
-            <div class="payment-badges">
-                <span>Affirm</span><span>Klarna</span><span>Afterpay</span>
+            <span class="usage-price">$0.006 <span class="usage-unit">/ msg</span></span>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">SMS</span>
+              <span class="usage-direction">US — international rates vary</span>
             </div>
-            <p class="payment-badges-text" style="margin-top: 0.5rem;">Setup starts at $1,000. Pay over time.</p>
-            <p class="payment-badges-text">If you want it tailored to your exact flow.</p>
+            <span class="usage-price">~$0.01 <span class="usage-unit">/ msg</span></span>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">Voice call — outbound</span>
+              <span class="usage-direction">per minute</span>
+            </div>
+            <span class="usage-price">~$0.017 <span class="usage-unit">/ min</span></span>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">Voice call — inbound</span>
+              <span class="usage-direction">per minute</span>
+            </div>
+            <span class="usage-price">~$0.010 <span class="usage-unit">/ min</span></span>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Channels -->
-    <section class="section" style="padding: var(--space-3xl) 0; background: var(--gray-50);">
-        <div class="container">
-            <h2 class="section-title center">Your customers don't live in one channel. Neither should your front line.</h2>
-            <p style="max-width: 600px; margin: 0 auto 2rem; text-align: center; color: var(--gray-600); line-height: 1.7;">
-                SmartLine Agent can handle conversations through: <strong>Phone calls</strong>, <strong>SMS</strong>, <strong>WhatsApp</strong>. When a call doesn't connect — the conversation doesn't die. It continues where people actually reply.
-            </p>
+      <!-- AI PROCESSING -->
+      <div class="usage-group">
+        <div class="usage-group-header">
+          <span class="usage-group-icon">🧠</span>
+          <h3>AI Conversation Processing</h3>
+          <p class="usage-group-note">Tokens are the units used to generate replies</p>
         </div>
-    </section>
-
-    <!-- Personalization -->
-    <section class="section" style="padding: var(--space-3xl) 0;">
-        <div class="container">
-            <h2 class="section-title center">It doesn't have to sound like "a bot." It can sound like you.</h2>
-            <p style="max-width: 640px; margin: 0 auto 1.5rem; text-align: center; color: var(--gray-600); line-height: 1.8;">
-                Give your agent a name (SmartLine is just our demo). Choose a voice that fits your brand — or use the owner's voice if you want. Then train it on what makes your business… your business: offers and rules, FAQs and edge cases, scheduling logic, scripts and objection handling, what to say (and what never to say). In other words: it's not a generic agent. It's your front line — made consistent.
-            </p>
+        <div class="usage-rows">
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">Input tokens</span>
+              <span class="usage-direction">conversation context read by the agent</span>
+            </div>
+            <span class="usage-price">$0.30 <span class="usage-unit">/ 1M tokens</span></span>
+          </div>
+          <div class="usage-row">
+            <div class="usage-row-left">
+              <span class="usage-item">Output tokens</span>
+              <span class="usage-direction">replies generated by the agent</span>
+            </div>
+            <span class="usage-price">$2.40 <span class="usage-unit">/ 1M tokens</span></span>
+          </div>
+          <div class="usage-row usage-row-note">
+            <span class="usage-note-text">A typical conversation (10–15 messages) uses roughly 2,000–4,000 tokens total — about $0.01–$0.02 per conversation.</span>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Pricing -->
-    <section class="section" style="padding: var(--space-3xl) 0; background: var(--gray-50);">
-        <div class="container">
-            <h2 class="section-title center">Simple to start. Flexible as you grow.</h2>
-            <p style="max-width: 600px; margin: 0 auto 2rem; text-align: center; color: var(--gray-600); line-height: 1.7;">
-                Setup starts at $1,000 (installation + configuration). After that, it's pay-as-you-go, based on usage.
-            </p>
+    </div>
 
-            <!-- On-the-go costs: replace cost-rate spans with your rates, e.g. $0.06/min -->
-            <div class="cost-breakdown">
-                <h3 style="text-align: center; font-size: 1.125rem; margin-bottom: 1.25rem;">On-the-go usage costs</h3>
-                <div class="cost-grid">
-                    <div class="cost-item">
-                        <span class="cost-label">AI (API)</span>
-                        <span class="cost-value">Voice processing (token-based)</span>
-                        <span class="cost-rate">$0.30 / $2.40 per 1M tokens</span>
-                    </div>
-                    <div class="cost-item">
-                        <span class="cost-label">Phone calls</span>
-                        <span class="cost-value">Inbound ~$0.01 · Outbound ~$0.017</span>
-                        <span class="cost-rate">per minute</span>
-                    </div>
-                    <div class="cost-item">
-                        <span class="cost-label">SMS</span>
-                        <span class="cost-value">Sent/received</span>
-                        <span class="cost-rate">~$0.01 per message</span>
-                    </div>
-                    <div class="cost-item">
-                        <span class="cost-label">WhatsApp</span>
-                        <span class="cost-value">Messages in/out</span>
-                        <span class="cost-rate">$0.006 per message</span>
-                    </div>
-                </div>
-                <p class="cost-note">Same rates as Lead Agents Studio (vendor + 20% platform margin). International SMS/WhatsApp vary by region. <a href="https://calendly.com/aumi4-support/30min">Book a call</a> for your exact quote.</p>
-            </div>
+    <!-- EXAMPLE COST STRIP -->
+    <div class="usage-example reveal reveal-delay-2">
+      <p class="usage-example-label">Example monthly cost — 200 conversations via SMS + calls</p>
+      <div class="usage-example-pills">
+        <span class="usage-eg-pill">200 SMS threads<strong>~$4</strong></span>
+        <span class="usage-eg-sep">+</span>
+        <span class="usage-eg-pill">~600 call minutes<strong>~$10</strong></span>
+        <span class="usage-eg-sep">+</span>
+        <span class="usage-eg-pill">AI processing<strong>~$4</strong></span>
+        <span class="usage-eg-sep">=</span>
+        <span class="usage-eg-pill usage-eg-total">~$18 / month</span>
+      </div>
+      <p class="usage-example-sub">Exact usage visible in your dashboard. You can set a monthly cap and alerts.</p>
+    </div>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <a href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" class="btn btn-primary btn-lg">Buy Now</a>
-                <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book a Call</a>
-            </div>
-            <div class="payment-badges" style="margin-top: 0.5rem;">
-                <span>Affirm</span><span>Klarna</span><span>Afterpay</span>
-            </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CAPABILITY SYSTEM — 6 JOBS
+═══════════════════════════════════════════ -->
+<section id="capabilities">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;max-width:100%">
+      <div class="section-rule" style="margin:0 auto 20px"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:16px">One Trained System. Six Revenue-Saving Jobs.</p>
+      <h2>Not six add-ons. One system closing the leak in six places.</h2>
+      <p class="section-sub" style="max-width:680px;margin:16px auto 0">Once SmartLine knows your business, it can protect the sale before, during, and after the conversation — with follow-up, languages, handoff, booking, recovery, and conversion support working as one system.</p>
+    </div>
+
+    <p class="capabilities-bridge reveal">These are not separate tools to buy. They are six jobs the same system can handle once it knows your business.</p>
+
+    <div class="capabilities-grid reveal reveal-delay-1">
+
+      <div class="capability-card">
+        <div class="cap-icon">🌙</div>
+        <h3>After-Hours Recovery</h3>
+        <p>When a lead calls or messages after hours, SmartLine answers or follows up before interest cools down.</p>
+      </div>
+
+      <div class="capability-card">
+        <div class="cap-icon">💬</div>
+        <h3>No-Reply Follow-Up</h3>
+        <p>When a warm lead goes quiet, SmartLine reopens the conversation before the sale disappears.</p>
+      </div>
+
+      <div class="capability-card">
+        <div class="cap-icon">📅</div>
+        <h3>Booking, Rescheduling &amp; Waitlist Fill</h3>
+        <p>Recover canceled slots, reduce no-shows, and turn empty calendar time back into revenue.</p>
+      </div>
+
+      <div class="capability-card">
+        <div class="cap-icon">🌍</div>
+        <h3>Multilingual + Brand Voice</h3>
+        <p>Run the same sales flow in the languages your customers actually use, in a tone that fits your business.</p>
+      </div>
+
+      <div class="capability-card">
+        <div class="cap-icon">🤝</div>
+        <h3>Human Handoff + CRM / Calendar Logic</h3>
+        <p>When a person should step in, SmartLine passes the context forward instead of dropping the thread.</p>
+      </div>
+
+      <div class="capability-card">
+        <div class="cap-icon">📊</div>
+        <h3>Conversion Content Layer</h3>
+        <p>When a lead needs more than one conversation, we can support the sale with demo assets, proof-driven content, and follow-up creatives that send people back into action.</p>
+      </div>
+
+    </div>
+
+    <div class="capabilities-footer reveal">
+      <p class="capabilities-closing">Start with the leak that costs you the most. Let the same system handle more over time.</p>
+      <a class="capabilities-agent-link" onclick="scrollToAgent()">Tell the agent which part of your sales process leaks the most →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ROI CALCULATOR
+═══════════════════════════════════════════ -->
+<section id="roi">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">Revenue at Risk</p>
+      <h2>How Much Revenue Is Leaking Through Missed Conversations?</h2>
+    </div>
+
+    <div class="roi-layout">
+      <div class="roi-inputs reveal reveal-delay-1">
+        <div class="form-group">
+          <label class="form-label">Missed calls / inquiries per week</label>
+          <input type="number" class="form-input" id="roi-missed" value="10" min="1" oninput="calcROI()">
         </div>
-    </section>
-
-    <!-- Email Capture -->
-    <section class="section" style="padding: var(--space-3xl) 0;">
-        <div class="container">
-            <h2 class="section-title center">Not ready to buy today? Don't lose the thread.</h2>
-            <p style="max-width: 560px; margin: 0 auto 1.5rem; text-align: center; color: var(--gray-600);">
-                Get the SmartLine "Missed Conversation" Checklist — the exact set of call moments that quietly leak revenue, and what to automate first.
-            </p>
-            <form class="demo-form" style="max-width: 400px; margin: 0 auto;" onsubmit="alert('Email capture - connect to your backend'); return false;">
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Work email" required style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200);">
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">Send it to me</button>
-            </form>
-            <p class="footnote" style="margin-top: 0.5rem;">No spam. Just the checklist.</p>
+        <div class="form-group">
+          <label class="form-label">Close rate on warm leads (%)</label>
+          <input type="number" class="form-input" id="roi-close" value="25" min="1" max="100" oninput="calcROI()">
         </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section faq" style="padding: var(--space-3xl) 0; background: var(--gray-50);">
-        <div class="container">
-            <h2 class="section-title center">FAQ</h2>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h3>Do I need to pick a language?</h3>
-                    <p>No. Click Start conversation, then speak — SmartLine Enterprise Agent follows your language automatically.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Can it sound like the owner?</h3>
-                    <p>Yes. You can use a custom voice, including the owner's voice (with permission), or choose another branded voice.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>What if the caller is angry or the case is complicated?</h3>
-                    <p>It's built to escalate to a human when the situation calls for it — and pass context so the customer doesn't repeat themselves.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Where does it work?</h3>
-                    <p>Calls, SMS, WhatsApp. Your customers choose the channel; you keep the conversation.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>How does pricing work after setup?</h3>
-                    <p>Pay-as-you-go: AI (API) voice processing per minute, phone calls per minute, SMS per message, WhatsApp per conversation. See the cost breakdown above.</p>
-                </div>
-            </div>
+        <div class="form-group">
+          <label class="form-label">Average sale value ($)</label>
+          <input type="number" class="form-input" id="roi-value" value="500" min="1" oninput="calcROI()">
         </div>
-    </section>
+        <p style="font-size:13px;color:var(--text-3)">These numbers are yours to set — the output shows the revenue opportunity those missed conversations represent.</p>
+      </div>
 
-    <!-- Full Capabilities -->
-    <section class="section" style="padding: var(--space-3xl) 0;">
-        <div class="container">
-            <h2 class="section-title center">Everything SmartLine Enterprise Agent can do (you turn on what you need)</h2>
-            <div class="capability-grid" style="margin-top: 2rem;">
-                <div class="capability-category">
-                    <h4>Sales & Lead Handling</h4>
-                    <ul>
-                        <li>Lead qualification: need / budget / timeline</li>
-                        <li>Filters out non-fit inquiries</li>
-                        <li>Objection handling scripts</li>
-                        <li>Lead scoring: hot / warm / cold</li>
-                        <li>Missed call → instant follow-up</li>
-                        <li>Upsell / cross-sell flows</li>
-                        <li>Reactivates past customers</li>
-                        <li>CRM capture</li>
-                    </ul>
-                </div>
-                <div class="capability-category">
-                    <h4>Scheduling & Operations</h4>
-                    <ul>
-                        <li>Book / reschedule / cancel</li>
-                        <li>Slot selection by rules</li>
-                        <li>Waitlist + fills cancellations</li>
-                        <li>Confirmations + reminders</li>
-                        <li>Pre-visit instructions</li>
-                        <li>Location, parking, entry links</li>
-                    </ul>
-                </div>
-                <div class="capability-category">
-                    <h4>Customer Support</h4>
-                    <ul>
-                        <li>24/7 FAQs</li>
-                        <li>Status updates</li>
-                        <li>Complaint intake</li>
-                        <li>Triage: urgent vs normal</li>
-                        <li>Escalates to human when needed</li>
-                    </ul>
-                </div>
-                <div class="capability-category">
-                    <h4>CRM & Admin</h4>
-                    <ul>
-                        <li>Logs every interaction</li>
-                        <li>Auto-creates tasks</li>
-                        <li>Tags and reasons</li>
-                        <li>Daily/weekly summaries</li>
-                        <li>Calendar / CRM integrations</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="roi-result-card reveal reveal-delay-2">
+        <h3>Your Revenue Leak</h3>
+        <p class="roi-sub">Based on the numbers you entered</p>
+        <div class="roi-stat">
+          <div class="roi-stat-label">Potential conversations lost per month</div>
+          <div class="roi-stat-value red" id="roi-monthly-missed">~43 leads</div>
         </div>
-    </section>
-
-    <!-- Final Close -->
-    <section class="section" style="padding: var(--space-3xl) 0; background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(255,59,139,0.08));">
-        <div class="container">
-            <h2 class="section-title center" style="font-size: 1.75rem;">
-                You can't control the moment your next customer calls.<br>You can control whether the conversation happens.
-            </h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <a href="#demo" class="btn btn-primary btn-xl">Talk to SmartLine right here</a>
-                <a href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" class="btn btn-primary btn-xl">Buy Now</a>
-                <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-xl">Book a Call</a>
-            </div>
-            <div class="payment-badges" style="margin-top: 0.75rem;">
-                <span>Affirm</span><span>Klarna</span><span>Afterpay</span>
-            </div>
+        <div class="roi-stat">
+          <div class="roi-stat-label">Revenue potentially at risk per month</div>
+          <div class="roi-stat-value red" id="roi-monthly-revenue">~$5,375</div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-brand">
-                <span class="badge-icon" aria-hidden="true">✓</span>
-                <span>SmartLine Enterprise Agent by Lead Agents Studio</span>
-            </div>
-            <div class="footer-links">
-                <a href="/privacy.html">Privacy</a>
-                <a href="/terms.html">Terms</a>
-            </div>
-            <p class="footer-support">Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
+        <div class="roi-stat">
+          <div class="roi-stat-label">Annual revenue at risk</div>
+          <div class="roi-stat-value red" id="roi-annual">~$64,500</div>
         </div>
-    </footer>
+        <div class="roi-stat">
+          <div class="roi-stat-label">SmartLine ROI potential (Year 1)</div>
+          <div class="roi-stat-value green" id="roi-payback">~14× return</div>
+        </div>
+        <p class="roi-disclaimer">Estimates only. Based on your inputs. Actual results depend on industry, offer, and call handling setup.</p>
+        <a href="#payment" class="btn btn-primary" style="margin-top:24px;display:inline-flex">Start with the $1,000 Setup →</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script src="/smartline/agent.js"></script>
+<!-- ═══════════════════════════════════════════
+     COMPARISON
+═══════════════════════════════════════════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">How It Compares</p>
+      <h2>Not a FAQ bot. A revenue agent.</h2>
+      <p class="section-sub">Voicemail records the miss. SmartLine recovers the sale.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1" style="overflow-x:auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th class="col-voicemail">Voicemail</th>
+            <th class="col-human">Human Staff</th>
+            <th class="col-header-sl">SmartLine</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Available 24/7, after hours</td>
+            <td class="col-voicemail"><span class="partialmark">△</span> Records only</td>
+            <td class="col-human"><span class="crossmark">✕</span> Business hours</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Always live</td>
+          </tr>
+          <tr>
+            <td>Instant first response</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span> Passive</td>
+            <td class="col-human"><span class="partialmark">△</span> Depends on mood/load</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Sub-second</td>
+          </tr>
+          <tr>
+            <td>Qualifies &amp; handles objections</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span></td>
+            <td class="col-human"><span class="checkmark">✓</span> When trained</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Trained on your offer</td>
+          </tr>
+          <tr>
+            <td>Continues across channels</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span></td>
+            <td class="col-human"><span class="crossmark">✕</span> Manual switch</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Call → SMS → WhatsApp</td>
+          </tr>
+          <tr>
+            <td>Speaks multiple languages</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span></td>
+            <td class="col-human"><span class="partialmark">△</span> If staff available</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Any language</td>
+          </tr>
+          <tr>
+            <td>Books appointments &amp; follows up</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span></td>
+            <td class="col-human"><span class="checkmark">✓</span> When not busy</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Automated, with rules</td>
+          </tr>
+          <tr>
+            <td>Human handoff with context</td>
+            <td class="col-voicemail"><span class="crossmark">✕</span></td>
+            <td class="col-human"><span class="partialmark">△</span> Often lost</td>
+            <td class="col-smartline"><span class="checkmark">✓</span> Full transcript passed</td>
+          </tr>
+          <tr>
+            <td>Monthly cost behavior</td>
+            <td class="col-voicemail">Fixed low</td>
+            <td class="col-human">$3,000–8,000/mo salary</td>
+            <td class="col-smartline">Usage-based, scales</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="text-align:center;margin-top:32px">
+      <a href="#demo" class="btn btn-primary">See the Difference Live</a>
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FAQ
+═══════════════════════════════════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-rule"></div>
+      <p class="eyebrow" style="text-align:center;margin-bottom:12px">FAQ</p>
+      <h2>Questions people ask right before they decide</h2>
+    </div>
+    <p class="faq-intro reveal">These are not product docs. They are the objections SmartLine gets asked every day — and handles in the demo.</p>
+
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Are follow-up and languages extra add-ons?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">No. If follow-up logic or multilingual handling is part of the workflow, it is part of the system we train for your business.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need to configure channels and pricing on the page?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">No. The page is here to show how SmartLine protects revenue. The live agent can help map the right workflow for your business.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What counts as custom?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">Custom means deeper workflows beyond the first launch — for example more advanced booking logic, richer CRM rules, recovery sequences, or conversion assets that support the same sale.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I start with the $1,000 setup and customize later?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">Yes. The $1,000 setup is the fastest way to launch a focused first workflow. More channels, languages, integrations, and custom logic can be added after launch — once the first workflow pays for itself.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What does the interactive estimator do?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">It shows what changes scope, complexity, and likely starting cost. It is there to help you understand your best starting setup before you expand. It is not a checkout — it is a way to have a smarter conversation with the agent about what you actually need.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does the estimator give me a final quote?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">No. It gives you a realistic starting estimate. Final scope depends on channels, volume, languages, voice requirements, and integrations. Use it to understand the range, then talk to the agent or start with the $1,000 setup.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does this just answer questions, or can it actually sell?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">It does both. SmartLine can answer, qualify, handle objections, and move the next step forward instead of stopping at FAQ replies. The best proof is to test it directly — use one of the prompt chips above and judge it like a buyer.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will it sound robotic?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">Not unless you want it to. You can use a branded voice, a custom voice, or the owner's voice with permission. The demo above uses a trained agent voice — listen for yourself before you decide.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What happens when a customer wants a human?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">When a real person should step in, SmartLine hands the conversation over with full context so your customer does not start from zero. Your rep starts informed — not with "what can I help you with today?"</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can it work in more than one language?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">Yes. The demo already supports multiple languages, and production can be configured for the languages your customers actually use. We support English, Hebrew, Russian, Spanish, and more.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Why not hire a receptionist instead?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">A great human still matters. SmartLine covers the moments great humans can't always catch — after hours, between tasks, across channels, and when they're tired or busy. SmartLine is the coverage layer, not the replacement.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How hard is setup?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">We start with one focused workflow, train the agent on your business, connect the right tools, test real scenarios, and then go live. It is not a mystery custom project — you get a clear 5-step rollout from day one.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need to replace my team?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">No. SmartLine handles the moments your team misses, rushes, or should not have to repeat manually. Humans stay where human judgment matters most.</div>
+      </div>
+    </div>
+
+    <div class="faq-cta-row reveal">
+      <a href="#demo" class="btn btn-primary">Ask the Agent Your Question</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CLOSE
+═══════════════════════════════════════════ -->
+<section id="close">
+  <div class="container">
+    <div class="reveal"><div class="section-rule"></div></div>
+    <p class="eyebrow close-eyebrow reveal">One last thing</p>
+    <h2 class="reveal reveal-delay-1">The fastest way to understand SmartLine is to challenge it.</h2>
+    <p class="close-sub reveal reveal-delay-2">Ask about pricing. Push back. Bring objections. If it can handle you well, it can handle your leads.</p>
+    <div class="close-cta-row reveal reveal-delay-3">
+      <a href="#demo" class="btn btn-primary" style="padding:16px 40px;font-size:17px">Test the Agent</a>
+    </div>
+    <div class="trust-pills reveal reveal-delay-4">
+      <span class="trust-pill"><span class="icon">✓</span> Secure checkout</span>
+      <span class="trust-pill"><span class="icon">✓</span> Setup starts at $1,000</span>
+      <span class="trust-pill"><span class="icon">✓</span> Start narrow, expand later</span>
+      <span class="trust-pill"><span class="icon">✓</span> No mystery next step</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HUMAN CONTACT STRIP
+═══════════════════════════════════════════ -->
+<section id="human-contact" style="padding:40px 0 36px;border-top:1px solid var(--border);">
+  <div class="container" style="text-align:center;max-width:560px;">
+    <p style="font-size:13px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px;">Prefer to speak with a person?</p>
+    <p style="font-size:15px;color:var(--text-2);line-height:1.65;margin:0 0 20px;">If you'd rather talk through your setup with a human, you can book a call or email us directly.</p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+      <a href="https://calendly.com/aumi4-support/30min" target="_blank" style="display:inline-block;padding:9px 22px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-2)'">Book a Call</a>
+      <a href="mailto:support@leadagentsstudio.com" style="display:inline-block;padding:9px 22px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-2)'">Email Support</a>
+    </div>
+    <p style="font-size:12px;color:var(--text-3);font-style:italic;margin:0;">For everyone else, the fastest way to understand SmartLine is still to <a href="#demo" style="color:var(--text-3);text-decoration:underline;text-underline-offset:3px;">test the agent</a>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <p>© 2026 SmartLine — <a href="https://leadagentsstudio.com" target="_blank">Lead Agents Studio</a> &nbsp;·&nbsp;
+  <a href="https://smartline.leadagentsstudio.com/smartline/" target="_blank">Live Agent Demo</a></p>
+  <p style="margin-top:8px;font-size:11px;color:#3D5170">AI Sales Agent for Calls, SMS &amp; WhatsApp · Missed call recovery · Lead qualification · Booking &amp; follow-up</p>
+  <div class="footer-policy-links">
+    <a onclick="openPolicy('privacy')"  class="footer-policy-link">Privacy Policy</a>
+    <span class="footer-sep">·</span>
+    <a onclick="openPolicy('terms')"    class="footer-policy-link">Terms &amp; Conditions</a>
+    <span class="footer-sep">·</span>
+    <a onclick="openPolicy('billing')"  class="footer-policy-link">Billing Policy</a>
+    <span class="footer-sep">·</span>
+    <a onclick="openPolicy('refund')"   class="footer-policy-link">Refund Policy</a>
+  </div>
+  <p style="margin-top:10px;font-size:11px;color:#3D5170">Operated by AUMI 4 · 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US · <a href="mailto:support@leadagentsstudio.com" style="color:var(--text-2)">support@leadagentsstudio.com</a> · +1 760-512-8491</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     LEGAL / POLICIES MODAL
+═══════════════════════════════════════════ -->
+<div id="policies-modal" style="display:none">
+  <div id="policies-backdrop"></div>
+  <div id="policies-drawer">
+    <button id="policies-close" onclick="closePolicy()" title="Close">&times;</button>
+  <div class="container">
+
+    <!-- TABS -->
+    <div class="policy-tabs" role="tablist">
+      <button class="policy-tab active" onclick="openPolicy('privacy')"  id="tab-privacy">Privacy Policy</button>
+      <button class="policy-tab"        onclick="openPolicy('terms')"    id="tab-terms">Terms &amp; Conditions</button>
+      <button class="policy-tab"        onclick="openPolicy('billing')"  id="tab-billing">Billing Policy</button>
+      <button class="policy-tab"        onclick="openPolicy('refund')"   id="tab-refund">Refund Policy</button>
+    </div>
+
+    <!-- PRIVACY POLICY -->
+    <div class="policy-panel active" id="policy-privacy">
+      <h2 class="policy-title">Privacy Policy</h2>
+      <p class="policy-updated">Last updated: February 13, 2026</p>
+
+      <h3>1. Who We Are</h3>
+      <p>Lead Agents Studio is operated by AUMI 4, a company registered in Delaware, US.<br>
+      Address: 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+      Email: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a><br>
+      Phone: +1 760-512-8491</p>
+
+      <h3>2. What Data We Collect</h3>
+      <table class="policy-table">
+        <thead><tr><th>Data Type</th><th>When Collected</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Name</td><td>Demo form / Setup</td><td>Personalize communications</td></tr>
+          <tr><td>Email address</td><td>Demo form / Setup</td><td>Account, support, billing</td></tr>
+          <tr><td>Phone number</td><td>Demo form / Setup</td><td>Demo messaging, follow-up system</td></tr>
+          <tr><td>Channel preference</td><td>Demo form</td><td>Route demo via WhatsApp/SMS/call</td></tr>
+          <tr><td>Conversation logs</td><td>During demo &amp; live use</td><td>Qualify leads, improve system</td></tr>
+          <tr><td>Payment info</td><td>Checkout (Stripe)</td><td>Process payments (handled by Stripe)</td></tr>
+          <tr><td>IP address / browser data</td><td>Website visits</td><td>Analytics, security</td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. How We Use Your Data</h3>
+      <ul class="policy-list">
+        <li><strong>Deliver the Service:</strong> Send demo messages, qualify leads, book appointments.</li>
+        <li><strong>Billing:</strong> Process payments and send invoices.</li>
+        <li><strong>Support:</strong> Respond to your inquiries and troubleshoot issues.</li>
+        <li><strong>Improve the System:</strong> Analyze conversation patterns to improve AI responses and qualification accuracy.</li>
+        <li><strong>Compliance:</strong> Meet legal obligations and enforce our Terms.</li>
+      </ul>
+      <p>We never sell your personal data to third parties. We never use your data for medical purposes. Our system handles scheduling and qualification only.</p>
+
+      <h3>4. Third-Party Services</h3>
+      <table class="policy-table">
+        <thead><tr><th>Service</th><th>Purpose</th><th>Privacy Policy</th></tr></thead>
+        <tbody>
+          <tr><td>Twilio</td><td>SMS, WhatsApp, voice calls</td><td><a href="https://www.twilio.com/legal/privacy" target="_blank">twilio.com/legal/privacy</a></td></tr>
+          <tr><td>OpenAI</td><td>AI conversation processing</td><td><a href="https://openai.com/privacy" target="_blank">openai.com/privacy</a></td></tr>
+          <tr><td>Stripe</td><td>Payment processing</td><td><a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></td></tr>
+          <tr><td>Cloudflare</td><td>Website hosting, CDN</td><td><a href="https://www.cloudflare.com/privacypolicy/" target="_blank">cloudflare.com/privacypolicy</a></td></tr>
+          <tr><td>Notion</td><td>CRM / lead tracking</td><td><a href="https://www.notion.so/privacy" target="_blank">notion.so/privacy</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5. Data Retention</h3>
+      <ul class="policy-list">
+        <li><strong>Billing records:</strong> Retained for 7 years as required by tax law.</li>
+        <li><strong>Conversation logs:</strong> Retained for 12 months for quality improvement, then anonymized or deleted.</li>
+        <li><strong>Client data:</strong> Retained for the duration of your service agreement plus 12 months.</li>
+        <li><strong>Demo data:</strong> Retained for 90 days after the demo, then deleted unless you proceed to installation.</li>
+      </ul>
+
+      <h3>6. Your Rights</h3>
+      <p>Depending on your jurisdiction, you may have the right to: access the personal data we hold about you; correct inaccurate or incomplete data; delete your data ("right to be forgotten"); export your data in a portable format; opt out of messaging at any time by replying STOP; withdraw consent for data processing.</p>
+      <p>To exercise any of these rights, email <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a>. We will respond within 30 days.</p>
+
+      <h3>7. Cookies &amp; Analytics</h3>
+      <p>Our website uses minimal cookies for essential functionality. We do not use advertising trackers. We may use basic analytics (page views, referrer) to understand site usage.</p>
+
+      <h3>8. Data Security</h3>
+      <p>We implement industry-standard security measures including HTTPS encryption on all connections, encrypted storage for sensitive data, access controls and authentication for internal systems, and regular security reviews. No system is 100% secure. If you become aware of a security incident, please contact us immediately.</p>
+
+      <h3>9. International Transfers</h3>
+      <p>Your data may be processed in the United States and other countries where our service providers operate. We ensure appropriate safeguards are in place for international transfers.</p>
+
+      <h3>10. Children's Privacy</h3>
+      <p>Our Services are not directed to individuals under 18. We do not knowingly collect data from minors.</p>
+
+      <h3>11. Changes to This Policy</h3>
+      <p>We may update this Privacy Policy from time to time. Material changes will be communicated via email or website notice. The "Last updated" date at the top reflects the most recent revision.</p>
+
+      <h3>12. Contact Us</h3>
+      <p>AUMI 4 · 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+      Email: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a> · Phone: +1 760-512-8491</p>
+    </div>
+
+    <!-- TERMS & CONDITIONS -->
+    <div class="policy-panel" id="policy-terms">
+      <h2 class="policy-title">Terms &amp; Conditions</h2>
+      <p class="policy-updated">Last updated: February 13, 2026</p>
+
+      <h3>1. Agreement to Terms</h3>
+      <p>By accessing or using the Lead Agents Studio website (leadagentsstudio.com) and services ("Services"), operated by Aumi4 ("Company," "we," "us," or "our"), you agree to be bound by these Terms &amp; Conditions. If you do not agree, do not use the Services.</p>
+
+      <h3>2. Description of Services</h3>
+      <p>Lead Agents Studio provides AI-powered services for businesses, including SmartLine — an AI Sales Agent for Calls, SMS &amp; WhatsApp — and other automation products. Important: Our Services provide appointment scheduling and lead qualification only. We do not provide medical advice, diagnosis, or treatment.</p>
+
+      <h3>3. Eligibility</h3>
+      <p>You must be at least 18 years of age and have the legal authority to enter into a binding agreement. If you are using the Services on behalf of a business, you represent that you have authority to bind that entity.</p>
+
+      <h3>4. Account &amp; Access</h3>
+      <p>You are responsible for maintaining the confidentiality of any credentials or access provided to you. You agree to notify us immediately of any unauthorized use.</p>
+
+      <h3>5. Installation &amp; Setup</h3>
+      <ul class="policy-list">
+        <li>Customizations and add-ons are quoted separately based on complexity.</li>
+        <li>Installation includes setup, training the agent on your business, channel connection, testing, and launch as described on the sales page for each product.</li>
+        <li>Typical launch timeline is 7 business days from onboarding start.</li>
+        <li>Setup fees vary by product. See the relevant product page for current pricing.</li>
+      </ul>
+
+      <h3>6. Usage-Based Billing</h3>
+      <p>After installation, ongoing costs are usage-based (pay-as-you-go). See our Billing Policy for full details on rates, margins, and payment terms.</p>
+
+      <h3>7. Acceptable Use</h3>
+      <p>You agree not to: use the Services to provide medical advice or diagnosis; attempt to reverse-engineer, decompile, or extract source code from the Services; send spam, unsolicited messages, or deceptive content through the system; use the Services for any unlawful purpose or in violation of any applicable law.</p>
+
+      <h3>8. Intellectual Property</h3>
+      <ul class="policy-list">
+        <li><strong>Your Content:</strong> You retain ownership of your branding, offers, and content inputs.</li>
+        <li><strong>Our IP:</strong> The platform, scripts, AI models, and system architecture remain the property of Lead Agents Studio / Aumi4.</li>
+      </ul>
+
+      <h3>9. Consent &amp; Messaging Compliance</h3>
+      <ul class="policy-list">
+        <li>We comply with applicable messaging regulations including TCPA (US), CASL (Canada), and GDPR (EU/UK) to the extent applicable.</li>
+        <li>All automated messages include opt-out instructions (STOP).</li>
+        <li>You are responsible for ensuring that leads who enter your funnel have provided appropriate consent to be contacted.</li>
+      </ul>
+
+      <h3>10. Disclaimers</h3>
+      <ul class="policy-list">
+        <li>Message delivery depends on third-party carriers (Twilio, WhatsApp, SMS networks) and is not guaranteed.</li>
+        <li>We do not guarantee specific results, conversion rates, or lead volumes.</li>
+        <li>Services are provided "as is" without warranties of any kind, express or implied.</li>
+      </ul>
+
+      <h3>11. Limitation of Liability</h3>
+      <p>To the maximum extent permitted by law, Lead Agents Studio / Aumi4 shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenue. Our total liability shall not exceed the amount paid by you in the 12 months preceding the claim.</p>
+
+      <h3>12. Termination</h3>
+      <ul class="policy-list">
+        <li>We may suspend or terminate access immediately for violations of these Terms.</li>
+        <li>Upon termination, access to the system will be revoked. Outstanding usage charges remain payable.</li>
+        <li>Either party may terminate with 30 days written notice to <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a>.</li>
+      </ul>
+
+      <h3>13. Governing Law</h3>
+      <p>These Terms are governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to conflict of law principles.</p>
+
+      <h3>14. Changes to Terms</h3>
+      <p>We may update these Terms from time to time. Material changes will be communicated via email or website notice. Continued use after changes constitutes acceptance.</p>
+
+      <h3>15. Contact</h3>
+      <p>AUMI 4 · 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+      Email: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a> · Phone: +1 760-512-8491<br>
+      Website: <a href="https://leadagentsstudio.com" target="_blank">leadagentsstudio.com</a></p>
+    </div>
+
+    <!-- BILLING POLICY -->
+    <div class="policy-panel" id="policy-billing">
+      <h2 class="policy-title">Billing Policy</h2>
+      <p class="policy-updated">Last updated: February 13, 2026</p>
+
+      <h3>1. Setup Fee</h3>
+      <p>A one-time setup fee applies per product. The fee covers agent training, channel connection, testing, and launch. See the relevant product page for current pricing. Installment options may be available at checkout via Affirm, Afterpay, or Klarna (subject to eligibility, region, and currency).</p>
+
+      <h3>2. Monthly Usage Costs (Pay-As-You-Go)</h3>
+      <p>After installation, you pay only for what you use. There is no monthly subscription fee.</p>
+      <p><strong>What's included in usage billing:</strong> Conversation processing (AI qualification + scripting); Messaging + calls (WhatsApp, SMS, phone minutes).</p>
+      <p><strong>Platform margin:</strong> All usage items are billed at vendor list price + 20% platform margin. This covers orchestration, monitoring, error handling, and consolidated billing.</p>
+
+      <h3>3. Rate Card (including platform margin)</h3>
+      <table class="policy-table">
+        <thead><tr><th>Item</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>WhatsApp message (in/out)</td><td>$0.006 per message</td></tr>
+          <tr><td>SMS (US example, in/out)</td><td>~$0.01 per message</td></tr>
+          <tr><td>Outbound calls</td><td>~$0.017 per minute</td></tr>
+          <tr><td>Inbound calls</td><td>~$0.010 per minute</td></tr>
+          <tr><td>AI input tokens</td><td>$0.30 per 1M tokens</td></tr>
+          <tr><td>AI output tokens</td><td>$2.40 per 1M tokens</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:var(--text-3)">International SMS/WhatsApp rates vary by country. Exact rates are visible in your dashboard.</p>
+
+      <h3>4. Payment Method</h3>
+      <p>Monthly usage charges are billed to the card on file. We accept major credit/debit cards (Visa, Mastercard, Amex). All payments are processed securely via Stripe.</p>
+
+      <h3>5. Usage Caps &amp; Alerts</h3>
+      <p>You can set a monthly usage cap to control spending. We provide alerts when you approach your cap. A monthly usage summary is sent by email.</p>
+
+      <h3>6. Managed Service (Optional)</h3>
+      <ul class="policy-list">
+        <li><strong>Self-Managed (included):</strong> You run the system; we provide tools and reporting.</li>
+        <li><strong>Managed by us (+$500/month):</strong> Weekly tuning, deliverability checks, objection improvements, reporting + fixes.</li>
+        <li>You can enable or disable managed service at any time after installation.</li>
+      </ul>
+
+      <h3>7. Invoicing</h3>
+      <ul class="policy-list">
+        <li>Setup fee: Invoiced at time of purchase.</li>
+        <li>Monthly usage: Invoiced at the end of each calendar month.</li>
+        <li>Managed service: Invoiced monthly in advance.</li>
+        <li>All invoices are sent via email and available in your Stripe dashboard.</li>
+      </ul>
+
+      <h3>8. Late Payments</h3>
+      <p>If payment fails, we will retry up to 3 times over 7 days. If payment remains unsuccessful, the system may be paused until payment is resolved. We will notify you before any service interruption.</p>
+
+      <h3>9. Currency</h3>
+      <p>All prices are listed in USD. If you pay from a non-US card, your bank may apply exchange rates and fees.</p>
+
+      <h3>10. Contact</h3>
+      <p>AUMI 4 · 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+      Email: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a> · Phone: +1 760-512-8491</p>
+    </div>
+
+    <!-- REFUND POLICY -->
+    <div class="policy-panel" id="policy-refund">
+      <h2 class="policy-title">Refund &amp; Return Policy</h2>
+      <p class="policy-updated">Last updated: February 13, 2026</p>
+
+      <p>We want you to be confident in your purchase. This policy covers all payment types: setup fees and monthly usage charges.</p>
+
+      <h3>1. Setup Fee — Refund Policy</h3>
+      <h4 style="color:var(--text-2);font-size:14px;margin:16px 0 8px">Before work begins</h4>
+      <p>If you cancel before onboarding starts (before Day 1 kickoff), you receive a full refund of the setup fee.</p>
+      <h4 style="color:var(--text-2);font-size:14px;margin:16px 0 8px">During installation (Days 1–7)</h4>
+      <table class="policy-table">
+        <thead><tr><th>Stage</th><th>Refund Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Cancel before Day 3 (channel connection)</td><td>75% refund</td></tr>
+          <tr><td>Cancel before Day 5 (testing phase)</td><td>50% refund</td></tr>
+          <tr><td>Cancel after Day 5 (soft launch / live)</td><td>No refund — system is substantially complete</td></tr>
+        </tbody>
+      </table>
+      <h4 style="color:var(--text-2);font-size:14px;margin:16px 0 8px">After launch</h4>
+      <p>Once the system is live, the setup fee is non-refundable. The work has been completed and delivered.</p>
+
+      <h3>2. Monthly Usage Charges — Refund Policy</h3>
+      <p>Usage charges are generally non-refundable as they represent real third-party costs (messages sent, calls made, AI processing). If you believe there is a billing error, contact us within 30 days of the charge. We will investigate and correct any verified errors.</p>
+
+      <h3>3. Managed Service (+$500/month) — Refund Policy</h3>
+      <ul class="policy-list">
+        <li>Managed service is billed monthly in advance.</li>
+        <li>Pro-rata refund is available if you cancel within the first 7 days of a billing cycle.</li>
+        <li>After 7 days, the current month is non-refundable.</li>
+        <li>You may cancel managed service at any time — it will stop at the end of the current billing cycle.</li>
+      </ul>
+
+      <h3>4. How to Request a Refund</h3>
+      <ol class="policy-list">
+        <li>Email <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a> with subject line: "Refund Request"</li>
+        <li>Include your name, email, payment date, and reason for the request.</li>
+        <li>We will respond within 2 business days.</li>
+        <li>Approved refunds are processed within 5–10 business days to your original payment method.</li>
+      </ol>
+
+      <h3>5. Disputes &amp; Chargebacks</h3>
+      <p>Before filing a chargeback with your bank, please contact us first at <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a>. We resolve most issues within 48 hours. Filing a chargeback without contacting us first may result in account suspension.</p>
+
+      <h3>6. Satisfaction Guarantee</h3>
+      <p>We stand behind our work. If the system is not performing as described after launch, contact us and we will work to resolve the issue at no additional charge. Our goal is a working system that handles your leads — if we can't deliver that, we'll work with you on a fair resolution.</p>
+
+      <h3>7. Contact</h3>
+      <p>AUMI 4 · 2810 N Church St PMB 32529, Wilmington, Delaware 19802-4447, US<br>
+      Email: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a> · Phone: +1 760-512-8491</p>
+    </div>
+
+  </div><!-- /.container -->
+  </div><!-- /#policies-drawer -->
+</div><!-- /#policies-modal -->
+
+<!-- ═══════════════════════════════════════════
+     STICKY MOBILE BAR — one action only
+═══════════════════════════════════════════ -->
+<div class="sticky-mobile" id="stickyBar">
+  <a href="#demo" class="btn btn-primary">Test the Agent</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
+<script>
+  /* ── SCROLL REVEAL ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── STICKY BAR ── */
+  const stickyBar = document.getElementById('stickyBar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight * 0.2) {
+      stickyBar.classList.add('visible');
+    } else {
+      stickyBar.classList.remove('visible');
+    }
+  });
+
+  /* ── FAQ ACCORDION ── */
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  /* ── VIDEO TOGGLE ── */
+  function toggleVideo(videoId, overlayId) {
+    const vid     = document.getElementById(videoId);
+    const overlay = document.getElementById(overlayId);
+    const placeholder = document.getElementById(videoId + '-placeholder');
+
+    // If no video source file exists yet, do nothing
+    if (!vid || !vid.src || vid.error) return;
+
+    if (vid.paused) {
+      if (placeholder) placeholder.classList.add('hidden');
+      vid.play();
+      overlay.style.opacity = '0';
+      vid.onpause = () => { overlay.style.opacity = '1'; };
+      vid.onended = () => { overlay.style.opacity = '1'; };
+    } else {
+      vid.pause();
+      overlay.style.opacity = '1';
+    }
+  }
+
+  /* Show placeholder if video file is missing / not found */
+  document.addEventListener('DOMContentLoaded', () => {
+    const vid = document.getElementById('vid1');
+    if (vid) {
+      vid.onerror = () => {
+        const overlay = document.getElementById('vid1-overlay');
+        if (overlay) overlay.style.display = 'none';
+      };
+    }
+  });
+
+  /* ── CAPABILITY SECTION — scroll to agent ── */
+  function scrollToAgent() {
+    document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      const input = document.querySelector('.sl-chat-input, [data-smartline-agent] input, [data-smartline-agent] textarea');
+      if (input) { input.focus(); }
+    }, 800);
+  }
+
+  /* ── PROMPT CHIP → SCROLL TO DEMO ── */
+  function sendPrompt(btn) {
+    const prompt = btn.textContent;
+    btn.style.borderColor = 'var(--lime)';
+    btn.style.color       = 'var(--lime)';
+    setTimeout(() => {
+      btn.style.borderColor = '';
+      btn.style.color       = '';
+    }, 800);
+
+    const demoSection = document.getElementById('demo');
+    demoSection.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── ROI CALCULATOR ── */
+  function calcROI() {
+    const missed = parseFloat(document.getElementById('roi-missed').value) || 0;
+    const close  = parseFloat(document.getElementById('roi-close').value) || 0;
+    const value  = parseFloat(document.getElementById('roi-value').value) || 0;
+
+    const monthlyMissed  = Math.round(missed * 4.33);
+    const monthlyRevenue = Math.round(monthlyMissed * (close/100) * value);
+    const annualRevenue  = monthlyRevenue * 12;
+    const roi = annualRevenue > 0 ? Math.round(annualRevenue / 4500) : 0;
+
+    document.getElementById('roi-monthly-missed').textContent  = '~' + monthlyMissed + ' leads';
+    document.getElementById('roi-monthly-revenue').textContent = '~$' + monthlyRevenue.toLocaleString();
+    document.getElementById('roi-annual').textContent          = '~$' + annualRevenue.toLocaleString();
+    document.getElementById('roi-payback').textContent         = '~' + roi + '× return';
+  }
+
+  /* ── POLICY MODAL ── */
+  function openPolicy(name) {
+    const modal = document.getElementById('policies-modal');
+    document.querySelectorAll('.policy-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.policy-panel').forEach(p => p.classList.remove('active'));
+    const tab   = document.getElementById('tab-' + name);
+    const panel = document.getElementById('policy-' + name);
+    if (tab)   tab.classList.add('active');
+    if (panel) panel.classList.add('active');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    // Scroll drawer to top
+    const drawer = document.getElementById('policies-drawer');
+    if (drawer) drawer.scrollTop = 0;
+    return false;
+  }
+  function closePolicy() {
+    document.getElementById('policies-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  // Close on backdrop click
+  document.getElementById('policies-backdrop').addEventListener('click', closePolicy);
+  // Close on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePolicy(); });
+
+  /* init */
+  calcROI();
+</script>
+  <!-- SmartLine chat widget -->
+  <link rel="stylesheet" href="styles.css">
+  <script src="agent.js"></script>
 </body>
 </html>
