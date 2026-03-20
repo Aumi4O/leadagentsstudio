@@ -1003,9 +1003,8 @@
         <div class="hero-video-card">
           <div class="video-container-hero">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <video id="hero-vid" class="hero-main-video" autoplay muted loop playsinline controls preload="metadata" disablePictureInPicture>
-              <source src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" type="video/mp4">
-            </video>
+            <!-- Direct src on <video> — iOS Safari often fails with child <source> only (NETWORK_NO_SOURCE) -->
+            <video id="hero-vid" class="hero-main-video" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" autoplay muted loop playsinline controls preload="metadata" disablePictureInPicture></video>
           </div>
         </div>
       </div>
@@ -2081,7 +2080,7 @@
   function startHeroVideo(heroVid) {
     // #region agent log — H1/H2/H3/H4/H5 instrumentation
     if (!heroVid) { _vdbg('NO hero-vid element found!'); return; }
-    _vdbg('hero-vid found', { src: heroVid.querySelector('source') ? heroVid.querySelector('source').src : heroVid.src, networkState: heroVid.networkState, readyState: heroVid.readyState });
+    _vdbg('hero-vid found', { src: heroVid.src || '(none)', networkState: heroVid.networkState, readyState: heroVid.readyState });
 
     heroVid.muted = true;
     heroVid.defaultMuted = true;
@@ -2089,19 +2088,37 @@
     heroVid.setAttribute('playsinline', '');
     heroVid.setAttribute('webkit-playsinline', '');
 
-    function tryPlay() {
+    /* Evidence: overlapping play() before readyState>=2 caused AbortError; error handler load() raced play() */
+    var playInFlight = false;
+    function safePlay(reason) {
+      if (heroVid.readyState < 2) {
+        _vdbg('safePlay SKIP (need data)', { reason: reason, readyState: heroVid.readyState, networkState: heroVid.networkState });
+        return;
+      }
+      if (playInFlight) {
+        _vdbg('safePlay SKIP (in flight)', { reason: reason });
+        return;
+      }
+      playInFlight = true;
+      _vdbg('safePlay CALL play()', { reason: reason, readyState: heroVid.readyState });
       var p = heroVid.play();
-      if (p && typeof p.catch === 'function') {
-        p.then(function(){ _vdbg('H3: play() RESOLVED OK', { paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight }); })
-         .catch(function(e){ _vdbg('H3: play() REJECTED', { name: e.name, message: e.message }); });
+      if (p && typeof p.then === 'function') {
+        p.then(function () {
+          playInFlight = false;
+          _vdbg('H3: play() OK', { reason: reason, paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight });
+        }).catch(function (e) {
+          playInFlight = false;
+          _vdbg('H3: play() REJECT', { reason: reason, name: e.name, message: e.message });
+        });
+      } else {
+        playInFlight = false;
       }
     }
 
-    // H1: network/load errors
-    heroVid.addEventListener('error', function (ev) {
+    // H1: log only — do NOT call load() here (was aborting in-flight play + clearing pipeline on iOS)
+    heroVid.addEventListener('error', function () {
       var me = heroVid.error;
-      _vdbg('H1: VIDEO ERROR', { code: me ? me.code : '?', msg: me ? me.message : '?', networkState: heroVid.networkState });
-      try { heroVid.load(); } catch (e) { _vdbg('H1: reload failed', { err: e.message }); }
+      _vdbg('H1: VIDEO ERROR (no reload)', { code: me ? me.code : '?', msg: me ? me.message : '?', networkState: heroVid.networkState });
     });
 
     // H4: track which events actually fire
@@ -2111,20 +2128,17 @@
       });
     });
 
-    heroVid.addEventListener('loadeddata', tryPlay, { once: true });
-    heroVid.addEventListener('canplay', tryPlay, { once: true });
+    heroVid.addEventListener('canplay', function () { safePlay('canplay'); }, { once: true });
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          _vdbg('H3: IntersectionObserver — in view, calling tryPlay');
-          tryPlay();
+          _vdbg('H3: IntersectionObserver in view', { readyState: heroVid.readyState });
+          safePlay('intersection');
         }
       });
     }, { threshold: 0.15, rootMargin: '40px' });
     observer.observe(heroVid);
-
-    tryPlay();
 
     // H5: check computed dimensions after a moment
     setTimeout(function(){
@@ -2133,10 +2147,9 @@
       _vdbg('H5: dimensions', { rectW: Math.round(rect.width), rectH: Math.round(rect.height), csW: cs.width, csH: cs.height, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight, paused: heroVid.paused, currentTime: heroVid.currentTime, readyState: heroVid.readyState, networkState: heroVid.networkState });
     }, 3000);
 
-    /* First touch anywhere unlocks decode on strict iOS */
     function unlockOnce() {
-      _vdbg('H3: user gesture (touch/click) — calling tryPlay');
-      tryPlay();
+      _vdbg('H3: user gesture', { readyState: heroVid.readyState });
+      safePlay('gesture');
       document.removeEventListener('touchstart', unlockOnce, true);
       document.removeEventListener('click', unlockOnce, true);
     }
