@@ -1987,14 +1987,11 @@
     }
   }
 
-  /* Show placeholder if video file is missing / not found */
+  /* On mobile, retry loading video when user taps play */
   document.addEventListener('DOMContentLoaded', () => {
     const heroVid = document.getElementById('hero-vid');
     if (heroVid) {
-      heroVid.onerror = () => {
-        const overlay = document.getElementById('hero-vid-overlay');
-        if (overlay) overlay.style.display = 'none';
-      };
+      heroVid.onerror = () => { heroVid.load(); };
     }
   });
 
