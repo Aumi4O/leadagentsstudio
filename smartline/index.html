@@ -168,18 +168,24 @@
       border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(104,225,253,.06);
     }
-    /* Hero demo video: same delivery pattern as leadagentsstudio.com (public/index.html) — cdn.leadagentsstudio.com + <source type="video/mp4"> + native controls */
+    /* Hero demo: same layout as working UGC videos on leadagentsstudio.com (.video-placeholder-large in public/assets/styles.css) — 9:16 + absolute fill */
     .hero-video-wrapper {
       position: relative;
       width: 100%;
+      aspect-ratio: 9 / 16;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: #000;
     }
     .hero-smartline-video {
+      position: absolute;
+      inset: 0;
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
       display: block;
-      border-radius: var(--radius-lg);
+      border-radius: 0;
       background: #000;
     }
     .hero-video-badge {
@@ -999,7 +1005,7 @@
         <div class="hero-video-card">
           <div class="hero-video-wrapper">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <!-- URL + markup aligned with public/index.html hero (R2 via cdn.leadagentsstudio.com). Muted autoplay = reliable on iOS; user unmutes in native controls for audio. -->
+            <!-- Same player pattern as leadagentsstudio.com UGC sections (#video-ugc / .video-placeholder-large): &lt;source&gt; + playsinline controls + 9:16 frame in CSS -->
             <video id="hero-vid" class="hero-smartline-video" autoplay muted loop playsinline controls preload="auto">
               <source src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" type="video/mp4">
             </video>
