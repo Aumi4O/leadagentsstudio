@@ -2057,41 +2057,95 @@
   /* init */
   calcROI();
 
+  // #region agent log — debug overlay for mobile video diagnosis
+  (function(){
+    var dbg = document.createElement('div');
+    dbg.id = 'vid-debug';
+    dbg.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:rgba(0,0,0,.92);color:#0f0;font:11px/1.4 monospace;padding:8px 10px;max-height:40vh;overflow:auto;pointer-events:auto;';
+    document.body.appendChild(dbg);
+    var logs = [];
+    window._vdbg = function(msg, data) {
+      var t = new Date().toLocaleTimeString();
+      var line = t + ' ' + msg + (data ? ' ' + JSON.stringify(data) : '');
+      logs.push(line);
+      if (logs.length > 30) logs.shift();
+      dbg.innerHTML = '<b>VIDEO DEBUG (tap to dismiss)</b><br>' + logs.join('<br>');
+      dbg.scrollTop = dbg.scrollHeight;
+      fetch('http://127.0.0.1:7775/ingest/e6d783ce-0a82-4ce8-972d-305da7bd2a9f',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'84e64a'},body:JSON.stringify({sessionId:'84e64a',location:'smartline/index.html',message:msg,data:data||{},timestamp:Date.now()})}).catch(function(){});
+    };
+    dbg.addEventListener('click', function(){ dbg.style.display = dbg.style.display === 'none' ? '' : 'none'; });
+  })();
+  // #endregion
+
   /* Hero video: iOS needs muted/playsInline set in JS + play after metadata; black frame fix */
   function startHeroVideo(heroVid) {
-    if (!heroVid) return;
+    // #region agent log — H1/H2/H3/H4/H5 instrumentation
+    if (!heroVid) { _vdbg('NO hero-vid element found!'); return; }
+    _vdbg('hero-vid found', { src: heroVid.querySelector('source') ? heroVid.querySelector('source').src : heroVid.src, networkState: heroVid.networkState, readyState: heroVid.readyState });
+
     heroVid.muted = true;
     heroVid.defaultMuted = true;
     heroVid.playsInline = true;
     heroVid.setAttribute('playsinline', '');
     heroVid.setAttribute('webkit-playsinline', '');
+
     function tryPlay() {
       var p = heroVid.play();
-      if (p && typeof p.catch === 'function') p.catch(function () {});
+      if (p && typeof p.catch === 'function') {
+        p.then(function(){ _vdbg('H3: play() RESOLVED OK', { paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight }); })
+         .catch(function(e){ _vdbg('H3: play() REJECTED', { name: e.name, message: e.message }); });
+      }
     }
-    heroVid.addEventListener('error', function () {
-      try { heroVid.load(); } catch (e) {}
+
+    // H1: network/load errors
+    heroVid.addEventListener('error', function (ev) {
+      var me = heroVid.error;
+      _vdbg('H1: VIDEO ERROR', { code: me ? me.code : '?', msg: me ? me.message : '?', networkState: heroVid.networkState });
+      try { heroVid.load(); } catch (e) { _vdbg('H1: reload failed', { err: e.message }); }
     });
-    /* First frame / decode — then play (fixes black on many iPhones) */
+
+    // H4: track which events actually fire
+    ['loadstart','loadedmetadata','loadeddata','canplay','canplaythrough','playing','stalled','suspend','waiting','emptied'].forEach(function(evt){
+      heroVid.addEventListener(evt, function(){
+        _vdbg('H4: event=' + evt, { readyState: heroVid.readyState, networkState: heroVid.networkState, paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight });
+      });
+    });
+
     heroVid.addEventListener('loadeddata', tryPlay, { once: true });
     heroVid.addEventListener('canplay', tryPlay, { once: true });
+
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) tryPlay();
+        if (entry.isIntersecting) {
+          _vdbg('H3: IntersectionObserver — in view, calling tryPlay');
+          tryPlay();
+        }
       });
     }, { threshold: 0.15, rootMargin: '40px' });
     observer.observe(heroVid);
+
     tryPlay();
+
+    // H5: check computed dimensions after a moment
+    setTimeout(function(){
+      var rect = heroVid.getBoundingClientRect();
+      var cs = getComputedStyle(heroVid);
+      _vdbg('H5: dimensions', { rectW: Math.round(rect.width), rectH: Math.round(rect.height), csW: cs.width, csH: cs.height, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight, paused: heroVid.paused, currentTime: heroVid.currentTime, readyState: heroVid.readyState, networkState: heroVid.networkState });
+    }, 3000);
+
     /* First touch anywhere unlocks decode on strict iOS */
     function unlockOnce() {
+      _vdbg('H3: user gesture (touch/click) — calling tryPlay');
       tryPlay();
       document.removeEventListener('touchstart', unlockOnce, true);
       document.removeEventListener('click', unlockOnce, true);
     }
     document.addEventListener('touchstart', unlockOnce, { capture: true, passive: true });
     document.addEventListener('click', unlockOnce, true);
+    // #endregion
   }
   document.addEventListener('DOMContentLoaded', function () {
+    _vdbg('DOMContentLoaded — starting hero video init');
     startHeroVideo(document.getElementById('hero-vid'));
   });
 
