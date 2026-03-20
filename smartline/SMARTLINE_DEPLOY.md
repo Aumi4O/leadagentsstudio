@@ -1,5 +1,14 @@
 # SmartLine subdomain setup (smartline.leadagentsstudio.com)
 
+## Where the site actually deploys
+
+| What | Host | Where to check deploys |
+|------|------|-------------------------|
+| **Static site** (`leadagentsstudio.com`, `smartline.leadagentsstudio.com`, `/smartline/`) | **Cloudflare Pages** (CDN: `server: cloudflare` in HTTP headers) | Cloudflare Dashboard → **Pages** → project connected to `Aumi4O/leadagentsstudio` (or your repo) |
+| **SmartLine API** (chat/voice tokens, tools) | **Render** | Render Dashboard → service **`lead-agents-api`** (e.g. `lead-agents-api.onrender.com`) |
+
+Pushes to GitHub only update the live **sales page** if **Cloudflare Pages** is connected to that repo/branch. You will **not** see those static-site builds under Render — only the API service appears there.
+
 ## Setup steps
 
 1. **Cloudflare Dashboard** → Your domain → **Pages** → your project (leadagentsstudio)
