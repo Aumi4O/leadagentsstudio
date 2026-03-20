@@ -123,14 +123,13 @@
     }
     @media(max-width:768px) {
       .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-      /* Show demo on phones — was display:none, so video never appeared (not the chat card blocking) */
+      /* Copy first, video below (same reading order as desktop; not order:-1 like main site's tablet tweak) */
       .hero-visual {
         display: flex;
-        order: -1;
         justify-content: center;
         width: 100%;
       }
-      .hero-video-card { max-width: min(100%, 340px); margin: 0 auto; }
+      .hero-video-card { max-width: min(100%, 380px); margin: 0 auto; }
       #hero { padding-top: 150px; padding-bottom: 80px; }
     }
     .hero-label { margin-bottom: 20px; }
@@ -169,50 +168,19 @@
       border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(104,225,253,.06);
     }
+    /* Hero demo video: same delivery pattern as leadagentsstudio.com (public/index.html) — cdn.leadagentsstudio.com + <source type="video/mp4"> + native controls */
     .hero-video-wrapper {
       position: relative;
-      background: #000;
-      aspect-ratio: 9/16;
       width: 100%;
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      /* iOS WebKit: % height on <video> inside aspect-ratio often collapses → black box */
-    }
-    .hero-video-wrapper video {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 15%;
       background: #000;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
     }
-    /* Hide play layer while playing (opacity-only can still composite above video on iOS) */
-    .hero-video-wrapper.video-slot--playing .hero-video-overlay {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .hero-video-overlay {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: rgba(6,11,22,.35);
-      cursor: pointer; transition: background .2s, opacity .2s;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-      z-index: 1;
-    }
-    .hero-video-overlay:hover { background: rgba(6,11,22,.15); }
-    /* Real <button> for reliable tap on iOS (div+onclick is flaky) */
-    button.hero-video-overlay {
-      margin: 0;
-      padding: 0;
-      border: none;
-      font: inherit;
-      color: inherit;
-      appearance: none;
-      -webkit-appearance: none;
+    .hero-smartline-video {
+      width: 100%;
+      display: block;
+      border-radius: var(--radius-lg);
+      background: #000;
     }
     .hero-video-badge {
       position: absolute; top: 16px; left: 16px;
@@ -220,7 +188,9 @@
       background: rgba(6,11,22,.7); backdrop-filter: blur(8px);
       border: 1px solid rgba(184,255,92,.25);
       color: var(--lime); font-size: 11px; font-weight: 600;
-      padding: 6px 12px; border-radius: 100px; z-index: 2;
+      padding: 6px 12px; border-radius: 100px;
+      z-index: 3;
+      pointer-events: none;
     }
     .hero-video-badge .badge-dot {
       width: 6px; height: 6px; background: var(--lime);
@@ -1029,10 +999,10 @@
         <div class="hero-video-card">
           <div class="hero-video-wrapper">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <video id="hero-vid" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4#t=0.001" preload="auto" playsinline></video>
-            <button type="button" class="hero-video-overlay" id="hero-vid-overlay" aria-label="Play live agent demo video" onclick="toggleVideo('hero-vid','hero-vid-overlay')">
-              <div class="play-btn"><div class="play-icon"></div></div>
-            </button>
+            <!-- URL + markup aligned with public/index.html hero (R2 via cdn.leadagentsstudio.com). Muted autoplay = reliable on iOS; user unmutes in native controls for audio. -->
+            <video id="hero-vid" class="hero-smartline-video" autoplay muted loop playsinline controls preload="auto">
+              <source src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
@@ -2016,23 +1986,6 @@
     if (!wasOpen) item.classList.add('open');
   }
 
-  /* ── VIDEO TOGGLE ── */
-  function toggleVideo(videoId, overlayId) {
-    const vid     = document.getElementById(videoId);
-    const placeholder = document.getElementById(videoId + '-placeholder');
-
-    if (!vid || !vid.src || vid.error) return;
-
-    if (vid.paused) {
-      if (placeholder) placeholder.classList.add('hidden');
-      var playPromise = vid.play();
-      if (playPromise) { playPromise.catch(function () {}); }
-    } else {
-      vid.pause();
-    }
-  }
-
-
   /* ── CAPABILITY SECTION — scroll to agent ── */
   function scrollToAgent() {
     document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
@@ -2101,23 +2054,12 @@
   /* init */
   calcROI();
 
-  /* Hero video: recover from transient network / CDN errors (common on mobile) */
+  /* Hero video: recover from transient CDN errors (same stack as main site videos) */
   document.addEventListener('DOMContentLoaded', function () {
     var heroVid = document.getElementById('hero-vid');
-    var heroWrap = heroVid ? heroVid.closest('.hero-video-wrapper') : null;
-    if (heroVid && heroWrap) {
+    if (heroVid) {
       heroVid.addEventListener('error', function () {
         try { heroVid.load(); } catch (e) {}
-      });
-      function syncHeroPlayingClass() {
-        heroWrap.classList.toggle('video-slot--playing', !heroVid.paused && !heroVid.ended);
-      }
-      heroVid.addEventListener('playing', syncHeroPlayingClass);
-      heroVid.addEventListener('pause', syncHeroPlayingClass);
-      heroVid.addEventListener('ended', syncHeroPlayingClass);
-      /* Tap video to pause when overlay is hidden */
-      heroVid.addEventListener('click', function () {
-        if (!heroVid.paused) heroVid.pause();
       });
     }
   });

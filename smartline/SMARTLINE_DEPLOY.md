@@ -20,6 +20,14 @@ Pushes to GitHub only update the live **sales page** if **Cloudflare Pages** is 
 
 When visitors go to smartline.leadagentsstudio.com, the main index redirects them to `/smartline/` (same subdomain). The SmartLine sales page loads.
 
+## Hero demo video (R2 / CDN)
+
+SmartLine uses the same public CDN hostname as the main site (`public/index.html`): **`https://cdn.leadagentsstudio.com/...`** (Cloudflare R2 behind that domain). The hero file is:
+
+`https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4`
+
+Markup matches the main site pattern: `<video … playsinline controls><source src="…" type="video/mp4"></video>`.
+
 ## Replace Buy Now link
 
 Search and replace `https://buy.stripe.com/SMARTLINE_LINK` in `smartline/index.html` with your actual SmartLine Stripe Payment Link ($1,000 setup).
