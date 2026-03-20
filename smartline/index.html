@@ -122,8 +122,16 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
     }
     @media(max-width:768px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero-visual { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      /* Show demo on phones — was display:none, so video never appeared (not the chat card blocking) */
+      .hero-visual {
+        display: flex;
+        order: -1;
+        justify-content: center;
+        width: 100%;
+      }
+      .hero-video-card { max-width: min(100%, 340px); margin: 0 auto; }
+      #hero { padding-top: 150px; padding-bottom: 80px; }
     }
     .hero-label { margin-bottom: 20px; }
     .hero-h1 {
@@ -170,9 +178,22 @@
     .hero-video-overlay {
       position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
       background: rgba(6,11,22,.35);
-      cursor: pointer; transition: background .2s;
+      cursor: pointer; transition: background .2s, opacity .2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      z-index: 1;
     }
     .hero-video-overlay:hover { background: rgba(6,11,22,.15); }
+    /* Real <button> for reliable tap on iOS (div+onclick is flaky) */
+    button.hero-video-overlay {
+      margin: 0;
+      padding: 0;
+      border: none;
+      font: inherit;
+      color: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+    }
     .hero-video-badge {
       position: absolute; top: 16px; left: 16px;
       display: inline-flex; gap: 6px; align-items: center;
@@ -988,10 +1009,10 @@
         <div class="hero-video-card">
           <div class="hero-video-wrapper">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <video id="hero-vid" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" poster="poster.jpg" preload="metadata" playsinline></video>
-            <div class="hero-video-overlay" id="hero-vid-overlay" onclick="toggleVideo('hero-vid','hero-vid-overlay')">
+            <video id="hero-vid" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" preload="metadata" playsinline webkit-playsinline></video>
+            <button type="button" class="hero-video-overlay" id="hero-vid-overlay" aria-label="Play live agent demo video" onclick="toggleVideo('hero-vid','hero-vid-overlay')">
               <div class="play-btn"><div class="play-icon"></div></div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -1987,12 +2008,28 @@
       if (placeholder) placeholder.classList.add('hidden');
       var playPromise = vid.play();
       if (playPromise) { playPromise.catch(function(){}); }
-      overlay.style.opacity = '0';
-      vid.onpause = () => { overlay.style.opacity = '1'; };
-      vid.onended = () => { overlay.style.opacity = '1'; };
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+      }
+      vid.onpause = function () {
+        if (overlay) {
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
+        }
+      };
+      vid.onended = function () {
+        if (overlay) {
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
+        }
+      };
     } else {
       vid.pause();
-      overlay.style.opacity = '1';
+      if (overlay) {
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+      }
     }
   }
 
@@ -2068,10 +2105,21 @@
   /* Hero video: recover from transient network / CDN errors (common on mobile) */
   document.addEventListener('DOMContentLoaded', function () {
     var heroVid = document.getElementById('hero-vid');
+    var heroOverlay = document.getElementById('hero-vid-overlay');
     if (heroVid) {
       heroVid.addEventListener('error', function () {
         try { heroVid.load(); } catch (e) {}
       });
+      /* Tap video while playing to pause (overlay is pointer-events: none then) */
+      if (heroOverlay) {
+        heroVid.addEventListener('click', function () {
+          if (!heroVid.paused) {
+            heroVid.pause();
+            heroOverlay.style.opacity = '1';
+            heroOverlay.style.pointerEvents = 'auto';
+          }
+        });
+      }
     }
   });
 
