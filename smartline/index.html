@@ -1978,7 +1978,8 @@
 
     if (vid.paused) {
       if (placeholder) placeholder.classList.add('hidden');
-      vid.play();
+      var playPromise = vid.play();
+      if (playPromise) { playPromise.catch(function(){}); }
       overlay.style.opacity = '0';
       vid.onpause = () => { overlay.style.opacity = '1'; };
       vid.onended = () => { overlay.style.opacity = '1'; };
@@ -1988,13 +1989,6 @@
     }
   }
 
-  /* On mobile, retry loading video when user taps play */
-  document.addEventListener('DOMContentLoaded', () => {
-    const heroVid = document.getElementById('hero-vid');
-    if (heroVid) {
-      heroVid.onerror = () => { heroVid.load(); };
-    }
-  });
 
   /* ── CAPABILITY SECTION — scroll to agent ── */
   function scrollToAgent() {
@@ -2063,6 +2057,7 @@
 
   /* init */
   calcROI();
+
 </script>
   <!-- SmartLine chat widget -->
   <link rel="stylesheet" href="styles.css">
