@@ -2056,110 +2056,45 @@
   /* init */
   calcROI();
 
-  // #region agent log — debug overlay for mobile video diagnosis
-  (function(){
-    var dbg = document.createElement('div');
-    dbg.id = 'vid-debug';
-    dbg.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99999;background:rgba(0,0,0,.92);color:#0f0;font:11px/1.4 monospace;padding:8px 10px;max-height:40vh;overflow:auto;pointer-events:auto;';
-    document.body.appendChild(dbg);
-    var logs = [];
-    window._vdbg = function(msg, data) {
-      var t = new Date().toLocaleTimeString();
-      var line = t + ' ' + msg + (data ? ' ' + JSON.stringify(data) : '');
-      logs.push(line);
-      if (logs.length > 30) logs.shift();
-      dbg.innerHTML = '<b>VIDEO DEBUG (tap to dismiss)</b><br>' + logs.join('<br>');
-      dbg.scrollTop = dbg.scrollHeight;
-      fetch('http://127.0.0.1:7775/ingest/e6d783ce-0a82-4ce8-972d-305da7bd2a9f',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'84e64a'},body:JSON.stringify({sessionId:'84e64a',location:'smartline/index.html',message:msg,data:data||{},timestamp:Date.now()})}).catch(function(){});
-    };
-    dbg.addEventListener('click', function(){ dbg.style.display = dbg.style.display === 'none' ? '' : 'none'; });
-  })();
-  // #endregion
-
-  /* Hero video: iOS needs muted/playsInline set in JS + play after metadata; black frame fix */
+  /* Hero video: iOS — muted/playsInline in JS; play only when readyState>=2; Baseline MP4 at /smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4 */
   function startHeroVideo(heroVid) {
-    // #region agent log — H1/H2/H3/H4/H5 instrumentation
-    if (!heroVid) { _vdbg('NO hero-vid element found!'); return; }
-    _vdbg('hero-vid found', { src: heroVid.src || '(none)', networkState: heroVid.networkState, readyState: heroVid.readyState });
-
+    if (!heroVid) return;
     heroVid.muted = true;
     heroVid.defaultMuted = true;
     heroVid.playsInline = true;
     heroVid.setAttribute('playsinline', '');
     heroVid.setAttribute('webkit-playsinline', '');
 
-    /* Evidence: overlapping play() before readyState>=2 caused AbortError; error handler load() raced play() */
     var playInFlight = false;
-    function safePlay(reason) {
-      if (heroVid.readyState < 2) {
-        _vdbg('safePlay SKIP (need data)', { reason: reason, readyState: heroVid.readyState, networkState: heroVid.networkState });
-        return;
-      }
-      if (playInFlight) {
-        _vdbg('safePlay SKIP (in flight)', { reason: reason });
-        return;
-      }
+    function safePlay() {
+      if (heroVid.readyState < 2 || playInFlight) return;
       playInFlight = true;
-      _vdbg('safePlay CALL play()', { reason: reason, readyState: heroVid.readyState });
       var p = heroVid.play();
       if (p && typeof p.then === 'function') {
-        p.then(function () {
-          playInFlight = false;
-          _vdbg('H3: play() OK', { reason: reason, paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight });
-        }).catch(function (e) {
-          playInFlight = false;
-          _vdbg('H3: play() REJECT', { reason: reason, name: e.name, message: e.message });
-        });
+        p.then(function () { playInFlight = false; }).catch(function () { playInFlight = false; });
       } else {
         playInFlight = false;
       }
     }
 
-    // H1: log only — do NOT call load() here (was aborting in-flight play + clearing pipeline on iOS)
-    heroVid.addEventListener('error', function () {
-      var me = heroVid.error;
-      var code = me ? me.code : '?';
-      _vdbg('H1: VIDEO ERROR (no reload)', { code: code, msg: me ? me.message : '?', networkState: heroVid.networkState, hint: code === 4 ? 'MEDIA_ERR_SRC_NOT_SUPPORTED — iOS needs H.264 Baseline (use _IOS.mp4)' : '' });
-    });
-
-    // H4: track which events actually fire
-    ['loadstart','loadedmetadata','loadeddata','canplay','canplaythrough','playing','stalled','suspend','waiting','emptied'].forEach(function(evt){
-      heroVid.addEventListener(evt, function(){
-        _vdbg('H4: event=' + evt, { readyState: heroVid.readyState, networkState: heroVid.networkState, paused: heroVid.paused, currentTime: heroVid.currentTime, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight });
-      });
-    });
-
-    heroVid.addEventListener('canplay', function () { safePlay('canplay'); }, { once: true });
+    heroVid.addEventListener('canplay', safePlay, { once: true });
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          _vdbg('H3: IntersectionObserver in view', { readyState: heroVid.readyState });
-          safePlay('intersection');
-        }
+        if (entry.isIntersecting) safePlay();
       });
     }, { threshold: 0.15, rootMargin: '40px' });
     observer.observe(heroVid);
 
-    // H5: check computed dimensions after a moment
-    setTimeout(function(){
-      var rect = heroVid.getBoundingClientRect();
-      var cs = getComputedStyle(heroVid);
-      _vdbg('H5: dimensions', { rectW: Math.round(rect.width), rectH: Math.round(rect.height), csW: cs.width, csH: cs.height, videoWidth: heroVid.videoWidth, videoHeight: heroVid.videoHeight, paused: heroVid.paused, currentTime: heroVid.currentTime, readyState: heroVid.readyState, networkState: heroVid.networkState });
-    }, 3000);
-
     function unlockOnce() {
-      _vdbg('H3: user gesture', { readyState: heroVid.readyState });
-      safePlay('gesture');
+      safePlay();
       document.removeEventListener('touchstart', unlockOnce, true);
       document.removeEventListener('click', unlockOnce, true);
     }
     document.addEventListener('touchstart', unlockOnce, { capture: true, passive: true });
     document.addEventListener('click', unlockOnce, true);
-    // #endregion
   }
   document.addEventListener('DOMContentLoaded', function () {
-    _vdbg('DOMContentLoaded — starting hero video init');
     startHeroVideo(document.getElementById('hero-vid'));
   });
 
