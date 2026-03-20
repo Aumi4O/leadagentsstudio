@@ -180,8 +180,11 @@
       object-fit: cover;
       object-position: center center;
       display: block;
-      border-radius: var(--radius-lg);
+      /* no border-radius on video — iOS often shows black with radius + object-fit */
+      border-radius: 0;
       background: #000;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
     .hero-video-badge {
       position: absolute; top: 16px; left: 16px;
@@ -1000,7 +1003,7 @@
         <div class="hero-video-card">
           <div class="video-container-hero">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <video id="hero-vid" class="hero-main-video" autoplay muted loop playsinline controls preload="auto">
+            <video id="hero-vid" class="hero-main-video" autoplay muted loop playsinline controls preload="metadata" disablePictureInPicture>
               <source src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" type="video/mp4">
             </video>
           </div>
@@ -2054,23 +2057,42 @@
   /* init */
   calcROI();
 
-  /* Hero video: play when in view (mobile autoplay fix) + recover from CDN errors */
-  document.addEventListener('DOMContentLoaded', function () {
-    var heroVid = document.getElementById('hero-vid');
-    if (heroVid) {
-      heroVid.addEventListener('error', function () {
-        try { heroVid.load(); } catch (e) {}
-      });
-      /* Mobile: autoplay often blocked until in view — play when visible */
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            heroVid.play().catch(function () {});
-          }
-        });
-      }, { threshold: 0.25 });
-      observer.observe(heroVid);
+  /* Hero video: iOS needs muted/playsInline set in JS + play after metadata; black frame fix */
+  function startHeroVideo(heroVid) {
+    if (!heroVid) return;
+    heroVid.muted = true;
+    heroVid.defaultMuted = true;
+    heroVid.playsInline = true;
+    heroVid.setAttribute('playsinline', '');
+    heroVid.setAttribute('webkit-playsinline', '');
+    function tryPlay() {
+      var p = heroVid.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
     }
+    heroVid.addEventListener('error', function () {
+      try { heroVid.load(); } catch (e) {}
+    });
+    /* First frame / decode — then play (fixes black on many iPhones) */
+    heroVid.addEventListener('loadeddata', tryPlay, { once: true });
+    heroVid.addEventListener('canplay', tryPlay, { once: true });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) tryPlay();
+      });
+    }, { threshold: 0.15, rootMargin: '40px' });
+    observer.observe(heroVid);
+    tryPlay();
+    /* First touch anywhere unlocks decode on strict iOS */
+    function unlockOnce() {
+      tryPlay();
+      document.removeEventListener('touchstart', unlockOnce, true);
+      document.removeEventListener('click', unlockOnce, true);
+    }
+    document.addEventListener('touchstart', unlockOnce, { capture: true, passive: true });
+    document.addEventListener('click', unlockOnce, true);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    startHeroVideo(document.getElementById('hero-vid'));
   });
 
 </script>
