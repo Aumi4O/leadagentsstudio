@@ -1,5 +1,7 @@
 # SmartLine subdomain setup (smartline.leadagentsstudio.com)
 
+**Remember:** **Cloudflare** = this marketing site. **Render** = the API (`lead-agents-api…`), not the HTML. See also `../DEPLOYMENT.md`.
+
 ## Where the site actually deploys
 
 | What | Host | Where to check deploys |

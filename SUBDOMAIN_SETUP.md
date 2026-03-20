@@ -1,5 +1,7 @@
 # Hebrew Subdomain Setup (he.leadagentsstudio.com)
 
+**Hosting:** The static site is on **Cloudflare Pages** (see `DEPLOYMENT.md`). The SmartLine **API** is on **Render** — that is separate from these HTML deploys.
+
 The site has two "versions" served from the same deploy:
 
 - **Main domain** (leadagentsstudio.com): USA version — Hebrew and Israeli flag are hidden
