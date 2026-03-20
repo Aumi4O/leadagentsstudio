@@ -1973,24 +1973,22 @@
   function toggleVideo(videoId, overlayId) {
     const vid     = document.getElementById(videoId);
     const overlay = document.getElementById(overlayId);
-    const placeholder = document.getElementById(videoId + '-placeholder');
-
-    // If no video source file exists yet, do nothing
-    if (!vid || !vid.src || vid.error) return;
+    if (!vid) return;
 
     if (vid.paused) {
-      if (placeholder) placeholder.classList.add('hidden');
       vid.muted = false;
       vid.play().catch(() => {
         vid.muted = true;
         vid.play();
       });
       overlay.style.opacity = '0';
-      vid.onpause = () => { overlay.style.opacity = '1'; };
-      vid.onended = () => { overlay.style.opacity = '1'; };
+      overlay.style.pointerEvents = 'none';
+      vid.onpause = () => { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; };
+      vid.onended = () => { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; };
     } else {
       vid.pause();
       overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
     }
   }
 
