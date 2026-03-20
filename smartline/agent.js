@@ -46,7 +46,7 @@
                 ${micSvg}
                 <span class="btn-label">Start Voice</span>
               </button>
-              <button type="button" class="btn-stop sl-stop-btn" title="Stop voice" aria-hidden="true" hidden>
+              <button type="button" class="btn-stop sl-stop-btn sl-voice-off" title="Stop voice" aria-hidden="true" tabindex="-1">
                 ${stopSvg}
                 <span class="btn-label">Stop</span>
               </button>
@@ -84,6 +84,24 @@
     let conversationId = null;
     let session = null;
     let isVoiceActive = false;
+
+    function setVoiceChrome(active) {
+      if (active) {
+        voiceBtn.classList.add('sl-voice-off');
+        voiceBtn.setAttribute('aria-hidden', 'true');
+        voiceBtn.setAttribute('tabindex', '-1');
+        stopBtn.classList.remove('sl-voice-off');
+        stopBtn.removeAttribute('aria-hidden');
+        stopBtn.removeAttribute('tabindex');
+      } else {
+        stopBtn.classList.add('sl-voice-off');
+        stopBtn.setAttribute('aria-hidden', 'true');
+        stopBtn.setAttribute('tabindex', '-1');
+        voiceBtn.classList.remove('sl-voice-off');
+        voiceBtn.removeAttribute('aria-hidden');
+        voiceBtn.removeAttribute('tabindex');
+      }
+    }
 
     function setStatus(msg, isError = false) {
       statusEl.textContent = msg;
@@ -229,9 +247,7 @@
 
         await session.connect({ apiKey: token });
         isVoiceActive = true;
-        voiceBtn.hidden = true;
-        stopBtn.hidden = false;
-        stopBtn.removeAttribute('aria-hidden');
+        setVoiceChrome(true);
         waveform.classList.remove('idle');
         waveform.classList.add('talking');
         if (avatar) avatar.classList.add('talking');
@@ -263,10 +279,8 @@
       } finally {
         window.__sl_voiceTranscript = [];
         isVoiceActive = false;
-        voiceBtn.hidden = false;
         voiceBtn.disabled = false;
-        stopBtn.hidden = true;
-        stopBtn.setAttribute('aria-hidden', 'true');
+        setVoiceChrome(false);
         waveform.classList.add('idle');
         waveform.classList.remove('talking');
         if (avatar) avatar.classList.remove('talking');

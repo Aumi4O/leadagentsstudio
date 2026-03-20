@@ -31,6 +31,92 @@
     --radius-full: 9999px;
 }
 
+/*
+ * LOCKED — SmartLine navy tester (.smartline-native)
+ * Confirmed product look: dark panels matching page tokens (not browser-default white inputs).
+ * Do not replace with light “v1” chrome.
+ */
+.smartline-native.agent-window {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(104, 225, 253, 0.06);
+}
+
+.smartline-native .agent-window-header {
+    background: var(--surface-2) !important;
+    border-bottom: 1px solid var(--line) !important;
+}
+
+.smartline-native .agent-info h3 {
+    color: var(--text-1) !important;
+}
+
+.smartline-native .agent-info span {
+    color: var(--text-2) !important;
+}
+
+.smartline-native .agent-waveform {
+    background: var(--surface) !important;
+    border-bottom: 1px solid var(--line) !important;
+}
+
+.smartline-native .agent-window-body {
+    background: var(--surface) !important;
+}
+
+.smartline-native .agent-messages {
+    scrollbar-color: var(--text-3) transparent;
+}
+
+.smartline-native .agent-input-row input {
+    background: var(--surface-2) !important;
+    color: var(--text-1) !important;
+    border-color: var(--line) !important;
+}
+
+.smartline-native .agent-input-row input::placeholder {
+    color: var(--text-3);
+}
+
+.smartline-native .agent-controls {
+    background: var(--surface-2) !important;
+}
+
+.smartline-native .agent-mic-notice {
+    background: var(--surface-3) !important;
+    color: var(--text-2) !important;
+}
+
+.smartline-native .agent-mic-notice strong {
+    color: var(--text-1) !important;
+}
+
+.smartline-native .agent-msg-assistant {
+    background: var(--surface-3) !important;
+    color: var(--text-1) !important;
+    border-color: var(--line) !important;
+}
+
+.smartline-native .agent-status {
+    color: var(--text-3) !important;
+}
+
+.smartline-native .agent-voice-row .btn-voice {
+    background: var(--surface-3) !important;
+    color: var(--text-1) !important;
+    border-color: var(--line) !important;
+}
+
+.smartline-native .agent-voice-row .btn-voice:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--cyan) !important;
+}
+
+/* Voice row: hide Stop until session is live (class-based; reliable vs [hidden] + flex) */
+.smartline-native .agent-voice-row .sl-voice-off {
+    display: none !important;
+}
+
 /* Trust badge icon (replaces strawberry) */
 .brand-badge .badge-icon,
 .footer-brand .badge-icon {
@@ -269,7 +355,7 @@
     transform: translateY(0);
 }
 
-/* [hidden] must win over .btn-stop { display: inline-flex } (iOS Safari + Chrome) */
+/* [hidden] backup if used without .sl-voice-off */
 .agent-voice-row .btn-stop[hidden] {
     display: none !important;
 }
