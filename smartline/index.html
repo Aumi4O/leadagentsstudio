@@ -162,17 +162,23 @@
       border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(104,225,253,.06);
     }
-    /* Same as leadagentsstudio.com .video-container-hero + .hero-main-video — identical on desktop and mobile */
+    /* 9:16 portrait — absolute fill + IntersectionObserver play for mobile */
     .video-container-hero {
       position: relative;
       width: 100%;
+      aspect-ratio: 9 / 16;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: #000;
       box-shadow: 0 30px 80px rgba(0,0,0,.5);
     }
     .hero-main-video {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
       display: block;
       border-radius: var(--radius-lg);
       background: #000;
@@ -2048,13 +2054,22 @@
   /* init */
   calcROI();
 
-  /* Hero video: recover from transient CDN errors (same stack as main site videos) */
+  /* Hero video: play when in view (mobile autoplay fix) + recover from CDN errors */
   document.addEventListener('DOMContentLoaded', function () {
     var heroVid = document.getElementById('hero-vid');
     if (heroVid) {
       heroVid.addEventListener('error', function () {
         try { heroVid.load(); } catch (e) {}
       });
+      /* Mobile: autoplay often blocked until in view — play when visible */
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            heroVid.play().catch(function () {});
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(heroVid);
     }
   });
 
