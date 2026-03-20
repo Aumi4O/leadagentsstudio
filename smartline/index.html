@@ -123,13 +123,7 @@
     }
     @media(max-width:768px) {
       .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-      /* Copy first, video below (same reading order as desktop; not order:-1 like main site's tablet tweak) */
-      .hero-visual {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-      }
-      .hero-video-card { max-width: min(100%, 380px); margin: 0 auto; }
+      .hero-visual { display: flex; justify-content: center; width: 100%; }
       #hero { padding-top: 150px; padding-bottom: 80px; }
     }
     .hero-label { margin-bottom: 20px; }
@@ -168,18 +162,19 @@
       border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(104,225,253,.06);
     }
-    /* Hero demo: same container as leadagentsstudio.com (.video-container-hero + .hero-main-video) — no absolute positioning, video flows naturally for mobile */
-    .hero-video-wrapper {
+    /* Same as leadagentsstudio.com .video-container-hero + .hero-main-video — identical on desktop and mobile */
+    .video-container-hero {
       position: relative;
       width: 100%;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: #000;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
     }
-    .hero-smartline-video {
+    .hero-main-video {
       width: 100%;
       display: block;
-      border-radius: 0;
+      border-radius: var(--radius-lg);
       background: #000;
     }
     .hero-video-badge {
@@ -997,10 +992,9 @@
 
       <div class="hero-visual">
         <div class="hero-video-card">
-          <div class="hero-video-wrapper">
+          <div class="video-container-hero">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <!-- Same container pattern as leadagentsstudio.com (.video-container-hero + .hero-main-video): video flows naturally, no absolute positioning -->
-            <video id="hero-vid" class="hero-smartline-video" autoplay muted loop playsinline controls preload="auto">
+            <video id="hero-vid" class="hero-main-video" autoplay muted loop playsinline controls preload="auto">
               <source src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" type="video/mp4">
             </video>
           </div>
