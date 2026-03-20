@@ -20,13 +20,17 @@ Pushes to GitHub only update the live **sales page** if **Cloudflare Pages** is 
 
 When visitors go to smartline.leadagentsstudio.com, the main index redirects them to `/smartline/` (same subdomain). The SmartLine sales page loads.
 
-## Hero demo video (R2 / CDN)
+## Hero demo video
 
-SmartLine uses the same public CDN hostname as the main site (`public/index.html`): **`https://cdn.leadagentsstudio.com/...`** (Cloudflare R2 behind that domain). The hero file is:
+**Mobile (Safari):** The hero uses **`/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4`** (same origin as the site, deployed with Pages). That file is **H.264 Baseline + AAC + faststart**. iOS returns **`MEDIA_ERR_SRC_NOT_SUPPORTED` (error code 4)** if you use a **H.264 High**-only export (desktop Chrome still plays it).
 
-`https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4`
+Regenerate from the master file:
 
-Markup matches the main site pattern: `<video … playsinline controls><source src="…" type="video/mp4"></video>`.
+```bash
+ffmpeg -y -i SMARTLINE_LEA_DIALOGUE_FINAL.mp4 -c:v libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 128k -ac 2 public/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4
+```
+
+**Optional CDN copy:** You can also host the same `_IOS.mp4` on R2 and set `src` to `https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4` if you prefer not to ship video from Pages.
 
 ## Replace Buy Now link
 

@@ -1003,8 +1003,8 @@
         <div class="hero-video-card">
           <div class="video-container-hero">
             <div class="hero-video-badge"><span class="badge-dot"></span> Live agent demo</div>
-            <!-- Direct src on <video> — iOS Safari often fails with child <source> only (NETWORK_NO_SOURCE) -->
-            <video id="hero-vid" class="hero-main-video" src="https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_FINAL.mp4" autoplay muted loop playsinline controls preload="metadata" disablePictureInPicture></video>
+            <!-- iOS: MEDIA_ERR_SRC_NOT_SUPPORTED (code 4) on H.264 High — use Baseline re-encode, same-origin from Pages -->
+            <video id="hero-vid" class="hero-main-video" src="/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4" autoplay muted loop playsinline controls preload="metadata" disablePictureInPicture></video>
           </div>
         </div>
       </div>
@@ -2118,7 +2118,8 @@
     // H1: log only — do NOT call load() here (was aborting in-flight play + clearing pipeline on iOS)
     heroVid.addEventListener('error', function () {
       var me = heroVid.error;
-      _vdbg('H1: VIDEO ERROR (no reload)', { code: me ? me.code : '?', msg: me ? me.message : '?', networkState: heroVid.networkState });
+      var code = me ? me.code : '?';
+      _vdbg('H1: VIDEO ERROR (no reload)', { code: code, msg: me ? me.message : '?', networkState: heroVid.networkState, hint: code === 4 ? 'MEDIA_ERR_SRC_NOT_SUPPORTED — iOS needs H.264 Baseline (use _IOS.mp4)' : '' });
     });
 
     // H4: track which events actually fire
