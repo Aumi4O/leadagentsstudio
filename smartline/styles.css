@@ -1,6 +1,36 @@
 /* SmartLine Agent — Sales Page Overrides */
 /* Extends main styles.css */
 
+/*
+ * Token bridge: agent.css uses legacy names (--white, --gray-*, etc.).
+ * Those are NOT defined in index.html. Chrome often "kind of works"; iOS Safari
+ * treats invalid var() as unset and drops the whole declaration → broken/invisible UI.
+ * Map every legacy name to the navy tokens already defined in index.html :root.
+ */
+:root {
+    --white: var(--surface);
+    --gray-50: var(--surface-2);
+    --gray-100: var(--surface-3);
+    --gray-200: var(--line);
+    --gray-300: var(--text-3);
+    --gray-400: var(--text-3);
+    --gray-500: var(--text-2);
+    --gray-600: var(--text-2);
+    --gray-700: var(--text-1);
+    --gray-800: var(--text-1);
+    --gray-900: var(--text-1);
+    --pink: var(--rose);
+    --pink-light: #ff8f9f;
+    --pink-glow: rgba(255, 122, 144, 0.4);
+    --cyan-glow: rgba(104, 225, 253, 0.35);
+    --gradient-accent: linear-gradient(135deg, var(--cyan) 0%, var(--rose) 100%);
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --radius-full: 9999px;
+}
+
 /* Trust badge icon (replaces strawberry) */
 .brand-badge .badge-icon,
 .footer-brand .badge-icon {
@@ -237,6 +267,11 @@
 .agent-voice-row .btn-voice:active,
 .agent-voice-row .btn-stop:active {
     transform: translateY(0);
+}
+
+/* [hidden] must win over .btn-stop { display: inline-flex } (iOS Safari + Chrome) */
+.agent-voice-row .btn-stop[hidden] {
+    display: none !important;
 }
 
 .agent-waveform.idle .bar {
