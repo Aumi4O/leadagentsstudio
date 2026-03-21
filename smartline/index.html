@@ -293,19 +293,33 @@
       background: rgba(104,225,253,.06);
     }
 
-    /* Single panel around native agent only — no fake OS window / “embed” chrome */
-    .demo-agent-panel {
+    .demo-embed-wrapper {
       max-width: 700px; margin: 0 auto;
-      padding: 20px 24px 16px;
-      border-radius: var(--radius-lg);
-      background: rgba(104, 225, 253, 0.04);
-      border: 1px solid rgba(104, 225, 253, 0.22);
-      box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.08), 0 24px 56px rgba(0,0,0,.45);
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5);
     }
-    /* Stronger cyan frame on the actual SmartLine tester (native DOM, not iframe) */
-    #demo .smartline-native.agent-window {
-      border-color: rgba(104, 225, 253, 0.35) !important;
-      box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.14), 0 20px 56px rgba(0, 0, 0, 0.55) !important;
+    .demo-bar {
+      padding: 14px 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .demo-bar-dots { display: flex; gap: 6px; }
+    .demo-bar-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--line);
+    }
+    .demo-bar-dots span:first-child  { background: #FF5F57; }
+    .demo-bar-dots span:nth-child(2) { background: #FEBC2E; }
+    .demo-bar-dots span:nth-child(3) { background: #28C840; }
+    .demo-bar-title {
+      font-size: 13px; font-weight: 600; color: var(--text-2);
+      margin-left: 8px;
+    }
+    .demo-status {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--lime); font-weight: 600;
     }
     /* video placeholder */
     .video-placeholder {
@@ -1056,9 +1070,16 @@
       <button class="chip" onclick="sendPrompt(this)">What happens when a customer wants a human?</button>
     </div>
 
-    <div class="demo-agent-panel reveal reveal-delay-3">
-      <div data-smartline-agent data-api-base="https://lead-agents-api.onrender.com" id="smartline-chat-widget"></div>
-      <div class="demo-footer" style="margin-top:16px;padding:0;border:0;justify-content:center;">
+    <div class="demo-embed-wrapper reveal reveal-delay-3">
+      <div class="demo-bar">
+        <div class="demo-bar-dots"><span></span><span></span><span></span></div>
+        <span class="demo-bar-title">SmartLine — Live Agent</span>
+        <div class="demo-status"><div class="indicator-dot" style="background:var(--lime);width:7px;height:7px;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0"></div> Agent is live</div>
+      </div>
+      <div style="padding:24px">
+        <div data-smartline-agent data-api-base="https://lead-agents-api.onrender.com" id="smartline-chat-widget"></div>
+      </div>
+      <div class="demo-footer">
         <span>Type or click <strong>Start Voice</strong> to talk. Any language.</span>
       </div>
     </div>
