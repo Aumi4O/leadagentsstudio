@@ -34,6 +34,10 @@ ffmpeg -y -i SMARTLINE_LEA_DIALOGUE_FINAL.mp4 -c:v libx264 -profile:v baseline -
 
 **Optional CDN copy:** You can also host the same `_IOS.mp4` on R2 and set `src` to `https://cdn.leadagentsstudio.com/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4` if you prefer not to ship video from Pages.
 
+## Live demo UI (intended variant)
+
+The **Live Challenge** block uses a **decorative title bar** (traffic lights + “SmartLine — Live Agent” + “Agent is live”) wrapping the **native** tester from `agent.js` (not an iframe). That single composed card is the shipped design—do not add a second outer “frame” (e.g. cyan panel) around it, or it reads as stacked chrome. Git reference: tree at commit **`f926616`** for `smartline/index.html` if you need to diff.
+
 ## Replace Buy Now link
 
 Search and replace `https://buy.stripe.com/SMARTLINE_LINK` in `smartline/index.html` with your actual SmartLine Stripe Payment Link ($1,000 setup).
