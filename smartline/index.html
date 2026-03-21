@@ -280,7 +280,8 @@
 
     .prompt-chips {
       display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center; margin-bottom: 40px;
+      justify-content: center; margin-bottom: 0;
+      max-width: 900px; margin-left: auto; margin-right: auto;
     }
     .chip {
       padding: 10px 18px; border-radius: 100px;
@@ -293,34 +294,6 @@
       background: rgba(104,225,253,.06);
     }
 
-    .demo-embed-wrapper {
-      max-width: 700px; margin: 0 auto;
-      background: var(--surface); border: 1px solid var(--line);
-      border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: 0 40px 80px rgba(0,0,0,.5);
-    }
-    .demo-bar {
-      padding: 14px 20px;
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--line);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .demo-bar-dots { display: flex; gap: 6px; }
-    .demo-bar-dots span {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--line);
-    }
-    .demo-bar-dots span:first-child  { background: #FF5F57; }
-    .demo-bar-dots span:nth-child(2) { background: #FEBC2E; }
-    .demo-bar-dots span:nth-child(3) { background: #28C840; }
-    .demo-bar-title {
-      font-size: 13px; font-weight: 600; color: var(--text-2);
-      margin-left: 8px;
-    }
-    .demo-status {
-      margin-left: auto; display: flex; align-items: center; gap: 6px;
-      font-size: 11px; color: var(--lime); font-weight: 600;
-    }
     /* video placeholder */
     .video-placeholder {
       position: absolute; inset: 0;
@@ -338,15 +311,6 @@
     .placeholder-label { font-size: 15px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
     .placeholder-sub { font-size: 12px; color: var(--text-3); }
     .placeholder-sub code { background: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 11px; }
-    .demo-footer {
-      padding: 16px 20px;
-      border-top: 1px solid var(--line);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 13px; color: var(--text-3);
-    }
-    .demo-footer a { color: var(--cyan); }
-
-
     /* ─────────────────────────────────────────
        PRICING BUILDER
     ───────────────────────────────────────── */
@@ -1063,25 +1027,11 @@
     <p class="demo-sub reveal reveal-delay-1">Ask what real buyers ask: price, timing, objections, languages, human handoff. If it handles you well, it can handle your leads.</p>
 
     <div class="prompt-chips reveal reveal-delay-2">
-      <button class="chip" onclick="sendPrompt(this)">Sell me this system</button>
-      <button class="chip" onclick="sendPrompt(this)">I'm comparing you to hiring a receptionist</button>
-      <button class="chip" onclick="sendPrompt(this)">What would this cost for my business?</button>
-      <button class="chip" onclick="sendPrompt(this)">I don't trust bots. Change my mind.</button>
-      <button class="chip" onclick="sendPrompt(this)">What happens when a customer wants a human?</button>
-    </div>
-
-    <div class="demo-embed-wrapper reveal reveal-delay-3">
-      <div class="demo-bar">
-        <div class="demo-bar-dots"><span></span><span></span><span></span></div>
-        <span class="demo-bar-title">SmartLine — Live Agent</span>
-        <div class="demo-status"><div class="indicator-dot" style="background:var(--lime);width:7px;height:7px;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0"></div> Agent is live</div>
-      </div>
-      <div style="padding:24px">
-        <div data-smartline-agent data-api-base="https://lead-agents-api.onrender.com" id="smartline-chat-widget"></div>
-      </div>
-      <div class="demo-footer">
-        <span>Type or click <strong>Start Voice</strong> to talk. Any language.</span>
-      </div>
+      <button type="button" class="chip">Sell me this system</button>
+      <button type="button" class="chip">I'm comparing you to hiring a receptionist</button>
+      <button type="button" class="chip">What would this cost for my business?</button>
+      <button type="button" class="chip">I don't trust bots. Change my mind.</button>
+      <button type="button" class="chip">What happens when a customer wants a human?</button>
     </div>
   </div>
 </section>
@@ -1988,27 +1938,9 @@
     if (!wasOpen) item.classList.add('open');
   }
 
-  /* ── CAPABILITY SECTION — scroll to agent ── */
+  /* ── CAPABILITY SECTION — scroll to demo prompts ── */
   function scrollToAgent() {
     document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      const input = document.querySelector('.sl-chat-input, [data-smartline-agent] input, [data-smartline-agent] textarea');
-      if (input) { input.focus(); }
-    }, 800);
-  }
-
-  /* ── PROMPT CHIP → SCROLL TO DEMO ── */
-  function sendPrompt(btn) {
-    const prompt = btn.textContent;
-    btn.style.borderColor = 'var(--lime)';
-    btn.style.color       = 'var(--lime)';
-    setTimeout(() => {
-      btn.style.borderColor = '';
-      btn.style.color       = '';
-    }, 800);
-
-    const demoSection = document.getElementById('demo');
-    demoSection.scrollIntoView({ behavior: 'smooth' });
   }
 
   /* ── ROI CALCULATOR ── */
@@ -2099,8 +2031,5 @@
   });
 
 </script>
-  <!-- SmartLine chat widget -->
-  <link rel="stylesheet" href="styles.css">
-  <script src="agent.js"></script>
 </body>
 </html>
