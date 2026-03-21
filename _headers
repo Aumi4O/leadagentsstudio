@@ -1,0 +1,14 @@
+# Lead Agents Studio — Cache headers
+# Cloudflare Pages uses this file for cache control
+
+# SmartLine page: short cache so mobile gets updates quickly
+/smartline/
+  Cache-Control: public, max-age=60, stale-while-revalidate=300
+
+# SmartLine Agency report (smartline.leadagentsstudio.com/agency)
+/agency/
+  Cache-Control: public, max-age=60, stale-while-revalidate=300
+
+# Main HTML: moderate cache
+/
+  Cache-Control: public, max-age=300, stale-while-revalidate=600

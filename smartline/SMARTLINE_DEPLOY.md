@@ -20,6 +20,8 @@ Pushes to GitHub only update the live **sales page** if **Cloudflare Pages** is 
 
 When visitors go to smartline.leadagentsstudio.com, the main index redirects them to `/smartline/` (same subdomain). The SmartLine sales page loads.
 
+**Agency offer (research report + $5k onboarding):** `https://smartline.leadagentsstudio.com/agency` — static file at `public/agency/index.html` in the Pages build. Assets reuse `/smartline/styles.css` and `/smartline/agent.js`.
+
 ## Hero demo video
 
 **Mobile (Safari):** The hero uses **`/smartline/SMARTLINE_LEA_DIALOGUE_IOS.mp4`** (same origin as the site, deployed with Pages). That file is **H.264 Baseline + AAC + faststart**. iOS returns **`MEDIA_ERR_SRC_NOT_SUPPORTED` (error code 4)** if you use a **H.264 High**-only export (desktop Chrome still plays it).
