@@ -280,8 +280,50 @@
 
     .prompt-chips {
       display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center; margin-bottom: 0;
+      justify-content: center; margin-bottom: 28px;
       max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+
+    /* Live agent: in-page panel (no fake OS window / embed chrome) */
+    .demo-agent-inline {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .demo-agent-inline-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-bottom: 16px;
+    }
+    .demo-agent-inline-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+    .demo-agent-inline-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--lime);
+    }
+    .demo-agent-inline-body {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .demo-agent-inline .smartline-native.agent-window {
+      box-shadow: none !important;
+      border-radius: var(--radius-lg) !important;
+    }
+    .demo-agent-inline-hint {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 16px;
     }
     .chip {
       padding: 10px 18px; border-radius: 100px;
@@ -936,7 +978,7 @@
   <div class="nav-logo">Smart<span>Line</span></div>
   <div class="nav-cta">
     <a href="#payment" class="btn btn-ghost">Start $1,000 Setup</a>
-    <a href="#demo" class="btn btn-primary">Talk to the AI Agent</a>
+    <a href="#demo" class="btn btn-primary">Test the Agent</a>
   </div>
 </nav>
 
@@ -952,7 +994,7 @@
         <h1 class="hero-h1">Your AI voice agent that answers, sells, and books — 24/7.</h1>
         <p class="hero-sub">SmartLine answers, qualifies, follows up, books, and hands the conversation to your team when needed — so warm leads do not disappear while your staff is busy, closed, or off the clock.</p>
         <div class="hero-cta-row">
-          <a href="#demo" class="btn btn-primary" style="padding:16px 36px;font-size:16px">Talk to the AI Agent Now</a>
+          <a href="#demo" class="btn btn-primary" style="padding:16px 36px;font-size:16px">Test the Agent</a>
           <a href="#payment" class="btn btn-ghost">Start $1,000 Setup</a>
         </div>
         <div class="proof-bar">
@@ -1027,11 +1069,22 @@
     <p class="demo-sub reveal reveal-delay-1">Ask what real buyers ask: price, timing, objections, languages, human handoff. If it handles you well, it can handle your leads.</p>
 
     <div class="prompt-chips reveal reveal-delay-2">
-      <button type="button" class="chip">Sell me this system</button>
-      <button type="button" class="chip">I'm comparing you to hiring a receptionist</button>
-      <button type="button" class="chip">What would this cost for my business?</button>
-      <button type="button" class="chip">I don't trust bots. Change my mind.</button>
-      <button type="button" class="chip">What happens when a customer wants a human?</button>
+      <button type="button" class="chip" onclick="sendPrompt(this)">Sell me this system</button>
+      <button type="button" class="chip" onclick="sendPrompt(this)">I'm comparing you to hiring a receptionist</button>
+      <button type="button" class="chip" onclick="sendPrompt(this)">What would this cost for my business?</button>
+      <button type="button" class="chip" onclick="sendPrompt(this)">I don't trust bots. Change my mind.</button>
+      <button type="button" class="chip" onclick="sendPrompt(this)">What happens when a customer wants a human?</button>
+    </div>
+
+    <div class="demo-agent-inline reveal reveal-delay-3">
+      <div class="demo-agent-inline-head">
+        <span class="demo-agent-inline-title">SmartLine — Live Agent</span>
+        <span class="demo-agent-inline-status"><span class="indicator-dot" style="width:7px;height:7px;flex-shrink:0"></span> Agent is live</span>
+      </div>
+      <div class="demo-agent-inline-body">
+        <div data-smartline-agent data-api-base="https://lead-agents-api.onrender.com" id="smartline-chat-widget"></div>
+      </div>
+      <p class="demo-agent-inline-hint">Type or click <strong>Start Voice</strong> to talk. Any language.</p>
     </div>
   </div>
 </section>
@@ -1906,7 +1959,7 @@
      STICKY MOBILE BAR — one action only
 ═══════════════════════════════════════════ -->
 <div class="sticky-mobile" id="stickyBar">
-  <a href="#demo" class="btn btn-primary">Talk to the AI Agent</a>
+  <a href="#demo" class="btn btn-primary">Test the Agent</a>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -1938,9 +1991,35 @@
     if (!wasOpen) item.classList.add('open');
   }
 
-  /* ── CAPABILITY SECTION — scroll to demo prompts ── */
+  /* ── CAPABILITY SECTION — scroll to live agent ── */
   function scrollToAgent() {
     document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      const input = document.querySelector('#smartline-chat-widget .sl-chat-input, [data-smartline-agent] .sl-chat-input');
+      if (input) input.focus();
+    }, 800);
+  }
+
+  /* ── PROMPT CHIPS → scroll + prefill chat ── */
+  function sendPrompt(btn) {
+    const prompt = btn.textContent.trim();
+    btn.style.borderColor = 'var(--lime)';
+    btn.style.color = 'var(--lime)';
+    setTimeout(() => {
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 800);
+
+    document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+    function prefill() {
+      const input = document.querySelector('#smartline-chat-widget .sl-chat-input, [data-smartline-agent] .sl-chat-input');
+      if (input) {
+        input.value = prompt;
+        input.focus();
+      }
+    }
+    setTimeout(prefill, 400);
+    setTimeout(prefill, 900);
   }
 
   /* ── ROI CALCULATOR ── */
@@ -2031,5 +2110,7 @@
   });
 
 </script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="agent.js"></script>
 </body>
 </html>
