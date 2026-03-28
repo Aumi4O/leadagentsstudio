@@ -242,8 +242,10 @@
       visibility: visible;
     }
     .panel-box {
-      max-width: 420px;
+      max-width: 520px;
       width: 100%;
+      max-height: min(92vh, 900px);
+      overflow-y: auto;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
@@ -301,6 +303,62 @@
       font-size: 12px;
       color: var(--text-3);
       text-align: center;
+    }
+    .panel-pay-intro {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-1);
+      text-align: center;
+      margin: 22px 0 14px;
+      font-family: 'Sora', sans-serif;
+    }
+    .panel-pay-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .panel-pay-link {
+      display: block;
+      text-decoration: none !important;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .panel-pay-link:hover {
+      border-color: var(--cyan);
+      transform: translateY(-1px);
+    }
+    .panel-pay-link .pay-line1 {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .panel-pay-link .pay-brand {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-1);
+    }
+    .panel-pay-link .pay-amount {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--lime);
+      white-space: nowrap;
+    }
+    .panel-pay-link .pay-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+    .panel-pay-link .pay-cta {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cyan);
     }
   </style>
 </head>
@@ -365,15 +423,58 @@
       </div>
       <div class="panel-step">
         <span class="num">3</span>
-        <p>After the booking moment, you can continue on WhatsApp/SMS from the <a href="https://leadagentsstudio.com/#demo">full demo</a> if you want the full multi-channel flow.</p>
+        <p>After the call, you can also run the full WhatsApp/SMS flow on <a href="https://leadagentsstudio.com/#demo">leadagentsstudio.com</a>.</p>
       </div>
-      <p class="panel-note">If nothing rings within a few minutes, check spam/blocked numbers or try again. Support: support@leadagentsstudio.com</p>
+
+      <p class="panel-pay-intro">Ready to move forward? Pay the setup for your system (Stripe)</p>
+      <div class="panel-pay-grid">
+        <a class="panel-pay-link" id="paySmartline" href="https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02" target="_blank" rel="noopener noreferrer">
+          <div class="pay-line1">
+            <span class="pay-brand">SmartLine</span>
+            <span class="pay-amount">$1,000 setup</span>
+          </div>
+          <p class="pay-desc">Voice agent for calls, SMS &amp; WhatsApp — per-brand install.</p>
+          <span class="pay-cta">Open Stripe checkout →</span>
+        </a>
+        <a class="panel-pay-link" id="payLeadAgents" href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" target="_blank" rel="noopener noreferrer">
+          <div class="pay-line1">
+            <span class="pay-brand">Lead Agents Studio</span>
+            <span class="pay-amount">$5,000 install</span>
+          </div>
+          <p class="pay-desc">Full ads-to-appointment stack for aesthetic clinics (main site offer).</p>
+          <span class="pay-cta">Open Stripe checkout →</span>
+        </a>
+        <a class="panel-pay-link" id="payAgency" href="https://buy.stripe.com/cNieVc5O0gYucJlfKEaIM03" target="_blank" rel="noopener noreferrer">
+          <div class="pay-line1">
+            <span class="pay-brand">SmartLine Agency</span>
+            <span class="pay-amount">$5,000 agency setup</span>
+          </div>
+          <p class="pay-desc">White-label voice AI for agencies — client accounts &amp; your margin.</p>
+          <span class="pay-cta">Open Stripe checkout →</span>
+        </a>
+      </div>
+
+      <p class="panel-note">If the call doesn’t connect within a few minutes, check blocked numbers or try again. <a href="https://smartline.leadagentsstudio.com/agency/">Agency program</a> · Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
     </div>
   </div>
 
   <script>
     (function () {
       var DEMO_API_URL = 'https://lead-agents-api.onrender.com/api/demo/start';
+      var STRIPE_SMARTLINE = 'https://buy.stripe.com/8x23cugsE4bIfVxgOIaIM02';
+      var STRIPE_LEAD_AGENTS = 'https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01';
+      var STRIPE_AGENCY = 'https://buy.stripe.com/cNieVc5O0gYucJlfKEaIM03';
+
+      function stripeUrlWithEmail(base, email) {
+        if (!email) return base;
+        try {
+          var u = new URL(base);
+          u.searchParams.set('prefilled_email', email);
+          return u.toString();
+        } catch (e) {
+          return base;
+        }
+      }
 
       function clearErrors(form) {
         form.querySelectorAll('.error-message').forEach(function (el) { el.remove(); });
@@ -445,6 +546,10 @@
           });
           var result = await response.json().catch(function () { return {}; });
           if (response.ok && result.success) {
+            var em = data.email || '';
+            document.getElementById('paySmartline').href = stripeUrlWithEmail(STRIPE_SMARTLINE, em);
+            document.getElementById('payLeadAgents').href = stripeUrlWithEmail(STRIPE_LEAD_AGENTS, em);
+            document.getElementById('payAgency').href = stripeUrlWithEmail(STRIPE_AGENCY, em);
             panel.classList.add('active');
             document.body.style.overflow = 'hidden';
             btn.textContent = 'Demo started';
