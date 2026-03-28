@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLine — Request a demo call</title>
+  <meta name="description" content="Submit your number. Our voice agent will call you for a short SmartLine demo—same flow as leadagentsstudio.com." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #060B16;
+      --surface: #0F1728;
+      --surface-2: #152136;
+      --text-1: #F8FAFC;
+      --text-2: #A9B4C6;
+      --text-3: #6B7A90;
+      --cyan: #68E1FD;
+      --lime: #B8FF5C;
+      --violet: #A78BFA;
+      --rose: #FF7A90;
+      --line: #24324A;
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(104, 225, 253, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(167, 139, 250, 0.08), transparent),
+        linear-gradient(180deg, transparent 0%, rgba(6, 11, 22, 0.9) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    h1, h2 { font-family: 'Sora', sans-serif; line-height: 1.15; }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .brand {
+      font-family: 'Sora', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .brand span { color: var(--cyan); }
+    .back-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .back-link:hover { color: var(--cyan); text-decoration: none; }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(1.65rem, 5vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #F8FAFC 45%, #68E1FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .lede {
+      color: var(--text-2);
+      font-size: 0.98rem;
+      margin-bottom: 28px;
+    }
+    .call-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: rgba(104, 225, 253, 0.1);
+      border: 1px solid rgba(104, 225, 253, 0.25);
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 8px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="tel"],
+    .form-group input[type="email"] {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--text-1);
+      font-size: 16px;
+      font-family: inherit;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(104, 225, 253, 0.15);
+    }
+    .form-group.has-error input { border-color: var(--rose); }
+    .error-message {
+      display: block;
+      color: var(--rose);
+      font-size: 0.8125rem;
+      margin-top: 8px;
+    }
+    .general-error {
+      background: rgba(255, 122, 144, 0.1);
+      border: 1px solid rgba(255, 122, 144, 0.25);
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--rose);
+    }
+
+    .consent {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+    .consent input {
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 8px;
+      padding: 16px 22px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--lime);
+      color: #07111F;
+      font-family: 'Sora', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 24px rgba(184, 255, 92, 0.2);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(184, 255, 92, 0.3);
+    }
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .micro {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.55;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    footer a { color: var(--text-3); }
+    footer a:hover { color: var(--cyan); }
+
+    /* Success panel */
+    .panel-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(6, 11, 22, 0.88);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .panel-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .panel-box {
+      max-width: 420px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+    }
+    .panel-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--text-2);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .panel-close:hover { color: var(--text-1); background: var(--line); }
+    .panel-icon { font-size: 2.5rem; text-align: center; margin-bottom: 12px; }
+    .panel-box h2 {
+      text-align: center;
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      color: var(--text-1);
+    }
+    .panel-step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: var(--text-2);
+    }
+    .panel-step .num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(167, 139, 250, 0.2);
+      color: var(--violet);
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel-note {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--text-3);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <div class="page">
+    <div class="brand-row">
+      <div class="brand">Smart<span>Line</span></div>
+      <a class="back-link" href="/smartline/">← Product page</a>
+    </div>
+
+    <p class="eyebrow">Voice demo</p>
+    <h1>Get called by the agent</h1>
+    <p class="lede">Same backend as the main Lead Agents Studio demo—here we lock the channel to a <strong style="color:var(--text-1)">short phone call</strong> so you can hear SmartLine live.</p>
+    <div class="call-pill" role="status">📞 ~60 second demo call</div>
+
+    <div class="card">
+      <form id="demoCallForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="+1… or +972…" required autocomplete="tel" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+        </div>
+        <input type="hidden" name="channel" value="call" />
+
+        <label class="consent form-group">
+          <input type="checkbox" name="consent" />
+          <span>I consent to receive a demo call from Lead Agents Studio. Reply STOP to opt out. Booking &amp; qualification only—not medical advice.</span>
+        </label>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Call me — start demo</button>
+        <p class="micro">Include country code on your number. If lines are busy, your demo is saved—you can retry or use the full demo on <a href="https://leadagentsstudio.com/#demo">leadagentsstudio.com</a>.</p>
+      </form>
+    </div>
+
+    <footer>
+      <p><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></p>
+      <p style="margin-top:8px"><a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
+    </footer>
+  </div>
+
+  <div class="panel-overlay" id="successPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+    <div class="panel-box">
+      <button type="button" class="panel-close" id="panelClose" aria-label="Close">×</button>
+      <div class="panel-icon" aria-hidden="true">✅</div>
+      <h2 id="panelTitle">Demo started — watch your phone</h2>
+      <div class="panel-step">
+        <span class="num">1</span>
+        <p>Answer when the number rings. The call is short (about a minute).</p>
+      </div>
+      <div class="panel-step">
+        <span class="num">2</span>
+        <p>Reply naturally, like a real lead—short answers are fine.</p>
+      </div>
+      <div class="panel-step">
+        <span class="num">3</span>
+        <p>After the booking moment, you can continue on WhatsApp/SMS from the <a href="https://leadagentsstudio.com/#demo">full demo</a> if you want the full multi-channel flow.</p>
+      </div>
+      <p class="panel-note">If nothing rings within a few minutes, check spam/blocked numbers or try again. Support: support@leadagentsstudio.com</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var DEMO_API_URL = 'https://lead-agents-api.onrender.com/api/demo/start';
+
+      function clearErrors(form) {
+        form.querySelectorAll('.error-message').forEach(function (el) { el.remove(); });
+        form.querySelectorAll('.form-group.has-error').forEach(function (el) { el.classList.remove('has-error'); });
+        var g = form.querySelector('.general-error');
+        if (g) g.remove();
+      }
+
+      function showFieldError(fieldId, message) {
+        var input = document.getElementById(fieldId);
+        if (!input) return;
+        var fg = input.closest('.form-group');
+        if (fg) fg.classList.add('has-error');
+        var span = document.createElement('span');
+        span.className = 'error-message';
+        span.textContent = message;
+        fg.appendChild(span);
+      }
+
+      function showGeneralError(form, message) {
+        var div = document.createElement('div');
+        div.className = 'general-error';
+        div.textContent = message;
+        form.insertBefore(div, form.firstChild);
+      }
+
+      var form = document.getElementById('demoCallForm');
+      var panel = document.getElementById('successPanel');
+      var btn = document.getElementById('submitBtn');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        clearErrors(form);
+
+        var fd = new FormData(form);
+        var data = {
+          name: (fd.get('name') || '').trim(),
+          phone: (fd.get('phone') || '').trim(),
+          email: (fd.get('email') || '').trim(),
+          channel: 'call'
+        };
+
+        if (!form.querySelector('input[name="consent"]').checked) {
+          showGeneralError(form, 'Please check the consent box to proceed.');
+          return;
+        }
+        if (!data.phone || data.phone.indexOf('+') !== 0) {
+          showFieldError('phone', 'Include country code (e.g. +1, +972).');
+          return;
+        }
+        if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+          showFieldError('email', 'Please enter a valid email address.');
+          return;
+        }
+        if (!data.name) {
+          showFieldError('name', 'Please enter your name.');
+          return;
+        }
+
+        var original = btn.textContent;
+        btn.textContent = 'Starting demo…';
+        btn.disabled = true;
+
+        try {
+          var response = await fetch(DEMO_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          var result = await response.json().catch(function () { return {}; });
+          if (response.ok && result.success) {
+            panel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            btn.textContent = 'Demo started';
+          } else {
+            throw new Error(result.error || 'Failed to start demo');
+          }
+        } catch (err) {
+          showGeneralError(form, err.message || 'Something went wrong. Try again.');
+          btn.textContent = original;
+          btn.disabled = false;
+        }
+      });
+
+      function closePanel() {
+        panel.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      document.getElementById('panelClose').addEventListener('click', closePanel);
+      panel.addEventListener('click', function (e) {
+        if (e.target === panel) closePanel();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closePanel();
+      });
+    })();
+  </script>
+</body>
+</html>
