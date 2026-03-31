@@ -23,7 +23,8 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lead Agents Studio — AI Video Ads + AI Follow-Up That Books</title>
+    <title>Lead Agents Studio — AI Growth System: Creative + SmartLine Follow-Up</title>
+    <meta name="description" content="Lead Agents Studio is a done-for-you AI growth system: avatar video, UGC-style ads, and SmartLine voice follow-up. Plus SmartLine standalone and SmartLine for Agencies." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -184,6 +185,120 @@
         .customizations-note p {
             color: #6e6e73;
         }
+        /* Hub — offers + LAS positioning */
+        .hub-tagline {
+            font-size: 1rem;
+            color: #6e6e73;
+            line-height: 1.65;
+            max-width: 52rem;
+            margin: 0 auto 1.75rem;
+            text-align: center;
+        }
+        .hub-cards-section { padding: 4rem 0 3rem; }
+        .hub-cards-grid {
+            display: grid;
+            gap: 1.25rem;
+            grid-template-columns: 1fr;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        @media (min-width: 640px) {
+            .hub-cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .hub-cards-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .hub-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem 1.35rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            border: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        a.hub-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.12);
+        }
+        .hub-card-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+        .hub-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1d1d1f;
+        }
+        .hub-card p {
+            font-size: 0.9rem;
+            color: #6e6e73;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+        .hub-card-cta {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #ff3b8b;
+        }
+        a.hub-card:hover .hub-card-cta { text-decoration: underline; }
+        .las-section {
+            padding: 4rem 0;
+            background: linear-gradient(180deg, rgba(0,212,255,0.06) 0%, rgba(255,59,139,0.04) 100%);
+        }
+        .las-inner { max-width: 720px; margin: 0 auto; }
+        .las-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .las-section .section-title { margin-bottom: 1rem; }
+        .las-body, .las-section .las-list {
+            color: #424245;
+            font-size: 1.02rem;
+            line-height: 1.7;
+        }
+        .las-body p + p { margin-top: 1rem; }
+        .las-list {
+            margin: 1.5rem 0;
+            padding-left: 1.25rem;
+        }
+        .las-list li { margin-bottom: 0.5rem; }
+        .las-support-line {
+            text-align: center;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-top: 1.5rem;
+            font-size: 1.05rem;
+        }
+        .start-here-section {
+            padding: 3.5rem 0;
+            background: #1d1d1f;
+            color: #f5f5f7;
+        }
+        .start-here-section .section-title { color: #fff; }
+        .start-here-body {
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: #aeaeb2;
+        }
+        .start-here-body p + p { margin-top: 0.75rem; }
+        .start-here-body strong { color: #fff; }
     </style>
 </head>
 <body>
@@ -212,8 +327,8 @@
     <!-- Sticky Top Bar -->
     <div class="sticky-bar">
         <div class="sticky-bar-content">
-            <span class="sticky-text">AI Video Ads + AI Follow‑Up that books consults.</span>
-            <span class="sticky-cta">Run the live system on your own phone → WhatsApp / SMS / Call.</span>
+            <span class="sticky-text">Creative + SmartLine follow-up in one growth system.</span>
+            <span class="sticky-cta">Run the live demo on your phone → WhatsApp / SMS / Call.</span>
             <button class="btn btn-sticky" onclick="scrollToDemo()">
                 <span class="btn-glow"></span>
                 Run the Free Demo
@@ -230,56 +345,39 @@
                     <span>Lead Agents Studio</span>
                 </div>
                 <h1 class="hero-headline">
-                    <span class="line-1">Clinics don't lose money on ads.</span>
-                    <span class="line-2">They lose it in the <em class="gradient-text">15 minutes</em> after the lead.</span>
+                    <span class="line-1">Turn attention into conversations.</span>
+                    <span class="line-2">Turn conversations into <em class="gradient-text">booked business</em>.</span>
                 </h1>
-                <p class="hero-subhead">
-                    Lead Agents Studio installs an <strong>AI Ads‑to‑Appointment system</strong> made for aesthetic clinics:
+                <p class="hero-subhead" style="max-width: 36rem; margin-left: auto; margin-right: auto;">
+                    Lead Agents Studio combines avatar video, UGC-style ad creative, and SmartLine voice follow-up into one <strong>AI growth system</strong> tailored to the way your business sells.
                 </p>
-                <div class="engine-list">
-                    <div class="engine-item">
-                        <span class="engine-num">1</span>
-                        <div class="engine-content">
-                            <h4>Owner‑Avatar Engine</h4>
-                            <p>Create a private AI avatar of the clinic owner/manager so you can publish <strong>unlimited owner‑style content</strong> without filming.</p>
-                        </div>
-                    </div>
-                    <div class="engine-item">
-                        <span class="engine-num">2</span>
-                        <div class="engine-content">
-                            <h4>UGC + Custom B‑Roll Engine</h4>
-                            <p>Generate fresh UGC‑style ad variations and custom b‑roll <strong>on demand</strong> (new hooks, angles, languages, product placement). <em>Not stock creators — fresh AI talent for every campaign.</em></p>
-                        </div>
-                    </div>
-                    <div class="engine-item">
-                        <span class="engine-num">3</span>
-                        <div class="engine-content">
-                            <h4>Follow‑Up + Booking Engine</h4>
-                            <p>Instant WhatsApp/SMS replies and phone calls that <strong>qualify politely</strong> and <strong>book consultations</strong> automatically.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="pipeline-note">
-                    One pipeline: <strong>new creative → new leads → instant follow‑up → booked consults</strong>.
+                <p class="hub-tagline">
+                    We build custom AI offers for businesses and agencies that do not want to get left behind: voice agents, done-for-you growth systems, white-label agency platforms, AI creative, and targeted prospect intelligence.
+                </p>
+                <div class="pipeline-note" style="margin-top: 0.5rem;">
+                    <strong>Lead Agents Studio</strong> — a done-for-you AI growth system that combines avatar video, UGC-style ad creative, and SmartLine voice follow-up—so businesses can attract more attention, respond faster, and convert more of the leads they generate.
                 </div>
                 <div class="hero-tags">
-                    <span class="tag">Injectables</span>
-                    <span class="tag">Laser</span>
-                    <span class="tag">Skincare</span>
-                    <span class="tag">Medspa</span>
-                    <span class="tag">High-intent Funnels</span>
-                    <span class="tag">Clinics tired of missed calls and creative fatigue</span>
+                    <span class="tag">Avatar video</span>
+                    <span class="tag">UGC-style ads</span>
+                    <span class="tag">SmartLine voice / SMS / WhatsApp</span>
+                    <span class="tag">Qualification &amp; booking logic</span>
+                    <span class="tag">Agency white-label</span>
                 </div>
                 <div class="hero-cta-group">
-                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                    <button class="btn btn-primary btn-xl" onclick="document.getElementById('lead-agents-studio').scrollIntoView({behavior:'smooth'})">
                         <span class="btn-shine"></span>
+                        <span class="btn-icon">◆</span>
+                        See Lead Agents Studio
+                    </button>
+                    <button class="btn btn-outline btn-xl" onclick="scrollToDemo()" style="margin-top: 0.75rem;">
                         <span class="btn-icon">▶</span>
                         Run the Free Demo
                     </button>
-                    <p class="cta-microcopy">The demo triggers real messages and/or a demo call. Opt out anytime (STOP).<br>Booking + qualification only (not medical advice).</p>
+                    <p class="cta-microcopy">The demo triggers real messages and/or a demo call. Opt out anytime (STOP).<br>Booking + qualification workflows only (not medical advice).</p>
                 </div>
-                <button class="btn btn-ghost" onclick="scrollToMechanism()">
-                    Show me what the system does "behind the scenes"
+                <button class="btn btn-ghost" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">
+                    Explore all offers
                     <span class="arrow">→</span>
                 </button>
             </div>
@@ -300,10 +398,114 @@
         </div>
     </section>
 
+    <!-- What we build — all offers -->
+    <section class="hub-cards-section" id="what-we-build">
+        <div class="container">
+            <h2 class="section-title center">What we build</h2>
+            <p class="section-subtitle center" style="max-width: 40rem; margin-left: auto; margin-right: auto;">
+                Three ways to work with us—plus creative and prospect intelligence when you need the front end or targeting sharpened first.
+            </p>
+            <div class="hub-cards-grid" style="margin-top: 2rem;">
+                <a class="hub-card" href="/smartline/">
+                    <span class="hub-card-label">Voice agent</span>
+                    <h3>SmartLine</h3>
+                    <p>AI voice agent for businesses—calls, SMS, and WhatsApp follow-up, qualification, and handoff when a human should step in.</p>
+                    <span class="hub-card-cta">Open SmartLine →</span>
+                </a>
+                <a class="hub-card" href="https://smartline.leadagentsstudio.com/agency/">
+                    <span class="hub-card-label">White-label</span>
+                    <h3>SmartLine for Agencies</h3>
+                    <p>White-label client-account version for agencies: your brand, your client accounts, rebilling-ready positioning.</p>
+                    <span class="hub-card-cta">See agency offer →</span>
+                </a>
+                <a class="hub-card" href="#lead-agents-studio">
+                    <span class="hub-card-label">Full system</span>
+                    <h3>Lead Agents Studio</h3>
+                    <p>A done-for-you AI growth system that combines avatar video, UGC-style ad creative, custom campaign assets, and SmartLine voice follow-up—adapted to the way your business attracts, responds, and converts.</p>
+                    <span class="hub-card-cta">See Lead Agents Studio →</span>
+                </a>
+                <a class="hub-card" href="mailto:support@leadagentsstudio.com?subject=AI%20Creative%20Design%20inquiry">
+                    <span class="hub-card-label">Creative</span>
+                    <h3>AI Creative Design</h3>
+                    <p>Premium AI visuals, campaign assets, and iterative creative support when you need the hook and the look to match your offer.</p>
+                    <span class="hub-card-cta">Email about creative →</span>
+                </a>
+                <a class="hub-card" href="mailto:support@leadagentsstudio.com?subject=Lead%20Intelligence%20Packs%20inquiry">
+                    <span class="hub-card-label">Targeting</span>
+                    <h3>Lead Intelligence Packs</h3>
+                    <p>Targeted prospect discovery and structured intelligence so your outbound and ads start from better lists, not guesswork.</p>
+                    <span class="hub-card-cta">Email about intelligence →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Agents Studio — deep positioning -->
+    <section class="las-section" id="lead-agents-studio">
+        <div class="container">
+            <div class="las-inner">
+                <p class="las-eyebrow">For businesses that need more than just leads</p>
+                <h2 class="section-title center">Ads get attention. Follow-up closes the gap. SmartLine keeps the conversation alive.</h2>
+                <div class="las-body">
+                    <p>Lead Agents Studio is not just creative.</p>
+                    <p>It is a full AI growth system built for businesses that need the front end and the follow-up to work together.</p>
+                    <p>Because most businesses do not just have a lead problem.</p>
+                    <p><strong>They have a system problem.</strong></p>
+                    <p>The ad gets seen.<br>The lead comes in.<br>The reply is slow.<br>The follow-up is weak.<br>The conversation dies.</p>
+                    <p>Lead Agents Studio fixes that by combining the pieces that actually move the sale:</p>
+                    <ul class="las-list">
+                        <li>avatar video</li>
+                        <li>UGC-style ad creative</li>
+                        <li>custom ad assets</li>
+                        <li>SmartLine voice / SMS / WhatsApp follow-up</li>
+                        <li>qualification logic</li>
+                        <li>booking or next-step logic</li>
+                    </ul>
+                    <p>So instead of buying disconnected services, the business gets one system designed to bring attention in, respond faster, and keep the lead moving.</p>
+                    <p><strong>What it includes</strong></p>
+                    <ul class="las-list">
+                        <li>avatar video built around the founder, owner, or brand</li>
+                        <li>UGC-style ad creatives for hooks, offers, and testing</li>
+                        <li>custom campaign visuals</li>
+                        <li>SmartLine voice agent follow-up</li>
+                        <li>SMS / WhatsApp continuation</li>
+                        <li>qualification and next-step logic</li>
+                        <li>business-specific adaptation based on how you sell</li>
+                    </ul>
+                </div>
+                <p class="las-support-line">Creative brings the lead in. SmartLine helps convert it.</p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">▶</span>
+                        See Lead Agents Studio — run the demo
+                    </button>
+                </div>
+                <p class="section-subtitle center" style="margin-top: 1.5rem; font-size: 0.95rem;">
+                    Prefer the tighter line: <em>The AI growth system for businesses that need better creative and faster follow-up.</em> Same system—avatar + UGC + SmartLine in one engine.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Not sure where to start -->
+    <section class="start-here-section" id="start-here">
+        <div class="container">
+            <h2 class="section-title center">Start with the leak that costs you the most.</h2>
+            <div class="start-here-body">
+                <p>If warm leads are disappearing, start with <strong><a href="/smartline/" style="color:#00d4ff;">SmartLine</a></strong>.</p>
+                <p>If you run an agency, start with the <strong><a href="https://smartline.leadagentsstudio.com/agency/" style="color:#00d4ff;">agency system</a></strong>.</p>
+                <p>If you need creative plus follow-up working together, start with <strong><a href="#lead-agents-studio" style="color:#00d4ff;">Lead Agents Studio</a></strong>.</p>
+                <p>If your brand needs better visuals, start with <strong><a href="mailto:support@leadagentsstudio.com?subject=AI%20Creative%20Design" style="color:#00d4ff;">AI Creative</a></strong>.</p>
+                <p>If your team needs better targets, start with <strong><a href="mailto:support@leadagentsstudio.com?subject=Lead%20Intelligence%20Packs" style="color:#00d4ff;">Lead Intelligence</a></strong>.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Video #1 Block: System Overview -->
     <section class="video-section" id="video-walkthrough">
         <div class="container">
-            <h2 class="section-title center">See the full system in 90 seconds.</h2>
+            <h2 class="section-title center">See the growth system in 90 seconds.</h2>
             <p class="section-subtitle center">90 seconds</p>
             <div class="video-container-large">
                 <div class="video-placeholder-large">
@@ -313,7 +515,7 @@
                     </video>
                 </div>
             </div>
-            <p class="video-caption">A quick walkthrough of the three engines: owner‑avatar content, UGC creatives + custom b‑roll, and the follow‑up loop that turns inquiries into booked consultations.</p>
+            <p class="video-caption">A quick walkthrough of the three engines: owner‑avatar content, UGC creatives + custom b‑roll, and the follow‑up loop that turns inquiries into booked next steps.</p>
         </div>
     </section>
 
@@ -321,7 +523,7 @@
     <section class="pain-story" id="pain">
         <div class="container">
             <div class="story-content">
-                <p class="story-lead">If you run a clinic, you know these two moments:</p>
+                <p class="story-lead">If you run a real business with real leads, you know these two moments:</p>
                 <div class="pain-moments">
                     <div class="pain-moment">
                         <h3>Moment #1 — Ads get tired.</h3>
@@ -329,7 +531,7 @@
                     </div>
                     <div class="pain-moment">
                         <h3>Moment #2 — The lead comes in.</h3>
-                        <p>They're warm. They're curious. They ask timing and price range.<br><br>Then… your admin is busy. It's after hours. Someone replies "later."<br><br>So the lead does what every human does: <strong>they message the next clinic — and book whoever replies first.</strong></p>
+                        <p>They're warm. They're curious. They ask timing and price range.<br><br>Then… your team is busy. It's after hours. Someone replies "later."<br><br>So the lead does what every human does: <strong>they reach out to the next option — and whoever replies first wins the conversation.</strong></p>
                     </div>
                 </div>
                 <div class="expensive-truth">
@@ -344,7 +546,7 @@
         <div class="container">
             <div class="mechanism-header">
                 <h2 class="section-title center">We don't sell "a chatbot."</h2>
-                <p class="section-subtitle large center">We install an Ads‑to‑Appointment pipeline.</p>
+                <p class="section-subtitle large center">We install a creative‑plus‑follow‑up pipeline that books your next step.</p>
             </div>
             <div class="steps-grid">
                 <div class="step-card">
@@ -368,8 +570,8 @@
                 <div class="step-card">
                     <div class="step-light"></div>
                     <div class="step-number">04</div>
-                    <h3>Booking (no back‑and‑forth)</h3>
-                    <p>It offers time windows, confirms, and sends reminders + easy reschedule.</p>
+                    <h3>Booking &amp; next steps (no back‑and‑forth)</h3>
+                    <p>It offers time windows, confirms, and sends reminders + easy reschedule—adapted to how you sell.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-light"></div>
@@ -403,7 +605,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="owner@clinic.com" required>
+                            <input type="email" id="email" name="email" placeholder="you@business.com" required>
                         </div>
                         <div class="form-group">
                             <label>Choose your demo channel</label>
@@ -425,7 +627,7 @@
                                 </label>
                             </div>
                             <div class="ai-character-note">
-                                Every ad gets a newly generated AI character — never shared with other clinics.<br>
+                                Every ad gets a newly generated AI character — never shared across accounts.<br>
                                 <strong>Not stock creators. Fresh AI talent for every campaign.</strong>
                             </div>
                         </div>
@@ -478,7 +680,7 @@
                     </video>
                 </div>
             </div>
-            <p class="video-caption">Starts like a client story — then shows why it converts: fresh UGC creatives + instant follow‑up + quiet‑lead recovery.<br>UGC‑style creatives use AI-generated actors and dramatized scenarios (not real patients). Booking + qualification only (not medical advice).</p>
+            <p class="video-caption">Starts like a client story — then shows why it converts: fresh UGC creatives + instant follow‑up + quiet‑lead recovery.<br>UGC‑style creatives use AI-generated actors and dramatized scenarios. Booking + qualification workflows only (not medical advice).</p>
         </div>
     </section>
 
@@ -493,9 +695,9 @@
                         <h3>Creative Engine Setup</h3>
                     </div>
                     <ul class="feature-list">
-                        <li>Private owner-avatar setup (your clinic's look + tone)</li>
+                        <li>Private owner-avatar setup (your brand's look + tone)</li>
                         <li>UGC-style ad system + custom b‑roll generation</li>
-                        <li>Product placement templates (so ads look like YOUR clinic)</li>
+                        <li>Product placement templates (so ads look like YOUR business)</li>
                         <li>Hook library + angles + variations for your offers</li>
                     </ul>
                 </div>
@@ -714,7 +916,7 @@
             <h2 class="section-title center">Prefer a human confirmation?</h2>
             <p class="zoom-description">Book a 15-minute implementation review (not a sales pitch):<br>we'll confirm your offers, tone, and booking rules.</p>
             <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book implementation review</a>
-            <p class="zoom-note">Only if you want it. Most clinics start after the live demo.</p>
+            <p class="zoom-note">Only if you want it. Most teams start after the live demo.</p>
         </div>
     </section>
 
@@ -767,13 +969,16 @@
     <section class="final-close" id="close">
         <div class="container">
             <div class="close-light"></div>
-            <h2 class="close-headline">Run the demo now.</h2>
-            <p class="close-subline">If it doesn't feel like your future content team — and your future front desk — walk away.</p>
+            <h2 class="close-headline">Run the demo — or jump straight to setup.</h2>
+            <p class="close-subline">If it doesn't feel like your future content engine plus follow-up layer, walk away.</p>
             <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
                 <span class="btn-shine"></span>
                 <span class="btn-icon">▶</span>
-                Run Live Demo ($5 credit)
+                Run Live Demo
             </button>
+            <p style="margin-top: 1.25rem;">
+                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-outline btn-lg">See Lead Agents Studio — Pay $5,000 setup</a>
+            </p>
         </div>
     </section>
 
@@ -785,12 +990,14 @@
                 <span>Lead Agents Studio</span>
             </div>
             <div class="footer-links">
+                <a href="/smartline/">SmartLine</a>
+                <a href="https://smartline.leadagentsstudio.com/agency/">Agency</a>
                 <a href="/privacy.html">Privacy</a>
                 <a href="/terms.html">Terms</a>
                 <a href="/billing.html">Billing</a>
                 <a href="/refund.html">Refund</a>
             </div>
-            <p class="footer-disclaimer">Demonstration of booking & qualification workflows only. Not medical advice.</p>
+            <p class="footer-disclaimer">Demonstration of booking &amp; qualification workflows only. Not medical advice.</p>
             <p class="footer-support">Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
         </div>
     </footer>
