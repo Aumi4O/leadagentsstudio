@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/assets/site-analytics.js"></script>
+    <script>
+        if (location.hostname.startsWith('smartline.')) {
+            location.replace('/smartline/');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Lead Agents Studio — AI Systems, Creative &amp; Conversion Tools</title>
+    <meta name="description" content="Five ways to make your business faster, smarter, and easier to buy from: SmartLine, agency white-label, real estate, Lead Agents Studio full system, and AI Creative + Ad Packs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site-footer.css">
+    <style>
+        :root {
+            --bg: #060B16;
+            --surface: #0F1728;
+            --surface-2: #152136;
+            --text-1: #F8FAFC;
+            --text-2: #A9B4C6;
+            --text-3: #6B7A90;
+            --cyan: #68E1FD;
+            --lime: #B8FF5C;
+            --line: #24324A;
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text-1);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+
+        h1, h2, h3 { font-family: 'Sora', sans-serif; line-height: 1.1; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* Nav */
+        .las-home-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 24px;
+            background: rgba(6, 11, 22, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .las-home-nav__brand {
+            font-family: 'Sora', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+        .las-home-nav__brand span { color: var(--cyan); }
+        .las-home-nav__links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .las-home-nav__links a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-2);
+        }
+        .las-home-nav__links a:hover { color: var(--cyan); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1;
+            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary {
+            background: var(--lime);
+            color: #07111F;
+            box-shadow: 0 0 24px rgba(184, 255, 92, 0.2);
+        }
+        .btn-primary:hover { box-shadow: 0 0 36px rgba(184, 255, 92, 0.4); }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-1);
+            border: 1.5px solid var(--line);
+        }
+        .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+        /* Hero */
+        .las-hero {
+            padding: 160px 0 88px;
+            position: relative;
+            overflow: hidden;
+        }
+        .las-hero__glow {
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(900px, 100vw);
+            height: 480px;
+            background: radial-gradient(ellipse at center, rgba(104, 225, 253, 0.09) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .las-hero__inner {
+            position: relative;
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .las-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 16px;
+        }
+        .las-hero__h1 {
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #F8FAFC 55%, #68E1FD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .las-hero__sub {
+            font-size: clamp(16px, 2.2vw, 18px);
+            color: var(--text-2);
+            line-height: 1.65;
+            margin-bottom: 32px;
+        }
+        .las-hero__ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* Sections */
+        main { flex: 1; }
+        .las-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--line);
+        }
+        .las-section__head {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 48px;
+        }
+        .las-section__head h2 {
+            font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .las-section__head p {
+            color: var(--text-2);
+            font-size: 17px;
+            line-height: 1.65;
+        }
+
+        /* Offer cards */
+        .las-offers {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) {
+            .las-offers { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .las-offers { grid-template-columns: repeat(3, 1fr); }
+        }
+        .offer-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        a.offer-card:hover {
+            border-color: rgba(104, 225, 253, 0.35);
+            box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.12), 0 24px 48px rgba(0, 0, 0, 0.35);
+        }
+        .offer-card__label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 10px;
+        }
+        .offer-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-1);
+        }
+        .offer-card__one {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--cyan);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .offer-card__copy {
+            font-size: 14px;
+            color: var(--text-2);
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 14px;
+        }
+        .offer-card__trust {
+            font-size: 13px;
+            color: var(--text-3);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+        .offer-card__cta {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--lime);
+        }
+        a.offer-card:hover .offer-card__cta { text-decoration: underline; text-underline-offset: 3px; }
+
+        /* Why us */
+        .las-why {
+            background: var(--surface-2);
+        }
+        .las-why__inner {
+            max-width: 520px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .las-why__inner h2 {
+            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            margin-bottom: 24px;
+        }
+        .las-why__inner p {
+            color: var(--text-2);
+            font-size: 16px;
+            line-height: 1.75;
+        }
+        .las-why__inner p + p { margin-top: 1rem; }
+        .las-why__inner strong { color: var(--text-1); }
+
+        /* LAS anchor section (Offer 4 target) */
+        .las-strip {
+            padding: 64px 0;
+            border-top: 1px solid var(--line);
+        }
+        .las-strip__box {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 40px 28px;
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .las-strip__box h2 { margin-bottom: 12px; }
+        .las-strip__box .offer-card__one { margin-bottom: 14px; }
+        .las-strip__box p { color: var(--text-2); font-size: 16px; line-height: 1.65; }
+
+        /* CTA band */
+        .las-cta-band {
+            background: linear-gradient(180deg, var(--surface-2) 0%, var(--bg) 100%);
+        }
+        .las-cta-band__inner {
+            text-align: center;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .las-cta-band__inner h2 { margin-bottom: 20px; }
+        .las-cta-band__inner .copy {
+            color: var(--text-2);
+            font-size: 16px;
+            line-height: 1.75;
+            text-align: left;
+        }
+        .las-cta-band__inner .copy p + p { margin-top: 0.65rem; }
+        .las-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 28px;
+        }
+
+        .home-footer-tagline {
+            text-align: center;
+            padding: 32px 24px 8px;
+            max-width: 480px;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-3);
+        }
+        .home-footer-tagline strong {
+            display: block;
+            font-family: 'Sora', sans-serif;
+            font-size: 16px;
+            color: var(--text-1);
+            margin-bottom: 6px;
+        }
+
+        /* Language switcher — dark */
+        .lang-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            padding: 8px;
+            border-radius: 100px;
+        }
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .lang-btn:hover { background: var(--surface-2); transform: scale(1.08); }
+        .lang-btn.active {
+            background: rgba(104, 225, 253, 0.15);
+            box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <header class="las-home-nav">
+        <a href="/" class="las-home-nav__brand">Lead <span>Agents</span> Studio</a>
+        <div class="las-home-nav__links">
+            <a href="/smartline/">SmartLine</a>
+            <a href="/about.html">About</a>
+            <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:10px 20px;font-size:14px;">Book a Call</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="las-hero" id="hero">
+            <div class="las-hero__glow" aria-hidden="true"></div>
+            <div class="container las-hero__inner">
+                <p class="las-eyebrow">AI systems, creative, and conversion tools</p>
+                <h1 class="las-hero__h1">Five ways to make your business faster, smarter, and easier to buy from.</h1>
+                <p class="las-hero__sub">Choose the offer that solves your biggest bottleneck first — conversations, leads, creative, ads, or a full growth system.</p>
+                <div class="las-hero__ctas">
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">Explore the 5 Offers</button>
+                    <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Book a Call</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="las-section" id="what-we-build">
+            <div class="container">
+                <div class="las-section__head">
+                    <h2>Start with the leak that costs you the most.</h2>
+                    <p>Each offer solves a different bottleneck. Pick the one that fits where your business is losing time, leads, trust, or momentum.</p>
+                </div>
+                <div class="las-offers">
+                    <a class="offer-card" href="/smartline/">
+                        <span class="offer-card__label">Offer 1</span>
+                        <h3>SmartLine</h3>
+                        <p class="offer-card__one">Your AI voice agent for calls, SMS, and WhatsApp.</p>
+                        <p class="offer-card__copy">Answers leads, follows up, qualifies, and keeps warm conversations from dying while your team is busy, closed, or off the clock.</p>
+                        <p class="offer-card__trust">Powered by ChatGPT. Trained on your business.</p>
+                        <span class="offer-card__cta">See SmartLine →</span>
+                    </a>
+                    <a class="offer-card" href="https://smartline.leadagentsstudio.com/agency/">
+                        <span class="offer-card__label">Offer 2</span>
+                        <h3>SmartLine for Agencies</h3>
+                        <p class="offer-card__one">A white-label AI voice agent offer under your brand.</p>
+                        <p class="offer-card__copy">Give every client their own voice agent with client accounts under your agency, so you stop selling one-off AI builds and start selling a cleaner recurring offer.</p>
+                        <p class="offer-card__trust">Give every client a ChatGPT-powered voice agent under your brand.</p>
+                        <span class="offer-card__cta">See Agency Offer →</span>
+                    </a>
+                    <a class="offer-card" href="/smartline/real-estate.html">
+                        <span class="offer-card__label">Offer 3</span>
+                        <h3>SmartLine for Real Estate</h3>
+                        <p class="offer-card__one">The AI voice agent built for buyer and seller inquiries.</p>
+                        <p class="offer-card__copy">Answers property questions, follows up fast, qualifies interest, books next steps, and helps stop commissions from slipping away in silence.</p>
+                        <p class="offer-card__trust">Powered by ChatGPT and trained on your listings, market, and process.</p>
+                        <span class="offer-card__cta">See Real Estate Offer →</span>
+                    </a>
+                    <a class="offer-card" href="#lead-agents-studio">
+                        <span class="offer-card__label">Offer 4</span>
+                        <h3>Lead Agents Studio</h3>
+                        <p class="offer-card__one">A done-for-you AI growth system.</p>
+                        <p class="offer-card__copy">Combines avatar video, UGC-style creative, ad assets, and SmartLine follow-up into one system that helps businesses attract more attention and convert more of it.</p>
+                        <span class="offer-card__cta">See Lead Agents Studio →</span>
+                    </a>
+                    <a class="offer-card" href="/ai-creative-offer.html">
+                        <span class="offer-card__label">Offer 5</span>
+                        <h3>AI Creative + Ad Packs</h3>
+                        <p class="offer-card__one">Premium creative for brands that need stronger visuals and better ads.</p>
+                        <p class="offer-card__copy">Exclusive creative direction by a Paris-trained artist with top-brand experience — for brand photoshoots, ad creative, and ongoing content systems.</p>
+                        <span class="offer-card__cta">See Creative Offer →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="las-strip" id="lead-agents-studio">
+            <div class="container">
+                <div class="las-strip__box">
+                    <h2>Lead Agents Studio</h2>
+                    <p class="offer-card__one" style="margin-bottom:0;">A done-for-you AI growth system.</p>
+                    <p style="margin-top:16px;">Combines avatar video, UGC-style creative, ad assets, and SmartLine follow-up into one system that helps businesses attract more attention and convert more of it.</p>
+                    <div class="las-cta-row" style="margin-top:24px;">
+                        <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
+                        <a href="mailto:support@leadagentsstudio.com?subject=Lead%20Agents%20Studio%20inquiry" class="btn btn-ghost">Email us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="las-section las-why" id="why-us">
+            <div class="container">
+                <div class="las-why__inner">
+                    <h2>Not AI for the sake of AI. AI that fixes the bottleneck.</h2>
+                    <p>Some businesses need faster conversations.<br>Some need a better agency offer.<br>Some need a stronger real-estate front line.<br>Some need a full growth engine.<br>Some need better creative and ads.</p>
+                    <p>The point is not to buy more tools.</p>
+                    <p><strong>The point is to make the business more modern where it matters most.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="las-section las-cta-band" id="start-here">
+            <div class="container">
+                <div class="las-cta-band__inner">
+                    <h2>Not sure where to start?</h2>
+                    <div class="copy">
+                        <p>If leads are going cold, start with SmartLine.</p>
+                        <p>If you run an agency, start with the agency offer.</p>
+                        <p>If you sell property, start with real estate.</p>
+                        <p>If you need creative plus follow-up, start with Lead Agents Studio.</p>
+                        <p>If you need stronger visuals and ads, start with the creative offer.</p>
+                    </div>
+                    <div class="las-cta-row">
+                        <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
+                        <button type="button" class="btn btn-ghost" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">Explore the 5 Offers</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <p class="home-footer-tagline"><strong>Lead Agents Studio</strong> AI systems, voice agents, creative, and growth infrastructure for businesses that do not want to get left behind.</p>
+    <div id="las-site-footer-mount"></div>
+
+    <div class="lang-switcher" aria-label="Language">
+        <a href="/" class="lang-btn active" title="English">🇺🇸</a>
+        <a href="/ru/" class="lang-btn" title="Русский">🇷🇺</a>
+        <a href="/he/" class="lang-btn" title="עברית">🇮🇱</a>
+    </div>
+
+    <script src="/assets/site-footer.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="/assets/site-analytics.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Agents Studio — ИИ‑видео‑реклама + ИИ‑follow‑up для записи</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="/assets/site-footer.css">
+    <style>
+        /* Language Switcher */
+        .lang-switcher {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: all 0.2s ease;
+            background: transparent;
+        }
+        .lang-btn:hover { transform: scale(1.15); background: rgba(0, 0, 0, 0.05); }
+        .lang-btn.active { background: linear-gradient(135deg, #00d4ff, #ff3b8b); box-shadow: 0 2px 10px rgba(0, 212, 255, 0.4); }
+        @media (max-width: 768px) { .lang-switcher { bottom: 16px; right: 16px; padding: 6px; } .lang-btn { width: 36px; height: 36px; font-size: 1.1rem; } }
+        /* Engine cards */
+        .engine-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .engine-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .engine-num {
+            background: linear-gradient(135deg, #00d4ff, #ff3b8b);
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .engine-content h4 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #1d1d1f;
+        }
+        .engine-content p {
+            font-size: 0.95rem;
+            color: #6e6e73;
+            margin: 0;
+        }
+        .pipeline-note {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        /* Pain moments */
+        .pain-moments {
+            display: grid;
+            gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .pain-moments {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .pain-moment {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .pain-moment h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1d1d1f;
+        }
+        .pain-moment p {
+            color: #6e6e73;
+            line-height: 1.6;
+        }
+        .expensive-truth {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
+            border-radius: 16px;
+        }
+        .expensive-truth p {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+        /* AI character note */
+        .ai-character-note {
+            background: rgba(0,212,255,0.1);
+            border-left: 3px solid #00d4ff;
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #1d1d1f;
+        }
+        /* Customizations section */
+        .customizations-note {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+        .customizations-note h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .customizations-note p {
+            color: #6e6e73;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <a href="/ugc/" class="lang-btn" title="English — full walkthrough">🇺🇸</a>
+        <a href="/ru/" class="lang-btn active" title="Русский">🇷🇺</a>
+        <a href="/he/" class="lang-btn lang-he" title="עברית">🇮🇱</a>
+    </div>
+
+    <!-- Animated Light Beams -->
+    <div class="light-beams">
+        <div class="beam beam-cyan"></div>
+        <div class="beam beam-pink"></div>
+        <div class="beam beam-blue"></div>
+    </div>
+
+    <!-- Video Background (subtle) -->
+    <div class="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="/assets/bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Sticky Top Bar -->
+    <div class="sticky-bar">
+        <div class="sticky-bar-content">
+            <span class="sticky-text">ИИ‑видео‑реклама + ИИ‑follow‑up, который записывает на консультации.</span>
+            <span class="sticky-cta">Запустите живую демо на своём телефоне → WhatsApp / SMS / звонок.</span>
+            <button class="btn btn-sticky" onclick="scrollToDemo()">
+                <span class="btn-glow"></span>
+                Запустить бесплатное демо
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <a href="/" class="brand-badge">
+                    <span class="badge-icon">◆</span>
+                    <span>Lead Agents Studio</span>
+                </a>
+                <h1 class="hero-headline">
+                    <span class="line-1">Клиники теряют деньги не на рекламе.</span>
+                    <span class="line-2">Они теряют их в <em class="gradient-text">первые 15 минут</em> после заявки.</span>
+                </h1>
+                <p class="hero-subhead">
+                    Lead Agents Studio устанавливает <strong>AI‑систему "реклама → запись"</strong> для эстетических клиник:
+                </p>
+                <div class="engine-list">
+                    <div class="engine-item">
+                        <span class="engine-num">1</span>
+                        <div class="engine-content">
+                            <h4>Owner‑Avatar Engine</h4>
+                            <p>Приватный AI‑аватар владельца/управляющего, чтобы публиковать <strong>бесконечный owner‑контент без съёмок</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="engine-item">
+                        <span class="engine-num">2</span>
+                        <div class="engine-content">
+                            <h4>UGC + Custom B‑Roll Engine</h4>
+                            <p>Свежие UGC‑креативы и кастомный b‑roll <strong>по запросу</strong> (новые хуки, углы, языки, product placement). <em>Уникальные AI‑актёры — не общие.</em></p>
+                        </div>
+                    </div>
+                    <div class="engine-item">
+                        <span class="engine-num">3</span>
+                        <div class="engine-content">
+                            <h4>Follow‑Up + Booking Engine</h4>
+                            <p>WhatsApp/SMS и звонки, которые <strong>вежливо квалифицируют</strong> и <strong>записывают на консультации</strong> автоматически.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pipeline-note">
+                    Одна цепочка: <strong>новый креатив → новые лиды → мгновенный follow‑up → записанные консультации</strong>.
+                </div>
+                <p style="text-align:center;margin-top:1rem;font-size:0.9rem;color:#6e6e73;">
+                    <a href="/ugc/" style="color:#00d4ff;font-weight:600;">UGC и аватар — отдельное предложение →</a>
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">Инъекции</span>
+                    <span class="tag">Лазер</span>
+                    <span class="tag">Уход</span>
+                    <span class="tag">MedSpa</span>
+                    <span class="tag">Воронки с высокой готовностью</span>
+                    <span class="tag">Клиники, уставшие от пропущенных заявок</span>
+                </div>
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">▶</span>
+                        Запустить бесплатное демо
+                    </button>
+                    <p class="cta-microcopy">Демо отправит реальные сообщения и/или сделает демо‑звонок. Отписка в любой момент: <strong>STOP</strong>.<br>Только запись и квалификация (не медицинская консультация).</p>
+                </div>
+                <button class="btn btn-ghost" onclick="scrollToMechanism()">
+                    Показать "что происходит внутри"
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+            <div class="hero-video hero-video-large">
+                <div class="video-container-hero">
+                    <video class="hero-main-video" autoplay muted loop playsinline controls>
+                        <source src="https://cdn.leadagentsstudio.com/RUS/Strawberry RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Прокрутите вниз</span>
+        </div>
+    </section>
+
+    <!-- Video #1 Block: System Overview -->
+    <section class="video-section" id="video-walkthrough">
+        <div class="container">
+            <h2 class="section-title center">Вся система за 90 секунд.</h2>
+            <p class="section-subtitle center">90 секунд</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <video autoplay muted loop playsinline controls>
+                        <source src="https://cdn.leadagentsstudio.com/RUS/PRODUCT PLACEMENT RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Краткий обзор трёх движков: owner‑аватар контент, UGC‑креативы + кастомный b‑roll, и follow‑up цикл, который превращает заявки в записанные консультации.</p>
+        </div>
+    </section>
+
+    <!-- Pain Story Section -->
+    <section class="pain-story" id="pain">
+        <div class="container">
+            <div class="story-content">
+                <p class="story-lead">Если вы ведёте клинику, вы знаете два момента:</p>
+                <div class="pain-moments">
+                    <div class="pain-moment">
+                        <h3>Момент №1 — креативы выгорают.</h3>
+                        <p>Ролики начинают выглядеть знакомо. CPL растёт. Нужно "свежее"… а съёмки дорогие, медленные и бесконечные.</p>
+                    </div>
+                    <div class="pain-moment">
+                        <h3>Момент №2 — приходит заявка.</h3>
+                        <p>Человек тёплый. Спрашивает цену и ближайшее время.<br><br>Потом… админ занят. Ночь. "Ответим позже."<br><br>И лид делает то, что делают люди: <strong>пишет в следующую клинику — и записывается там, где ответили быстрее.</strong></p>
+                    </div>
+                </div>
+                <div class="expensive-truth">
+                    <p>Дорогая правда: <em>свежесть креативов и скорость follow‑up — это новая "локация".</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mechanism Section -->
+    <section class="mechanism" id="mechanism">
+        <div class="container">
+            <div class="mechanism-header">
+                <h2 class="section-title center">Мы не продаём "чат‑бота".</h2>
+                <p class="section-subtitle large center">Мы устанавливаем конвейер "реклама → запись".</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">01</div>
+                    <h3>Свежий контент по запросу (без съёмок)</h3>
+                    <p>Owner‑аватар, UGC‑вариации, кастомный b‑roll, product placement — под любой оффер, когда угодно.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">02</div>
+                    <h3>Мгновенный ответ (WhatsApp/SMS)</h3>
+                    <p>Каждый лид получает ответ сразу — вечером, ночью, в выходные.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">03</div>
+                    <h3>Вежливая квалификация (минимум вопросов)</h3>
+                    <p>Система спрашивает только важное: интерес, сроки, ограничения, готовность.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">04</div>
+                    <h3>Запись (без "пинг‑понга")</h3>
+                    <p>Предлагает окна, подтверждает, отправляет напоминания и удобный перенос.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">05</div>
+                    <h3>"Тихие" лиды не исчезают</h3>
+                    <p>Если лид замолкает — follow‑up по каналам в человеческом стиле, затем стоп. Когда нужен человек — передача с полным контекстом.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-wrapper">
+                <div class="demo-header">
+                    <h2 class="section-title center">Попробуйте как лид.</h2>
+                    <p class="section-subtitle center">Затем посмотрите как владелец.</p>
+                    <p class="demo-description">Введите телефон и email. Вы получите тот же опыт, что и ваши лиды.<br>После демо вы увидите Owner View: что система собрала, как пометила, оценила и "записала".</p>
+                </div>
+                <div class="demo-form-container">
+                    <div class="form-light"></div>
+                    <form class="demo-form" id="demoForm">
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" name="name" placeholder="Anna" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+7 / +972 / ..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="owner@clinic.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Выберите канал демо</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="whatsapp" checked>
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">WhatsApp <span class="recommended">(рекомендуем)</span></span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="sms">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">SMS</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="call">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">Звонок <span class="duration">(60 секунд)</span></span>
+                                </label>
+                            </div>
+                            <div class="ai-character-note">
+                                Никаких общих лиц. Новый AI‑персонаж для каждого объявления.<br>
+                                <strong>Уникальные AI‑актёры — не общие.</strong>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="consent">
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">Я согласен/согласна получать демо‑сообщения и/или демо‑звонок от Lead Agents Studio. Чтобы отказаться — ответьте STOP. Только запись и квалификация (не мед. консультация).</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-xl btn-full">
+                            <span class="btn-shine"></span>
+                            <span class="btn-icon">◆</span>
+                            Запустить бесплатное демо
+                        </button>
+                        <p class="form-microcopy">Первое сообщение придёт меньше чем за минуту. Отвечайте естественно — как реальный лид.<br><br>Если демо временно поставится на паузу из‑за лимитов канала — ничего страшного: демо сохранено. Можно продолжить или переключить канал и продолжить с того же места.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video #2 Section: Owner Product Placement -->
+    <section class="video-section alt" id="video-ugc">
+        <div class="container">
+            <h2 class="section-title center">"Вот как мы делаем рекламу вокруг наших реальных продуктов."</h2>
+            <p class="section-subtitle center">60–75 сек</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <video autoplay muted loop playsinline controls>
+                        <source src="https://cdn.leadagentsstudio.com/RUS/Maya Rus.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Владелец показывает, как вставлять продукт в креативы, быстро генерировать вариации и отправлять лидов в тот же конвейер записи.</p>
+        </div>
+    </section>
+
+    <!-- Video #3 Section: UGC Client Story -->
+    <section class="video-section" id="video-testimonial">
+        <div class="container">
+            <h2 class="section-title center">"Это ощущается как сервис 'под ключ'."</h2>
+            <p class="section-subtitle center">UGC‑стиль, 60–75 сек</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <video autoplay muted loop playsinline controls>
+                        <source src="https://cdn.leadagentsstudio.com/RUS/Patricia RUS.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Начинается как история клиента — затем объясняет, почему это конвертит: свежие UGC‑креативы + мгновенный follow‑up + возврат "тихих" лидов.<br>UGC‑креативы используют AI‑сгенерированных актёров и постановочные сценарии (не реальные пациенты). Только запись и квалификация (не мед. консультация).</p>
+        </div>
+    </section>
+
+    <!-- What's Included Section -->
+    <section class="included" id="included">
+        <div class="container">
+            <h2 class="section-title center">Что включено в установку за $5,000</h2>
+            <div class="included-grid">
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">A</span>
+                        <h3>Creative Engine Setup</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Приватный owner‑аватар под вашу клинику (стиль + тон)</li>
+                        <li>UGC‑система + генерация кастомного b‑roll</li>
+                        <li>Product placement шаблоны (чтобы реклама выглядела как ВАША)</li>
+                        <li>Библиотека хуков/углов/вариаций под офферы</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">B</span>
+                        <h3>Follow‑Up + Booking Engine Setup</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>WhatsApp + SMS + звонки — настроено и работает</li>
+                        <li>Скрипты квалификации под ваши услуги и тон</li>
+                        <li>Логика записи (окна, подтверждения, напоминания, переносы)</li>
+                        <li>Возврат "тихих" лидов (несколько касаний, затем стоп)</li>
+                        <li>Согласия + отписка (STOP)</li>
+                        <li>Owner View + заметки для передачи админу</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">C</span>
+                        <h3>Testing + Launch</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Тесты на крайние случаи (нет ответа, "дорого", "кто врач?", "я подумаю")</li>
+                        <li>Soft launch + отчётность</li>
+                        <li>Чек‑лист запуска для админов</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2 class="section-title center">Запуск за 7 дней.</h2>
+            <div class="timeline-track">
+                <div class="timeline-item">
+                    <div class="day">День 1</div>
+                    <p>Офферы + тон + границы</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 2–3</div>
+                    <p>Подключение каналов + правила записи</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 4–5</div>
+                    <p>Тест сценариев и edge cases</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 6</div>
+                    <p>Мягкий запуск</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">День 7</div>
+                    <p>Полный запуск + отчётность</p>
+                </div>
+            </div>
+            <p class="timeline-note">Без остановки работы клиники. Система начинает ловить то, что сейчас теряется.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="pricing-hero">
+                <div class="price-light"></div>
+                <h2 class="price-amount">$5,000</h2>
+                <p class="price-label">разовая установка</p>
+            </div>
+            <div class="pricing-cta">
+                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-xxl">
+                    <span class="btn-shine"></span>
+                    <span class="btn-icon">◆</span>
+                    Оплатить установку $5,000
+                </a>
+                <p class="bnpl-note">Рассрочка может быть доступна на чекауте через <strong>Affirm / Afterpay / Klarna</strong> (зависит от страны/валюты/заявителя).</p>
+                <div class="escrow-option">
+                    <p>Нужна максимальная безопасность?</p>
+                    <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Оплата через Escrow</a>
+                </div>
+            </div>
+
+            <!-- Ongoing Monthly Cost -->
+            <div class="pricing-details">
+                <div class="pricing-block">
+                    <h3>Ежемесячные расходы <span class="badge-small">pay-as-you-go</span></h3>
+                    <p class="pricing-intro">Ежемесячные расходы — по факту использования (платите только за объём).</p>
+                    <div class="usage-includes">
+                        <h4>Что входит в usage</h4>
+                        <ul>
+                            <li>Сообщения и звонки (WhatsApp / SMS / минуты)</li>
+                            <li>Автоматизация диалогов (квалификация + ответы)</li>
+                            <li>Секунды генерации видео (новые креативы)</li>
+                            <li>Генерация owner‑аватар контента</li>
+                        </ul>
+                        <p class="margin-note"><strong>Важно:</strong> Usage считается по прайсу провайдеров <strong>+ 20% платформа‑маржа</strong> (оркестрация, мониторинг, обработка ошибок и единый биллинг).</p>
+                    </div>
+                </div>
+
+                <!-- Two ways to run it -->
+                <div class="pricing-block">
+                    <h3>Два режима работы</h3>
+                    <div class="management-options">
+                        <div class="option-card">
+                            <div class="option-header">
+                                <span class="option-badge">Вариант 1</span>
+                                <span class="option-price">Включено</span>
+                            </div>
+                            <h4>Self-Managed</h4>
+                            <p>Вы получаете систему, скрипты и отчёты. Команда ведёт работу сама.</p>
+                        </div>
+                        <div class="option-card featured">
+                            <div class="option-header">
+                                <span class="option-badge">Вариант 2</span>
+                                <span class="option-price">+$500/мес</span>
+                            </div>
+                            <h4>Managed by us</h4>
+                            <ul>
+                                <li>Настройка вопросов, follow‑ups и "точек записи"</li>
+                                <li>Проверка доставляемости</li>
+                                <li>Улучшение обработки возражений</li>
+                                <li>Отчёты и фиксы</li>
+                            </ul>
+                            <p class="option-note">Можно подключить в любой момент после установки.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customizations -->
+                <div class="customizations-note">
+                    <h3>Кастомизации (Add‑On)</h3>
+                    <p>Нужны интеграции с CRM, особые правила записи, мульти‑локации, нестандартные источники лидов или уникальные сценарии?<br>Сделаем как add‑on (оценка по сложности).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rate Card Section -->
+    <section class="rate-card" id="rates">
+        <div class="container">
+            <h2 class="section-title center">Rate Card</h2>
+            <p class="section-subtitle center">Прозрачно (маржа уже включена)</p>
+            
+            <div class="rates-grid">
+                <div class="rate-category">
+                    <h3>Сообщения и звонки</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">WhatsApp</span>
+                            <span class="rate-price">$0.006 <span class="rate-unit">за сообщение</span></span>
+                            <span class="rate-note">Вход/выход. Сетевые сборы могут применяться вне окна обслуживания.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">SMS (пример США)</span>
+                            <span class="rate-price">~$0.01 <span class="rate-unit">за сообщение</span></span>
+                            <span class="rate-note">Международные направления сильно отличаются.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Звонки (исходящие)</span>
+                            <span class="rate-price">~$0.017 <span class="rate-unit">за минуту</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Звонки (входящие)</span>
+                            <span class="rate-price">~$0.010 <span class="rate-unit">за минуту</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Обработка диалогов</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Input tokens</span>
+                            <span class="rate-price">$0.30 <span class="rate-unit">за 1M токенов</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Output tokens</span>
+                            <span class="rate-price">$2.40 <span class="rate-unit">за 1M токенов</span></span>
+                            <span class="rate-note">Токены — единицы текста для генерации ответов. Расходы видны в дашборде.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Генерация видео</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">AI‑видео (720p)</span>
+                            <span class="rate-price">$0.12 <span class="rate-unit">за секунду</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Высшие качества</span>
+                            <span class="rate-price">$0.36–$0.60 <span class="rate-unit">за секунду</span></span>
+                            <span class="rate-note">Зависит от качества.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Owner‑Avatar видео</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Генерация owner‑аватар видео</span>
+                            <span class="rate-price">$1.20 <span class="rate-unit">за минуту</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Optional Zoom Section -->
+    <section class="zoom-section" id="zoom">
+        <div class="container">
+            <h2 class="section-title center">Хотите человеческое подтверждение?</h2>
+            <p class="zoom-description">15 минут: офферы, тон, правила записи.</p>
+            <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Забронировать implementation review</a>
+            <p class="zoom-note">Только по желанию. Большинство клиник стартуют после демо.</p>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="support-section" id="support">
+        <div class="container">
+            <div class="support-card">
+                <div class="support-icon">💬</div>
+                <h2 class="section-title center">Нужна помощь? Свяжитесь с поддержкой</h2>
+                <p class="support-text">Вопросы о демо, установке или оплате? Наша команда готова помочь.</p>
+                <a href="mailto:support@leadagentsstudio.com" class="btn btn-secondary btn-lg">
+                    <span class="btn-shine"></span>
+                    Написать support@leadagentsstudio.com
+                </a>
+                <p class="support-response">Обычно отвечаем в течение 24 часов.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title center">FAQ</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Это AI‑система?</h3>
+                    <p>Да. AI используется для генерации видео (owner‑аватар + UGC‑креативы) и для автоматизации квалификации/записи.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>UGC — это реальные пациенты?</h3>
+                    <p>Нет. UGC‑креативы используют AI‑актёров и постановочные сценарии — чтобы "чувствовалось реально", но без обмана.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Будет ли это выглядеть роботизировано?</h3>
+                    <p>Нет. Пишет как хороший ресепшн: коротко, вежливо, понятно. И эскалирует человеку при необходимости.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Можно ли контролировать расходы?</h3>
+                    <p>Да. Можно поставить месячный лимит и алерты, плюс будет monthly summary.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Несколько услуг/языков?</h3>
+                    <p>Да. Скрипты ветвятся по услугам и языкам.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Close Section -->
+    <section class="final-close final-close--compact" id="close">
+        <div class="container">
+            <div class="close-light"></div>
+            <h2 class="close-headline">Запустите демо сейчас.</h2>
+            <p class="close-subline">Если это не ощущается как ваша будущая контент‑команда и будущий ресепшн — не покупайте.</p>
+            <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
+                <span class="btn-shine"></span>
+                <span class="btn-icon">▶</span>
+                Запустить бесплатное демо
+            </button>
+        </div>
+    </section>
+
+    <div class="container" style="padding:1.5rem 1rem 0;text-align:center">
+        <p class="footer-disclaimer">Только запись и квалификация. Не медицинская консультация.</p>
+    </div>
+    <div id="las-site-footer-mount"></div>
+
+    <!-- Post-Submit Demo Panel -->
+    <div class="demo-panel" id="demoPanel">
+        <div class="panel-content">
+            <button class="panel-close" onclick="closeDemoPanel()">×</button>
+            <div class="panel-icon">✅</div>
+            <h2>Демо запущено. Проверьте телефон.</h2>
+            <div class="panel-steps">
+                <div class="panel-step">
+                    <span class="step-num">1</span>
+                    <p>Откройте WhatsApp/SMS (или ответьте на звонок). Первое сообщение придёт меньше чем за минуту.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">2</span>
+                    <p>Отвечайте как реальный лид (коротко — идеально).</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">3</span>
+                    <p>После "записи" напишите <strong>SHOW OWNER VIEW</strong>.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">4</span>
+                    <p>Готовы стартовать? Оплатите установку <strong>$5,000</strong> (Stripe) или используйте <strong>Escrow</strong>.</p>
+                </div>
+            </div>
+            <p class="panel-pause-note">Если демо поставилось на паузу из‑за лимитов: демо сохранено. Продолжите или переключите канал — демо по‑прежнему бесплатно, без повторного старта.</p>
+            <div class="panel-cta">
+                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-lg">Оплатить установку $5,000</a>
+                <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Оплата через Escrow</a>
+            </div>
+            <p class="panel-support">Поддержка: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
+        </div>
+    </div>
+
+    <script src="/assets/site-footer.js" defer></script>
+    <script src="/assets/script.js?v=4"></script>
+</body>
+</html>

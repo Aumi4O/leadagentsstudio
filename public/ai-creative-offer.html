@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AI Creative for Modern Brands — AI Fashion Artists</title>
+  <meta name="description" content="AI Brand Photoshoot, Ad Creative Pack, and Content Engine. Premium AI creative by a Paris-trained artist — trust, ad freshness, consistency." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/site-footer.css" />
+  <script src="/assets/site-analytics.js"></script>
+  <style>
+    :root {
+      --bg: #060B16;
+      --surface: #0F1728;
+      --surface-2: #152136;
+      --text-1: #F8FAFC;
+      --text-2: #A9B4C6;
+      --text-3: #6B7A90;
+      --cyan: #68E1FD;
+      --lime: #B8FF5C;
+      --line: #24324A;
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    a { color: var(--cyan); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .narrow { max-width: 40rem; margin: 0 auto; padding: 0 24px; }
+    h1, h2, h3 { font-family: 'Sora', sans-serif; font-weight: 700; line-height: 1.12; }
+    h1 { font-size: clamp(2rem, 4.2vw, 3rem); margin-bottom: 1rem; }
+    h2 { font-size: clamp(1.45rem, 2.8vw, 2rem); margin-bottom: 0.75rem; }
+    h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem;
+    }
+    /* Scoped class — do not use bare `nav` (would pin the site footer's <nav> to top). */
+    .las-ac-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 24px;
+      background: rgba(6,11,22,.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .nav-logo { font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700; color: var(--text-1); text-decoration: none; }
+    .nav-logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 18px; font-size: 14px; font-weight: 500; }
+    .nav-links a { color: var(--text-2); text-decoration: none; }
+    .nav-links a:hover { color: var(--cyan); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer; font-family: inherit;
+      transition: transform .15s, box-shadow .15s, border-color .15s, color .15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--lime); color: #07111F;
+      box-shadow: 0 0 20px rgba(184,255,92,.2);
+    }
+    .btn-primary:hover { box-shadow: 0 0 32px rgba(184,255,92,.38); color: #07111F; }
+    .btn-ghost {
+      background: transparent; color: var(--text-1);
+      border: 1.5px solid var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+    .hero { padding: 120px 0 64px; position: relative; }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; top: -80px;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(104,225,253,.07), transparent);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; text-align: center; max-width: 48rem; margin: 0 auto; }
+    .hero-sub { color: var(--text-2); font-size: clamp(1rem, 2vw, 1.15rem); margin-bottom: 1.75rem; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 1rem; }
+    .support-line { font-size: 14px; color: var(--text-3); max-width: 32rem; margin: 0 auto; }
+    section { padding: 64px 0; border-top: 1px solid var(--line); }
+    .section-intro { text-align: center; max-width: 44rem; margin: 0 auto 48px; }
+    .section-intro p { color: var(--text-2); }
+    .offer { margin-bottom: 72px; }
+    .offer:last-of-type { margin-bottom: 0; }
+    .offer-head { margin-bottom: 1.5rem; }
+    .offer-tag {
+      display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--lime); margin-bottom: 10px;
+    }
+    .offer-tag.monthly { color: var(--cyan); }
+    .pain-h2 { font-size: clamp(1.35rem, 2.5vw, 1.75rem); margin-bottom: 0.5rem; }
+    .offer-sub { color: var(--text-2); font-size: 1.05rem; margin-bottom: 1.25rem; }
+    .prose { color: var(--text-2); }
+    .prose p { margin-bottom: 1em; }
+    .prose ul { margin: 1em 0 1em 1.2em; }
+    .prose li { margin-bottom: 0.35em; }
+    .conversion-line {
+      margin: 1.25rem 0 1.5rem; padding: 14px 18px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      color: var(--text-1); font-size: 15px;
+    }
+    .media-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin: 1.5rem 0 1rem;
+    }
+    @media (max-width: 700px) { .media-grid { grid-template-columns: 1fr; } }
+    .media-cell {
+      border-radius: var(--radius);
+      overflow: hidden; border: 1px solid var(--line);
+      background: var(--surface); aspect-ratio: 4/5;
+    }
+    button.media-cell--zoom {
+      display: block; width: 100%; height: 100%; min-height: 0;
+      padding: 0; margin: 0; border: none; background: none; cursor: zoom-in;
+      font: inherit; border-radius: inherit; color: inherit;
+    }
+    button.media-cell--zoom:focus-visible {
+      outline: 2px solid var(--cyan); outline-offset: 2px;
+    }
+    .media-cell img {
+      width: 100%; height: 100%; object-fit: cover;
+      pointer-events: none;
+    }
+    .media-cell--video { position: relative; }
+    .media-cell--video .media-expand-btn {
+      position: absolute; bottom: 10px; right: 10px; z-index: 2;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(6, 11, 22, 0.92);
+      color: var(--text-1); font-size: 12px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+    .media-cell--video .media-expand-btn:hover {
+      border-color: var(--cyan); color: var(--cyan);
+    }
+    .media-cell--video .media-expand-btn:focus-visible {
+      outline: 2px solid var(--cyan); outline-offset: 2px;
+    }
+    .media-cell video {
+      width: 100%; height: 100%; object-fit: cover; display: block; background: #000;
+    }
+    /* Portrait ad creative (9:16): keep in-layout playback; hide browser fullscreen (forces 16:9). */
+    .media-grid--ad-videos .media-cell {
+      aspect-ratio: 9 / 16;
+      max-height: min(72vh, 640px);
+      margin: 0 auto;
+      width: 100%;
+    }
+    video.ad-sample::-webkit-media-controls-fullscreen-button {
+      display: none !important;
+    }
+    .offer-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 1rem; }
+    .see-more { font-size: 14px; font-weight: 600; color: var(--cyan); text-decoration: none; }
+    .see-more:hover { text-decoration: underline; }
+    .micro { font-size: 13px; color: var(--text-3); margin-top: 0.75rem; }
+    .compare { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+    .compare-row {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 16px; padding: 20px 24px;
+      border-bottom: 1px solid var(--line); align-items: start;
+    }
+    .compare-row:last-child { border-bottom: none; }
+    @media (max-width: 640px) { .compare-row { grid-template-columns: 1fr; } }
+    .compare-row strong { color: var(--text-1); display: block; margin-bottom: 6px; }
+    .compare-row p { color: var(--text-2); font-size: 15px; margin: 0; }
+    .compare-row a { font-size: 13px; font-weight: 600; margin-top: 8px; display: inline-block; }
+    .close-band {
+      text-align: center; padding: 56px 24px;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--line); border-radius: var(--radius-lg); margin-top: 2rem;
+    }
+    .close-band p { color: var(--text-2); max-width: 36rem; margin: 0 auto 1.5rem; }
+    .close-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    footer { padding: 36px 24px; text-align: center; font-size: 14px; color: var(--text-3); border-top: 1px solid var(--line); }
+    footer a { color: var(--text-2); }
+
+    /* Lightbox — larger view without browser fullscreen (keeps 9:16 readable). */
+    .media-lightbox {
+      position: fixed; inset: 0; z-index: 10000;
+      display: flex; align-items: center; justify-content: center;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    }
+    .media-lightbox[hidden] { display: none !important; }
+    .media-lightbox__backdrop {
+      position: absolute; inset: 0; border: none; padding: 0; margin: 0;
+      background: rgba(0, 0, 0, 0.88); cursor: pointer;
+    }
+    .media-lightbox__panel {
+      position: relative; z-index: 1; max-width: 92vw; max-height: 92vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .media-lightbox__close {
+      position: absolute; top: -12px; right: -12px; z-index: 2;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--line); background: var(--surface);
+      color: var(--text-1); font-size: 22px; line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-family: inherit; padding: 0;
+    }
+    .media-lightbox__close:hover { border-color: var(--cyan); color: var(--cyan); }
+    .media-lightbox__close:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    .media-lightbox__img,
+    .media-lightbox__video {
+      display: block; max-width: 92vw; max-height: 88vh;
+      width: auto; height: auto; object-fit: contain;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+    .media-lightbox__video { background: #000; }
+    #lightboxVideo::-webkit-media-controls-fullscreen-button {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="las-ac-nav" aria-label="Primary">
+  <a href="/" class="nav-logo">Lead Agents <span>Studio</span></a>
+  <div class="nav-links">
+    <a href="/smartline/">SmartLine</a>
+    <a href="/ugc/">Full walkthrough (EN)</a>
+    <a href="/about.html">About</a>
+    <a href="https://aifashionartists.com" target="_blank" rel="noopener noreferrer">AI Fashion Artists</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">Exclusive AI creative for modern brands</p>
+    <h1>Creative that helps your business look sharper, advertise better, and show up consistently.</h1>
+    <p class="hero-sub">Premium AI creative by a Paris-trained artist with top-brand experience — built for founders, businesses, clinics, and campaigns that need more than generic content.</p>
+    <div class="hero-cta">
+      <a href="https://aifashionartists.com" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">View portfolio</a>
+      <a href="#offers" class="btn btn-primary">Choose your package</a>
+    </div>
+    <p class="support-line">Choose the bottleneck you need solved first: your brand presence, your ad creative, or your content consistency.</p>
+  </div>
+</header>
+
+<section id="offers">
+  <div class="container">
+    <div class="section-intro">
+      <h2>Three ways to use AI creative the smart way</h2>
+      <p style="margin-top:12px">Most businesses do not need “more content.” They need the right type of creative for the right business problem. Sometimes the problem is trust. Sometimes it is ad fatigue. Sometimes it is consistency. That is why these offers are packaged around what the business actually needs to fix.</p>
+    </div>
+
+    <!-- OFFER 1 -->
+    <article class="offer" id="brand-photoshoot">
+      <div class="offer-head">
+        <span class="offer-tag">One-time package</span>
+        <h2>AI Brand Photoshoot</h2>
+        <p class="pain-h2">Your business may be excellent. But online, it still has to look the part.</p>
+        <p class="offer-sub">A premium AI brand photoshoot for founders, owners, brands, clinics, and teams that need stronger visual authority without the cost and logistics of a traditional shoot.</p>
+      </div>
+      <div class="narrow prose">
+        <p>This package is for businesses that feel underrepresented by their current visuals.</p>
+        <p>The service may be premium. The expertise may be strong. The business may be excellent. But if the brand still looks generic, outdated, or visually weak, trust drops before the conversation even begins.</p>
+        <p>The AI Brand Photoshoot solves that. It creates a refined visual identity around the owner, founder, expert, or business presence — so the brand looks more current, more polished, and more credible everywhere it appears.</p>
+        <p><strong>Best for</strong></p>
+        <ul>
+          <li>founder-led brands, clinics and experts, premium service businesses</li>
+          <li>luxury / beauty / wellness</li>
+          <li>businesses that need better portraits, website visuals, or campaign presence</li>
+        </ul>
+        <p><strong>What’s included</strong></p>
+        <ul>
+          <li>creative direction; visual concept around the founder, owner, or brand</li>
+          <li>premium portraits and brand imagery; website, social, and campaign-ready assets</li>
+          <li>art-directed look and feel; commercial usage in mind</li>
+        </ul>
+        <div class="conversion-line"><strong>Make the business look as premium as it actually is.</strong></div>
+      </div>
+      <div class="container" style="max-width:900px;margin-top:1.5rem">
+        <div class="media-grid">
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open portrait sample 1 larger">
+              <img src="/assets/ai-creative-offer/photoshoot/1.png" alt="AI brand portrait sample 1" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open portrait sample 2 larger">
+              <img src="/assets/ai-creative-offer/photoshoot/2.png" alt="AI brand portrait sample 2" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open portrait sample 3 larger">
+              <img src="/assets/ai-creative-offer/photoshoot/3.png" alt="AI brand portrait sample 3" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+        </div>
+        <div class="offer-actions">
+          <a href="https://buy.stripe.com/3cI4gyekw37E7p1aqkaIM04" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Get AI Brand Photoshoot</a>
+          <a href="https://aifashionartists.com?utm_source=leadagentsstudio&amp;utm_medium=ai-creative-page&amp;utm_campaign=brand_photoshoot" class="see-more" target="_blank" rel="noopener noreferrer">See more work →</a>
+        </div>
+        <p class="micro">Best when the problem is trust, perception, or weak brand presence.</p>
+      </div>
+    </article>
+
+    <!-- OFFER 2 -->
+    <article class="offer" id="ad-creative-pack">
+      <div class="offer-head">
+        <span class="offer-tag">One-time campaign package</span>
+        <h2>Ad Creative Pack</h2>
+        <p class="pain-h2">When ads stop performing, the problem is often the creative.</p>
+        <p class="offer-sub">A campaign-ready ad pack with stronger hooks, fresher visual angles, and better creative built to give your offers new life.</p>
+      </div>
+      <div class="narrow prose">
+        <p>A lot of businesses blame targeting when performance drops. But very often, the audience is not the issue.</p>
+        <p>The creative is tired. The angles are repetitive. The visuals do not stop the scroll anymore.</p>
+        <p>The Ad Creative Pack is built for exactly that moment. It gives you a sharper creative set for paid campaigns — so you can relaunch, retest, and attack the same offer from stronger visual angles.</p>
+        <p>This is not just “more images.” It is ad-focused creative meant to help the campaign move again.</p>
+        <p><strong>Best for</strong></p>
+        <ul>
+          <li>paid ad campaigns, relaunches, offer testing</li>
+          <li>businesses with creative fatigue; brands that need stronger visual hooks</li>
+        </ul>
+        <p><strong>What’s included</strong></p>
+        <ul>
+          <li>campaign creative direction; multiple visual angles; ad-ready static creatives</li>
+          <li>headline / hook concepts; launch-ready asset set built for testing</li>
+        </ul>
+        <div class="conversion-line"><strong>Give your ads new life before you touch targeting.</strong></div>
+      </div>
+      <div class="container" style="max-width:900px;margin-top:1.5rem">
+        <div class="media-grid media-grid--ad-videos">
+          <div class="media-cell media-cell--video">
+            <video class="ad-sample" src="/assets/ai-creative-offer/ads/1.mp4" controls playsinline preload="metadata" controlsList="nofullscreen" aria-label="Ad creative sample video 1"></video>
+            <button type="button" class="media-expand-btn" data-lightbox-video="/assets/ai-creative-offer/ads/1.mp4" aria-label="Open ad sample 1 in larger viewer">Larger view</button>
+          </div>
+          <div class="media-cell media-cell--video">
+            <video class="ad-sample" src="/assets/ai-creative-offer/ads/2.mp4" controls playsinline preload="metadata" controlsList="nofullscreen" aria-label="Ad creative sample video 2"></video>
+            <button type="button" class="media-expand-btn" data-lightbox-video="/assets/ai-creative-offer/ads/2.mp4" aria-label="Open ad sample 2 in larger viewer">Larger view</button>
+          </div>
+          <div class="media-cell media-cell--video">
+            <video class="ad-sample" src="/assets/ai-creative-offer/ads/3.mp4" controls playsinline preload="metadata" controlsList="nofullscreen" aria-label="Ad creative sample video 3"></video>
+            <button type="button" class="media-expand-btn" data-lightbox-video="/assets/ai-creative-offer/ads/3.mp4" aria-label="Open ad sample 3 in larger viewer">Larger view</button>
+          </div>
+        </div>
+        <div class="offer-actions">
+          <a href="https://buy.stripe.com/fZu4gy4JW9w2aBdeGAaIM06" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Get Ad Creative Pack</a>
+          <a href="https://aifashionartists.com?utm_source=leadagentsstudio&amp;utm_medium=ai-creative-page&amp;utm_campaign=ad_pack" class="see-more" target="_blank" rel="noopener noreferrer">See more work →</a>
+        </div>
+        <p class="micro">Best when the problem is ad fatigue, weak hooks, or stale campaign visuals.</p>
+      </div>
+    </article>
+
+    <!-- OFFER 3 -->
+    <article class="offer" id="content-engine">
+      <div class="offer-head">
+        <span class="offer-tag monthly">Monthly retainer</span>
+        <h2>Content Engine</h2>
+        <p class="pain-h2">You know you need to show up consistently. You just don’t have time to create content all the time.</p>
+        <p class="offer-sub">A monthly AI content system for businesses that want a stronger ongoing presence without constant filming, planning, and design work.</p>
+      </div>
+      <div class="narrow prose">
+        <p>This package is for businesses that are not struggling with one launch. They are struggling with consistency.</p>
+        <p>They know they should be posting. They know the brand should feel alive. They know visibility matters. But content keeps slipping down the list.</p>
+        <p>The Content Engine solves that by turning AI creative into a steady branded content flow — so instead of disappearing between launches, your business keeps showing up with stronger visuals and a more consistent presence.</p>
+        <p><strong>Best for</strong></p>
+        <ul>
+          <li>founders and personal brands; active Instagram / social presence</li>
+          <li>brands that need regular campaign support; clinics and service businesses that need continuity</li>
+          <li>teams that want ongoing creative without in-house overload</li>
+        </ul>
+        <p><strong>What’s included</strong></p>
+        <ul>
+          <li>monthly content direction; branded visual content set; social-ready creative</li>
+          <li>campaign support visuals; consistent visual language; ongoing momentum without constant production stress</li>
+        </ul>
+        <div class="conversion-line"><strong>Stay visible without building a full in-house content machine.</strong></div>
+      </div>
+      <div class="container" style="max-width:900px;margin-top:1.5rem">
+        <div class="media-grid">
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open content sample 1 larger">
+              <img src="/assets/ai-creative-offer/content/1.png" alt="Content engine sample 1" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open content sample 2 larger">
+              <img src="/assets/ai-creative-offer/content/2.png" alt="Content engine sample 2" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+          <div class="media-cell">
+            <button type="button" class="media-cell--zoom" aria-label="Open content sample 3 larger">
+              <img src="/assets/ai-creative-offer/content/3.png" alt="Content engine sample 3" loading="lazy" width="400" height="500" />
+            </button>
+          </div>
+        </div>
+        <div class="offer-actions">
+          <a href="https://buy.stripe.com/9B6aEW7W837EaBdeGAaIM07" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Get Content Engine</a>
+          <a href="https://aifashionartists.com?utm_source=leadagentsstudio&amp;utm_medium=ai-creative-page&amp;utm_campaign=content_engine" class="see-more" target="_blank" rel="noopener noreferrer">See more work →</a>
+        </div>
+        <p class="micro">Best when the problem is inconsistency, content gaps, or weak brand presence between campaigns.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="container narrow">
+    <h2 style="text-align:center;margin-bottom:28px">Which one do you need first?</h2>
+    <div class="compare">
+      <div class="compare-row">
+        <div><strong>AI Brand Photoshoot</strong></div>
+        <div>
+          <p>When your business needs to look more premium and trustworthy.</p>
+          <a href="https://buy.stripe.com/3cI4gyekw37E7p1aqkaIM04" target="_blank" rel="noopener noreferrer">Checkout →</a>
+        </div>
+      </div>
+      <div class="compare-row">
+        <div><strong>Ad Creative Pack</strong></div>
+        <div>
+          <p>When your campaigns need fresher creative and stronger hooks.</p>
+          <a href="https://buy.stripe.com/fZu4gy4JW9w2aBdeGAaIM06" target="_blank" rel="noopener noreferrer">Checkout →</a>
+        </div>
+      </div>
+      <div class="compare-row">
+        <div><strong>Content Engine</strong></div>
+        <div>
+          <p>When your business needs to show up consistently without constant production.</p>
+          <a href="https://buy.stripe.com/9B6aEW7W837EaBdeGAaIM07" target="_blank" rel="noopener noreferrer">Checkout →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container narrow">
+    <h2 style="text-align:center">Start with the creative bottleneck that is costing you the most.</h2>
+    <p style="text-align:center;color:var(--text-2);margin:16px 0 0;max-width:36rem;margin-left:auto;margin-right:auto">
+      If the brand looks weak, start with the photoshoot. If the ads are tired, start with the ad pack. If the business keeps disappearing between pushes, start with the content engine. If you already know you need something more custom, we can scope that too.
+    </p>
+    <div class="close-band">
+      <div class="close-btns">
+        <a href="https://buy.stripe.com/3cI4gyekw37E7p1aqkaIM04" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Brand Photoshoot</a>
+        <a href="https://buy.stripe.com/fZu4gy4JW9w2aBdeGAaIM06" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Ad Creative Pack</a>
+        <a href="https://buy.stripe.com/9B6aEW7W837EaBdeGAaIM07" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Content Engine</a>
+        <a href="https://aifashionartists.com" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View portfolio</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="las-site-footer-mount"></div>
+
+<div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged media" hidden>
+  <button type="button" class="media-lightbox__backdrop" data-lightbox-close tabindex="-1" aria-label="Close viewer"></button>
+  <div class="media-lightbox__panel">
+    <button type="button" class="media-lightbox__close" data-lightbox-close aria-label="Close">&times;</button>
+    <img id="lightboxImg" class="media-lightbox__img" alt="" hidden />
+    <video id="lightboxVideo" class="media-lightbox__video" controls playsinline controlsList="nofullscreen" preload="metadata" hidden></video>
+  </div>
+</div>
+
+<script>
+(function () {
+  var lb = document.getElementById('mediaLightbox');
+  var lbImg = document.getElementById('lightboxImg');
+  var lbVid = document.getElementById('lightboxVideo');
+  var prevFocus = null;
+
+  function pauseInlineAds() {
+    document.querySelectorAll('video.ad-sample').forEach(function (v) { v.pause(); });
+  }
+
+  function openImage(src, alt) {
+    prevFocus = document.activeElement;
+    lbVid.pause();
+    lbVid.removeAttribute('src');
+    lbVid.load();
+    lbVid.hidden = true;
+    lbImg.src = src;
+    lbImg.alt = alt || '';
+    lbImg.hidden = false;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lb.querySelector('.media-lightbox__close').focus();
+  }
+
+  function openVideo(src) {
+    prevFocus = document.activeElement;
+    lbImg.removeAttribute('src');
+    lbImg.hidden = true;
+    pauseInlineAds();
+    lbVid.hidden = false;
+    lbVid.src = src;
+    lbVid.load();
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lb.querySelector('.media-lightbox__close').focus();
+  }
+
+  function closeLightbox() {
+    lb.hidden = true;
+    document.body.style.overflow = '';
+    lbVid.pause();
+    lbVid.removeAttribute('src');
+    lbVid.load();
+    lbImg.removeAttribute('src');
+    lbImg.alt = '';
+    if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
+  }
+
+  document.querySelectorAll('button.media-cell--zoom').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var img = btn.querySelector('img');
+      if (!img) return;
+      openImage(img.currentSrc || img.src, img.alt || '');
+    });
+  });
+
+  document.querySelectorAll('.media-expand-btn[data-lightbox-video]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var src = btn.getAttribute('data-lightbox-video');
+      if (src) openVideo(src);
+    });
+  });
+
+  document.querySelectorAll('video.ad-sample').forEach(function (v) {
+    v.addEventListener('dblclick', function (e) {
+      e.preventDefault();
+      var src = v.currentSrc || v.src;
+      if (src) openVideo(src);
+    });
+  });
+
+  lb.addEventListener('click', function (e) {
+    if (e.target.hasAttribute('data-lightbox-close')) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !lb.hidden) closeLightbox();
+  });
+})();
+</script>
+<script src="/assets/site-footer.js" defer></script>
+
+</body>
+</html>

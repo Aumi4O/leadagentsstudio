@@ -1,0 +1,15 @@
+.DS_Store
+.cursor/
+
+# Local archives / heavy media not needed for Pages (site ships from public/)
+leadagentsstudio-site.zip
+SMARTLINE_LEA_DIALOGUE_FINAL.mp4
+bg-video.mp4
+video1.mp4
+video2.mp4
+
+# Wrangler local state
+.wrangler/
+
+# Nested repo — do not commit
+public/.git/

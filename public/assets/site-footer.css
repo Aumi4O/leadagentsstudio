@@ -1,0 +1,82 @@
+/* Lead Agents Studio — shared site footer (loaded on all pages) */
+.las-site-footer {
+  background: #060b16;
+  color: #a9b4c6;
+  border-top: 1px solid #24324a;
+  padding: 2rem 1.25rem 2.5rem;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-top: auto;
+}
+.las-site-footer a {
+  color: #68e1fd;
+  text-decoration: none;
+}
+.las-site-footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.las-site-footer__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+.las-site-footer__brand {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+}
+.las-site-footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  justify-content: center;
+  align-items: center;
+}
+.las-site-footer__contact a[data-las-accent="1"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(184, 255, 92, 0.12);
+  color: #b8ff5c;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(184, 255, 92, 0.35);
+}
+.las-site-footer__contact a[data-las-accent="1"]:hover {
+  background: rgba(184, 255, 92, 0.2);
+  text-decoration: none;
+}
+.las-site-footer__nav,
+.las-site-footer__policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: center;
+}
+.las-site-footer__policies {
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(36, 50, 74, 0.9);
+  width: 100%;
+  max-width: 42rem;
+}
+.las-site-footer__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7a90;
+  width: 100%;
+}
+.las-site-footer__copy {
+  font-size: 12px;
+  color: #6b7a90;
+  margin: 0;
+}
