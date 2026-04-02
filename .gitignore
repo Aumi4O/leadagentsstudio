@@ -1,12 +1,12 @@
 .DS_Store
 .cursor/
 
-# Local archives / heavy media not needed for Pages (site ships from public/)
+# Local archives / heavy media (repo root only — public/assets copies ship with Pages)
 leadagentsstudio-site.zip
 SMARTLINE_LEA_DIALOGUE_FINAL.mp4
-bg-video.mp4
-video1.mp4
-video2.mp4
+/bg-video.mp4
+/video1.mp4
+/video2.mp4
 
 # Wrangler local state
 .wrangler/

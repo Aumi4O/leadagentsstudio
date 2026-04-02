@@ -9,488 +9,609 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Lead Agents Studio — AI Systems, Creative &amp; Conversion Tools</title>
-    <meta name="description" content="Five ways to make your business faster, smarter, and easier to buy from: SmartLine, agency white-label, real estate, Lead Agents Studio full system, and AI Creative + Ad Packs.">
+    <title>Lead Agents Studio — AI Follow-Up That Books</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="/assets/site-footer.css">
-    <style>
-        :root {
-            --bg: #060B16;
-            --surface: #0F1728;
-            --surface-2: #152136;
-            --text-1: #F8FAFC;
-            --text-2: #A9B4C6;
-            --text-3: #6B7A90;
-            --cyan: #68E1FD;
-            --lime: #B8FF5C;
-            --line: #24324A;
-            --radius: 12px;
-            --radius-lg: 20px;
-        }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
-            background: var(--bg);
-            color: var(--text-1);
-            font-family: 'Inter', system-ui, sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        a { color: inherit; text-decoration: none; }
-        button { cursor: pointer; border: none; font-family: inherit; }
-
-        h1, h2, h3 { font-family: 'Sora', sans-serif; line-height: 1.1; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-        /* Nav */
-        .las-home-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 16px 24px;
-            background: rgba(6, 11, 22, 0.88);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .las-home-nav__brand {
-            font-family: 'Sora', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-1);
-        }
-        .las-home-nav__brand span { color: var(--cyan); }
-        .las-home-nav__links {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-        .las-home-nav__links a {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-2);
-        }
-        .las-home-nav__links a:hover { color: var(--cyan); }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1;
-            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, color 0.15s;
-        }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-primary {
-            background: var(--lime);
-            color: #07111F;
-            box-shadow: 0 0 24px rgba(184, 255, 92, 0.2);
-        }
-        .btn-primary:hover { box-shadow: 0 0 36px rgba(184, 255, 92, 0.4); }
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-1);
-            border: 1.5px solid var(--line);
-        }
-        .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
-
-        /* Hero */
-        .las-hero {
-            padding: 160px 0 88px;
-            position: relative;
-            overflow: hidden;
-        }
-        .las-hero__glow {
-            position: absolute;
-            top: -120px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: min(900px, 100vw);
-            height: 480px;
-            background: radial-gradient(ellipse at center, rgba(104, 225, 253, 0.09) 0%, transparent 65%);
-            pointer-events: none;
-        }
-        .las-hero__inner {
-            position: relative;
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .las-eyebrow {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--cyan);
-            margin-bottom: 16px;
-        }
-        .las-hero__h1 {
-            font-size: clamp(2rem, 5vw, 3.25rem);
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #F8FAFC 55%, #68E1FD 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .las-hero__sub {
-            font-size: clamp(16px, 2.2vw, 18px);
-            color: var(--text-2);
-            line-height: 1.65;
-            margin-bottom: 32px;
-        }
-        .las-hero__ctas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        /* Sections */
-        main { flex: 1; }
-        .las-section {
-            padding: 80px 0;
-            border-top: 1px solid var(--line);
-        }
-        .las-section__head {
-            text-align: center;
-            max-width: 640px;
-            margin: 0 auto 48px;
-        }
-        .las-section__head h2 {
-            font-size: clamp(1.65rem, 3.5vw, 2.35rem);
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        .las-section__head p {
-            color: var(--text-2);
-            font-size: 17px;
-            line-height: 1.65;
-        }
-
-        /* Offer cards */
-        .las-offers {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 640px) {
-            .las-offers { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1024px) {
-            .las-offers { grid-template-columns: repeat(3, 1fr); }
-        }
-        .offer-card {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: var(--radius-lg);
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        a.offer-card:hover {
-            border-color: rgba(104, 225, 253, 0.35);
-            box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.12), 0 24px 48px rgba(0, 0, 0, 0.35);
-        }
-        .offer-card__label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-3);
-            margin-bottom: 10px;
-        }
-        .offer-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-1);
-        }
-        .offer-card__one {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--cyan);
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .offer-card__copy {
-            font-size: 14px;
-            color: var(--text-2);
-            line-height: 1.6;
-            flex: 1;
-            margin-bottom: 14px;
-        }
-        .offer-card__trust {
-            font-size: 13px;
-            color: var(--text-3);
-            line-height: 1.5;
-            margin-bottom: 18px;
-        }
-        .offer-card__cta {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--lime);
-        }
-        a.offer-card:hover .offer-card__cta { text-decoration: underline; text-underline-offset: 3px; }
-
-        /* Why us */
-        .las-why {
-            background: var(--surface-2);
-        }
-        .las-why__inner {
-            max-width: 520px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .las-why__inner h2 {
-            font-size: clamp(1.5rem, 3vw, 2.1rem);
-            margin-bottom: 24px;
-        }
-        .las-why__inner p {
-            color: var(--text-2);
-            font-size: 16px;
-            line-height: 1.75;
-        }
-        .las-why__inner p + p { margin-top: 1rem; }
-        .las-why__inner strong { color: var(--text-1); }
-
-        /* LAS anchor section (Offer 4 target) */
-        .las-strip {
-            padding: 64px 0;
-            border-top: 1px solid var(--line);
-        }
-        .las-strip__box {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: var(--radius-lg);
-            padding: 40px 28px;
-            text-align: center;
-            max-width: 640px;
-            margin: 0 auto;
-        }
-        .las-strip__box h2 { margin-bottom: 12px; }
-        .las-strip__box .offer-card__one { margin-bottom: 14px; }
-        .las-strip__box p { color: var(--text-2); font-size: 16px; line-height: 1.65; }
-
-        /* CTA band */
-        .las-cta-band {
-            background: linear-gradient(180deg, var(--surface-2) 0%, var(--bg) 100%);
-        }
-        .las-cta-band__inner {
-            text-align: center;
-            max-width: 520px;
-            margin: 0 auto;
-        }
-        .las-cta-band__inner h2 { margin-bottom: 20px; }
-        .las-cta-band__inner .copy {
-            color: var(--text-2);
-            font-size: 16px;
-            line-height: 1.75;
-            text-align: left;
-        }
-        .las-cta-band__inner .copy p + p { margin-top: 0.65rem; }
-        .las-cta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 28px;
-        }
-
-        .home-footer-tagline {
-            text-align: center;
-            padding: 32px 24px 8px;
-            max-width: 480px;
-            margin: 0 auto;
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-3);
-        }
-        .home-footer-tagline strong {
-            display: block;
-            font-family: 'Sora', sans-serif;
-            font-size: 16px;
-            color: var(--text-1);
-            margin-bottom: 6px;
-        }
-
-        /* Language switcher — dark */
-        .lang-switcher {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            gap: 8px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            padding: 8px;
-            border-radius: 100px;
-        }
-        .lang-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: background 0.2s, transform 0.2s;
-        }
-        .lang-btn:hover { background: var(--surface-2); transform: scale(1.08); }
-        .lang-btn.active {
-            background: rgba(104, 225, 253, 0.15);
-            box-shadow: 0 0 0 1px rgba(104, 225, 253, 0.4);
-        }
-    </style>
 </head>
 <body>
-    <header class="las-home-nav">
-        <a href="/" class="las-home-nav__brand">Lead <span>Agents</span> Studio</a>
-        <div class="las-home-nav__links">
-            <a href="/smartline/">SmartLine</a>
-            <a href="/about.html">About</a>
-            <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:10px 20px;font-size:14px;">Book a Call</a>
+    <!-- Animated Light Beams -->
+    <div class="light-beams">
+        <div class="beam beam-cyan"></div>
+        <div class="beam beam-pink"></div>
+        <div class="beam beam-blue"></div>
+    </div>
+
+    <!-- Video Background (subtle) -->
+    <div class="video-bg-container">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="/assets/bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Sticky Top Bar -->
+    <div class="sticky-bar">
+        <div class="sticky-bar-content">
+            <span class="sticky-text">Stop paying for leads you can't reach.</span>
+            <span class="sticky-cta">Try the follow-up agent on your own phone → WhatsApp / SMS / Call in under 60 seconds.</span>
+            <button class="btn btn-sticky" onclick="scrollToDemo()">
+                <span class="btn-glow"></span>
+                Run the live demo
+            </button>
         </div>
-    </header>
+    </div>
 
-    <main>
-        <section class="las-hero" id="hero">
-            <div class="las-hero__glow" aria-hidden="true"></div>
-            <div class="container las-hero__inner">
-                <p class="las-eyebrow">AI systems, creative, and conversion tools</p>
-                <h1 class="las-hero__h1">Five ways to make your business faster, smarter, and easier to buy from.</h1>
-                <p class="las-hero__sub">Choose the offer that solves your biggest bottleneck first — conversations, leads, creative, ads, or a full growth system.</p>
-                <div class="las-hero__ctas">
-                    <button type="button" class="btn btn-primary" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">Explore the 5 Offers</button>
-                    <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Book a Call</a>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="brand-badge">
+                    <span class="badge-icon">◆</span>
+                    <span>Lead Agents Studio</span>
+                </div>
+                <h1 class="hero-headline">
+                    <span class="line-1">Clinics don't lose money on ads.</span>
+                    <span class="line-2">They lose it in the <em class="gradient-text">15 minutes</em> after the lead.</span>
+                </h1>
+                <p class="hero-subhead">
+                    Lead Agents Studio installs an always-on follow-up agent that <strong>replies fast</strong>, <strong>qualifies politely</strong>, and <strong>books consultations</strong> on WhatsApp, SMS, and phone calls—then keeps following up until the lead <strong>books</strong> or <strong>opts out</strong>.
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">Injectables</span>
+                    <span class="tag">Laser</span>
+                    <span class="tag">Skincare</span>
+                    <span class="tag">Medspa</span>
+                    <span class="tag">High-intent Funnels</span>
+                    <span class="tag">Clinics tired of missed calls</span>
+                </div>
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
+                        <span class="btn-shine"></span>
+                        <span class="btn-icon">▶</span>
+                        Run the live demo on your phone
+                    </button>
+                    <p class="cta-microcopy">You'll receive demo messages and/or a demo call. Opt out anytime (STOP).<br>Demo is for booking & qualification workflows only—<strong>not medical advice</strong>.</p>
+                </div>
+                <button class="btn btn-ghost" onclick="scrollToMechanism()">
+                    Show me what the agent does "behind the scenes"
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+            <div class="hero-video">
+                <div class="phone-mockup">
+                    <div class="phone-glow"></div>
+                    <div class="phone-frame">
+                        <video class="phone-video" autoplay muted loop playsinline>
+                            <source src="/assets/video1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="phone-reflection"></div>
                 </div>
             </div>
-        </section>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
 
-        <section class="las-section" id="what-we-build">
-            <div class="container">
-                <div class="las-section__head">
-                    <h2>Start with the leak that costs you the most.</h2>
-                    <p>Each offer solves a different bottleneck. Pick the one that fits where your business is losing time, leads, trust, or momentum.</p>
-                </div>
-                <div class="las-offers">
-                    <a class="offer-card" href="/smartline/">
-                        <span class="offer-card__label">Offer 1</span>
-                        <h3>SmartLine</h3>
-                        <p class="offer-card__one">Your AI voice agent for calls, SMS, and WhatsApp.</p>
-                        <p class="offer-card__copy">Answers leads, follows up, qualifies, and keeps warm conversations from dying while your team is busy, closed, or off the clock.</p>
-                        <p class="offer-card__trust">Powered by ChatGPT. Trained on your business.</p>
-                        <span class="offer-card__cta">See SmartLine →</span>
-                    </a>
-                    <a class="offer-card" href="https://smartline.leadagentsstudio.com/agency/">
-                        <span class="offer-card__label">Offer 2</span>
-                        <h3>SmartLine for Agencies</h3>
-                        <p class="offer-card__one">A white-label AI voice agent offer under your brand.</p>
-                        <p class="offer-card__copy">Give every client their own voice agent with client accounts under your agency, so you stop selling one-off AI builds and start selling a cleaner recurring offer.</p>
-                        <p class="offer-card__trust">Give every client a ChatGPT-powered voice agent under your brand.</p>
-                        <span class="offer-card__cta">See Agency Offer →</span>
-                    </a>
-                    <a class="offer-card" href="/smartline/real-estate.html">
-                        <span class="offer-card__label">Offer 3</span>
-                        <h3>SmartLine for Real Estate</h3>
-                        <p class="offer-card__one">The AI voice agent built for buyer and seller inquiries.</p>
-                        <p class="offer-card__copy">Answers property questions, follows up fast, qualifies interest, books next steps, and helps stop commissions from slipping away in silence.</p>
-                        <p class="offer-card__trust">Powered by ChatGPT and trained on your listings, market, and process.</p>
-                        <span class="offer-card__cta">See Real Estate Offer →</span>
-                    </a>
-                    <a class="offer-card" href="#lead-agents-studio">
-                        <span class="offer-card__label">Offer 4</span>
-                        <h3>Lead Agents Studio</h3>
-                        <p class="offer-card__one">A done-for-you AI growth system.</p>
-                        <p class="offer-card__copy">Combines avatar video, UGC-style creative, ad assets, and SmartLine follow-up into one system that helps businesses attract more attention and convert more of it.</p>
-                        <span class="offer-card__cta">See Lead Agents Studio →</span>
-                    </a>
-                    <a class="offer-card" href="/ai-creative-offer.html">
-                        <span class="offer-card__label">Offer 5</span>
-                        <h3>AI Creative + Ad Packs</h3>
-                        <p class="offer-card__one">Premium creative for brands that need stronger visuals and better ads.</p>
-                        <p class="offer-card__copy">Exclusive creative direction by a Paris-trained artist with top-brand experience — for brand photoshoots, ad creative, and ongoing content systems.</p>
-                        <span class="offer-card__cta">See Creative Offer →</span>
-                    </a>
+    <!-- Video #1 Block -->
+    <section class="video-section" id="video-walkthrough">
+        <div class="container">
+            <h2 class="section-title center">Watch how clinics stop the leak</h2>
+            <p class="section-subtitle center">90 seconds</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <div class="video-glow-ring"></div>
+                    <video autoplay muted loop playsinline>
+                        <source src="/assets/video1.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
-        </section>
+            <p class="video-caption">A short walkthrough of how the follow-up agent turns inquiries into booked consultations—without you chasing people.</p>
+        </div>
+    </section>
 
-        <section class="las-strip" id="lead-agents-studio">
-            <div class="container">
-                <div class="las-strip__box">
-                    <h2>Lead Agents Studio</h2>
-                    <p class="offer-card__one" style="margin-bottom:0;">A done-for-you AI growth system.</p>
-                    <p style="margin-top:16px;">Combines avatar video, UGC-style creative, ad assets, and SmartLine follow-up into one system that helps businesses attract more attention and convert more of it.</p>
-                    <div class="las-cta-row" style="margin-top:24px;">
-                        <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
-                        <a href="mailto:support@leadagentsstudio.com?subject=Lead%20Agents%20Studio%20inquiry" class="btn btn-ghost">Email us</a>
+    <!-- Pain Story Section -->
+    <section class="pain-story" id="pain">
+        <div class="container">
+            <div class="story-content">
+                <p class="story-lead">If you run a clinic, you already know this moment:</p>
+                <div class="story-block">
+                    <p>A lead comes in. They're warm. They want timing and price range.</p>
+                    <p class="then">Then…</p>
+                    <p>Your admin is busy. Or it's after hours. Or someone "will reply later."</p>
+                </div>
+                <div class="story-block">
+                    <p>So the lead does what humans do:</p>
+                    <p class="highlight">They message the next clinic. And the next. And they book whoever replies first.</p>
+                </div>
+                <div class="truth-box">
+                    <div class="truth-light"></div>
+                    <span class="truth-label">One-line truth:</span>
+                    <p class="truth-text">Speed is the new location.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mechanism Section -->
+    <section class="mechanism" id="mechanism">
+        <div class="container">
+            <div class="mechanism-header">
+                <h2 class="section-title center">We don't "add a chatbot."</h2>
+                <p class="section-subtitle large center">We install a follow-up loop.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">01</div>
+                    <h3>Instant response</h3>
+                    <p>Every lead gets an answer immediately (WhatsApp/SMS), or a call when appropriate.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">02</div>
+                    <h3>Qualification (politely)</h3>
+                    <p>The agent asks only what matters: what they want, timing, constraints, readiness.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">03</div>
+                    <h3>Booking (no back-and-forth)</h3>
+                    <p>It offers time slots, confirms, and sends reminders + easy reschedule.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">04</div>
+                    <h3>Quiet leads don't disappear</h3>
+                    <p>If they go silent, the system follows up across channels in a human way—then stops.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-light"></div>
+                    <div class="step-number">05</div>
+                    <h3>Human handoff with context</h3>
+                    <p>When a human is needed, the agent hands off with full context (no "what did they want?").</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-wrapper">
+                <div class="demo-header">
+                    <h2 class="section-title center">Try it like a real lead.</h2>
+                    <p class="section-subtitle center">Then view it like an owner.</p>
+                    <p class="demo-description">Enter your phone + email. You'll receive the exact experience your prospects get.<br>After the demo, you'll see what the system logged, scored, and scheduled.</p>
+                </div>
+                <div class="demo-form-container">
+                    <div class="form-light"></div>
+                    <form class="demo-form" id="demoForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Anna" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+972..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="owner@clinic.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Choose your demo channel</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="whatsapp" checked>
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">WhatsApp <span class="recommended">(recommended)</span></span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="sms">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">SMS</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="channel" value="call">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">Phone call <span class="duration">(60 seconds)</span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="consent" required>
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">I consent to receive demo messages and/or a demo call from Lead Agents Studio. Reply STOP to opt out. This is not medical advice.</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-xl btn-full">
+                            <span class="btn-shine"></span>
+                            <span class="btn-icon">◆</span>
+                            Start the live demo
+                        </button>
+                        <p class="form-microcopy">You'll get the first message in under a minute. Reply naturally—like a real patient inquiry.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video #2 Section -->
+    <section class="video-section alt" id="video-ugc">
+        <div class="container">
+            <h2 class="section-title center">"We stopped chasing leads."</h2>
+            <p class="section-subtitle center">UGC-style story, 60–75 sec</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large pink">
+                    <div class="video-glow-ring pink"></div>
+                    <video autoplay muted loop playsinline>
+                        <source src="/assets/video2.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <p class="video-caption">Dramatized demo based on typical clinic workflows.</p>
+        </div>
+    </section>
+
+    <!-- Video #3 Section -->
+    <section class="video-section" id="video-testimonial">
+        <div class="container">
+            <h2 class="section-title center">"This became our always-on front desk."</h2>
+            <p class="section-subtitle center">Story + Proof, 75–90 sec</p>
+            <div class="video-container-large">
+                <div class="video-placeholder-large">
+                    <div class="video-glow-ring"></div>
+                    <div class="video-placeholder-inner">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <span class="video-label">Video #3</span>
+                        <span class="video-title">Testimonial + Proof Montage</span>
                     </div>
                 </div>
             </div>
-        </section>
+            <p class="video-caption">Screens redacted for privacy. Qualification + booking only (not medical advice).</p>
+        </div>
+    </section>
 
-        <section class="las-section las-why" id="why-us">
-            <div class="container">
-                <div class="las-why__inner">
-                    <h2>Not AI for the sake of AI. AI that fixes the bottleneck.</h2>
-                    <p>Some businesses need faster conversations.<br>Some need a better agency offer.<br>Some need a stronger real-estate front line.<br>Some need a full growth engine.<br>Some need better creative and ads.</p>
-                    <p>The point is not to buy more tools.</p>
-                    <p><strong>The point is to make the business more modern where it matters most.</strong></p>
+    <!-- What's Included Section -->
+    <section class="included" id="included">
+        <div class="container">
+            <h2 class="section-title center">What's included in the $5,000 installation</h2>
+            <div class="included-grid">
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">A</span>
+                        <h3>Follow-Up Agent Installation</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>WhatsApp + SMS + phone call flows installed</li>
+                        <li>Qualification scripts tailored to your services + tone</li>
+                        <li>Booking offer logic (slots, confirmations, reminders, reschedules)</li>
+                        <li>Quiet-lead recovery sequences (multi-channel)</li>
+                        <li>Opt-out + consent messaging built-in</li>
+                        <li>Human handoff notes (so your staff sees context instantly)</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">B</span>
+                        <h3>Creative Engine Setup</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Hooks + angles + short script variations for your offer</li>
+                        <li>Avatar + UGC-style script templates you can reuse</li>
+                        <li>"Owner View" reveal scripts that make the demo close</li>
+                    </ul>
+                </div>
+                <div class="included-card">
+                    <div class="card-header">
+                        <span class="card-letter">C</span>
+                        <h3>Testing + Launch</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Edge-case testing (no reply, price objection, "who is the doctor?", "I'll think")</li>
+                        <li>Soft launch + reporting setup</li>
+                        <li>Go-live checklist for your admin team</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="las-section las-cta-band" id="start-here">
-            <div class="container">
-                <div class="las-cta-band__inner">
-                    <h2>Not sure where to start?</h2>
-                    <div class="copy">
-                        <p>If leads are going cold, start with SmartLine.</p>
-                        <p>If you run an agency, start with the agency offer.</p>
-                        <p>If you sell property, start with real estate.</p>
-                        <p>If you need creative plus follow-up, start with Lead Agents Studio.</p>
-                        <p>If you need stronger visuals and ads, start with the creative offer.</p>
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2 class="section-title center">Go live in 7 days.</h2>
+            <div class="timeline-track">
+                <div class="timeline-item">
+                    <div class="day">Day 1</div>
+                    <p>Capture your offer + tone + boundaries</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">Day 2–3</div>
+                    <p>Connect channels + booking rules</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">Day 4–5</div>
+                    <p>Test conversations + edge cases</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">Day 6</div>
+                    <p>Soft launch</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="day">Day 7</div>
+                    <p>Full launch + reporting</p>
+                </div>
+            </div>
+            <p class="timeline-note">No disruption. Your team keeps working. The system starts catching what you currently miss.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="pricing-hero">
+                <div class="price-light"></div>
+                <h2 class="price-amount">$5,000</h2>
+                <p class="price-label">one-time installation</p>
+            </div>
+            <div class="pricing-cta">
+                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-xxl">
+                    <span class="btn-shine"></span>
+                    <span class="btn-icon">◆</span>
+                    Pay $5,000 setup
+                </a>
+                <p class="bnpl-note">Installments may be available <strong>at checkout</strong> via <strong>Affirm / Afterpay / Klarna</strong> (availability depends on country, currency, and buyer eligibility).</p>
+                <div class="escrow-option">
+                    <p>Prefer maximum safety?</p>
+                    <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Pay via Escrow</a>
+                </div>
+            </div>
+
+            <!-- Ongoing Monthly Cost -->
+            <div class="pricing-details">
+                <div class="pricing-block">
+                    <h3>Ongoing monthly cost <span class="badge-small">pay-as-you-go</span></h3>
+                    <p class="pricing-intro">Your monthly running costs are usage-based and billed to the card on file (pay only for what you use).</p>
+                    <div class="usage-includes">
+                        <h4>What's included in usage billing</h4>
+                        <ul>
+                            <li>Messaging + calls (WhatsApp / SMS / phone minutes)</li>
+                            <li>AI conversation processing ("brain" + message scripting)</li>
+                            <li>Video generation seconds (for new creatives)</li>
+                            <li>Avatar video subscription (if you use it)</li>
+                        </ul>
+                        <p class="margin-note"><strong>Important:</strong> All usage items are billed at vendor list price <strong>+ 20% platform margin</strong> (covers monitoring, orchestration, error handling, and consolidated billing).</p>
                     </div>
-                    <div class="las-cta-row">
-                        <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a Call</a>
-                        <button type="button" class="btn btn-ghost" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">Explore the 5 Offers</button>
+                </div>
+
+                <!-- Optional Management -->
+                <div class="pricing-block">
+                    <h3>Optional management <span class="badge-small">two ways</span></h3>
+                    <div class="management-options">
+                        <div class="option-card">
+                            <div class="option-header">
+                                <span class="option-badge">Option 1</span>
+                                <span class="option-price">Included</span>
+                            </div>
+                            <h4>Self-Managed</h4>
+                            <p>You get the system + scripts + reporting. Your team runs day-to-day.</p>
+                        </div>
+                        <div class="option-card featured">
+                            <div class="option-header">
+                                <span class="option-badge">Option 2</span>
+                                <span class="option-price">+$500/mo</span>
+                            </div>
+                            <h4>Managed by us</h4>
+                            <ul>
+                                <li>Weekly tuning of questions, follow-ups, and conversion paths</li>
+                                <li>Deliverability checks (messages delivered vs. blocked)</li>
+                                <li>Ongoing objection-path improvements</li>
+                                <li>Performance reporting + fixes</li>
+                            </ul>
+                            <p class="option-note">You can enable it any time after setup</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <p class="home-footer-tagline"><strong>Lead Agents Studio</strong> AI systems, voice agents, creative, and growth infrastructure for businesses that do not want to get left behind.</p>
+    <!-- Rate Card Section -->
+    <section class="rate-card" id="rates">
+        <div class="container">
+            <h2 class="section-title center">Usage Rate Card</h2>
+            <p class="section-subtitle center">Simple + transparent (20% platform margin included)</p>
+            
+            <div class="rates-grid">
+                <div class="rate-category">
+                    <h3>Messaging & Calls</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">WhatsApp messages</span>
+                            <span class="rate-price">$0.006 <span class="rate-unit">per message</span></span>
+                            <span class="rate-note">Sent or received. Network template fees may apply outside service window.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">SMS (US example)</span>
+                            <span class="rate-price">~$0.01 <span class="rate-unit">per message</span></span>
+                            <span class="rate-note">International destinations vary significantly.</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Voice calls (outbound)</span>
+                            <span class="rate-price">~$0.017 <span class="rate-unit">per minute</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Voice calls (inbound)</span>
+                            <span class="rate-price">~$0.010 <span class="rate-unit">per minute</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>AI Conversation Processing</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Input tokens</span>
+                            <span class="rate-price">$0.30 <span class="rate-unit">per 1M tokens</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Output tokens</span>
+                            <span class="rate-price">$2.40 <span class="rate-unit">per 1M tokens</span></span>
+                            <span class="rate-note">Tokens = the "units" used to generate replies. You'll see usage in your dashboard.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Video Generation</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">AI video (720p)</span>
+                            <span class="rate-price">$0.12 <span class="rate-unit">per second</span></span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-name">Higher quality tiers</span>
+                            <span class="rate-price">$0.36–$0.60 <span class="rate-unit">per second</span></span>
+                            <span class="rate-note">Depends on output quality selected.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rate-category">
+                    <h3>Avatar Video Subscription</h3>
+                    <div class="rate-items">
+                        <div class="rate-item">
+                            <span class="rate-name">Avatar video tool</span>
+                            <span class="rate-price">~$35 <span class="rate-unit">per month/seat</span></span>
+                            <span class="rate-note">Exact tier depends on resolution/features.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Optional Zoom Section -->
+    <section class="zoom-section" id="zoom">
+        <div class="container">
+            <h2 class="section-title center">Prefer a human confirmation?</h2>
+            <p class="zoom-description">Book a 15-minute implementation review (not a sales pitch):<br>we'll confirm your offers, tone, and booking rules.</p>
+            <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book implementation review</a>
+            <p class="zoom-note">Only if you want it. Most clinics start after the live demo.</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title center">FAQ</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Will it feel robotic?</h3>
+                    <p>No. It's written like a great front desk: short, clear, polite. It escalates to a human when needed.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Does it give medical advice?</h3>
+                    <p>No. It qualifies and books. That's it.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can it handle multiple services / languages?</h3>
+                    <p>Yes. The script branches by service and language.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How do we know it's working?</h3>
+                    <p>You'll see response time, lead stage, booking rate, recovered leads, and handoff outcomes.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I control usage spend?</h3>
+                    <p>Yes. We can set a monthly usage cap and alerts, and you'll get a monthly usage summary.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="support-section" id="support">
+        <div class="container">
+            <div class="support-card">
+                <div class="support-icon">💬</div>
+                <h2 class="section-title center">Have Questions? Contact Support</h2>
+                <p class="support-text">Questions about the demo, setup, billing, or anything else? Our team is here to help.</p>
+                <a href="mailto:support@leadagentsstudio.com" class="btn btn-primary btn-lg">
+                    <span class="btn-shine"></span>
+                    Email support@leadagentsstudio.com
+                </a>
+                <p class="support-response">We typically respond within 24 hours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Close Section -->
+    <section class="final-close" id="close">
+        <div class="container">
+            <div class="close-light"></div>
+            <h2 class="close-headline">Run the demo now.</h2>
+            <p class="close-subline">If it doesn't feel like your future front desk—walk away.</p>
+            <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
+                <span class="btn-shine"></span>
+                <span class="btn-icon">▶</span>
+                Start live demo
+            </button>
+        </div>
+    </section>
+
+    <div class="container" style="padding:1.5rem 1rem 0;text-align:center">
+        <p class="footer-disclaimer">This is a demonstration of lead qualification and booking workflows. Not medical advice.</p>
+    </div>
     <div id="las-site-footer-mount"></div>
 
-    <div class="lang-switcher" aria-label="Language">
-        <a href="/" class="lang-btn active" title="English">🇺🇸</a>
-        <a href="/ru/" class="lang-btn" title="Русский">🇷🇺</a>
-        <a href="/he/" class="lang-btn" title="עברית">🇮🇱</a>
+    <!-- Post-Submit Demo Panel -->
+    <div class="demo-panel" id="demoPanel">
+        <div class="panel-content">
+            <button class="panel-close" onclick="closeDemoPanel()">×</button>
+            <div class="panel-icon">✅</div>
+            <h2>Demo started. Now check your phone.</h2>
+            <div class="panel-steps">
+                <div class="panel-step">
+                    <span class="step-num">1</span>
+                    <p>Check WhatsApp/SMS (or answer the call). First message arrives in under a minute.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">2</span>
+                    <p>Reply like a real inquiry (short answers are perfect).</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">3</span>
+                    <p>When it books a slot, type <strong>SHOW OWNER VIEW</strong> to see what the system captured.</p>
+                </div>
+                <div class="panel-step">
+                    <span class="step-num">4</span>
+                    <p>If you want to start: pay the <strong>$5,000 setup</strong> (Stripe) or use <strong>Escrow</strong>.</p>
+                </div>
+            </div>
+            <div class="panel-cta">
+                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-lg">Pay $5,000 setup</a>
+                <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Pay via Escrow</a>
+            </div>
+            <p class="panel-support">Support: If nothing arrives, email <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
+        </div>
     </div>
 
     <script src="/assets/site-footer.js" defer></script>
+    <script src="/assets/script.js"></script>
 </body>
 </html>
