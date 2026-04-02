@@ -1,1040 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VX7SKYTQWP"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-VX7SKYTQWP');
-    </script>
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "vxpozw715x");
-    </script>
-    <script>
-        if (location.hostname.startsWith('smartline.')) {
-            location.replace('/smartline/');
-        }
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lead Agents Studio — AI Growth System: Creative + SmartLine Follow-Up</title>
-    <meta name="description" content="Lead Agents Studio is a done-for-you AI growth system: avatar video, UGC-style ads, and SmartLine voice follow-up. Plus SmartLine standalone and SmartLine for Agencies." />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/styles.css">
-    <style>
-        /* Language Switcher */
-        .lang-switcher {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 9999;
-            display: flex;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 8px;
-            border-radius: 50px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .lang-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 1.25rem;
-            transition: all 0.2s ease;
-            background: transparent;
-        }
-        .lang-btn:hover {
-            transform: scale(1.15);
-            background: rgba(0, 0, 0, 0.05);
-        }
-        .lang-btn.active {
-            background: linear-gradient(135deg, #00d4ff, #ff3b8b);
-            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.4);
-        }
-        @media (max-width: 768px) {
-            .lang-switcher {
-                bottom: 16px;
-                right: 16px;
-                padding: 6px;
-            }
-            .lang-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 1.1rem;
-            }
-        }
-        /* Engine cards */
-        .engine-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .engine-item {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-        .engine-num {
-            background: linear-gradient(135deg, #00d4ff, #ff3b8b);
-            color: white;
-            font-weight: 700;
-            font-size: 0.875rem;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .engine-content h4 {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            color: #1d1d1f;
-        }
-        .engine-content p {
-            font-size: 0.95rem;
-            color: #6e6e73;
-            margin: 0;
-        }
-        .pipeline-note {
-            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            margin-top: 1.5rem;
-            font-weight: 600;
-            color: #1d1d1f;
-        }
-        /* Pain moments */
-        .pain-moments {
-            display: grid;
-            gap: 2rem;
-        }
-        @media (min-width: 768px) {
-            .pain-moments {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        .pain-moment {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-        .pain-moment h3 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1d1d1f;
-        }
-        .pain-moment p {
-            color: #6e6e73;
-            line-height: 1.6;
-        }
-        .expensive-truth {
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,59,139,0.1));
-            border-radius: 16px;
-        }
-        .expensive-truth p {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1d1d1f;
-        }
-        /* AI character note */
-        .ai-character-note {
-            background: rgba(0,212,255,0.1);
-            border-left: 3px solid #00d4ff;
-            padding: 0.75rem 1rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.9rem;
-            color: #1d1d1f;
-        }
-        /* Customizations section */
-        .customizations-note {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-top: 2rem;
-        }
-        .customizations-note h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .customizations-note p {
-            color: #6e6e73;
-        }
-        /* Hub — offers + LAS positioning */
-        .hub-tagline {
-            font-size: 1rem;
-            color: #6e6e73;
-            line-height: 1.65;
-            max-width: 52rem;
-            margin: 0 auto 1.75rem;
-            text-align: center;
-        }
-        .hub-cards-section { padding: 4rem 0 3rem; }
-        .hub-cards-grid {
-            display: grid;
-            gap: 1.25rem;
-            grid-template-columns: 1fr;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        @media (min-width: 640px) {
-            .hub-cards-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1024px) {
-            .hub-cards-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        .hub-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem 1.35rem;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-            border: 1px solid rgba(0,0,0,0.06);
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        a.hub-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.12);
-        }
-        .hub-card-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: #00d4ff;
-            margin-bottom: 0.5rem;
-        }
-        .hub-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #1d1d1f;
-        }
-        .hub-card p {
-            font-size: 0.9rem;
-            color: #6e6e73;
-            line-height: 1.5;
-            flex: 1;
-            margin-bottom: 1rem;
-        }
-        .hub-card-cta {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #ff3b8b;
-        }
-        a.hub-card:hover .hub-card-cta { text-decoration: underline; }
-        .las-section {
-            padding: 4rem 0;
-            background: linear-gradient(180deg, rgba(0,212,255,0.06) 0%, rgba(255,59,139,0.04) 100%);
-        }
-        .las-inner { max-width: 720px; margin: 0 auto; }
-        .las-eyebrow {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: #00d4ff;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .las-section .section-title { margin-bottom: 1rem; }
-        .las-body, .las-section .las-list {
-            color: #424245;
-            font-size: 1.02rem;
-            line-height: 1.7;
-        }
-        .las-body p + p { margin-top: 1rem; }
-        .las-list {
-            margin: 1.5rem 0;
-            padding-left: 1.25rem;
-        }
-        .las-list li { margin-bottom: 0.5rem; }
-        .las-support-line {
-            text-align: center;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-top: 1.5rem;
-            font-size: 1.05rem;
-        }
-        .start-here-section {
-            padding: 3.5rem 0;
-            background: #1d1d1f;
-            color: #f5f5f7;
-        }
-        .start-here-section .section-title { color: #fff; }
-        .start-here-body {
-            max-width: 640px;
-            margin: 0 auto;
-            font-size: 1.05rem;
-            line-height: 1.75;
-            color: #aeaeb2;
-        }
-        .start-here-body p + p { margin-top: 0.75rem; }
-        .start-here-body strong { color: #fff; }
-    </style>
+  <script src="/assets/site-analytics.js"></script>
+  <script>
+    if (location.hostname.startsWith('smartline.')) {
+      location.replace('/smartline/');
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Lead Agents Studio — AI Systems, Creative &amp; Conversion</title>
+  <meta name="description" content="Five ways to make your business faster, smarter, and easier to buy from. SmartLine voice agents, agency offers, real estate, full growth systems, and premium creative." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/site-footer.css" />
+  <style>
+    :root {
+      --bg: #060B16;
+      --surface: #0F1728;
+      --surface-2: #152136;
+      --text-1: #F8FAFC;
+      --text-2: #A9B4C6;
+      --text-3: #6B7A90;
+      --cyan: #68E1FD;
+      --lime: #B8FF5C;
+      --line: #24324A;
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 { font-family: 'Sora', sans-serif; font-weight: 700; line-height: 1.12; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 24px;
+      background: rgba(6, 11, 22, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .nav-brand {
+      font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700;
+    }
+    .nav-brand span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; font-weight: 500; color: var(--text-2); }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; line-height: 1;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, background 0.15s;
+      cursor: pointer; border: none; font-family: inherit;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--lime); color: #07111F;
+      box-shadow: 0 0 20px rgba(184, 255, 92, 0.2);
+    }
+    .btn-primary:hover { box-shadow: 0 0 32px rgba(184, 255, 92, 0.35); }
+    .btn-ghost {
+      background: transparent; color: var(--text-1);
+      border: 1.5px solid var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    #hero {
+      position: relative;
+      padding: 108px 0 56px;
+      overflow: hidden;
+    }
+    .hero-glow {
+      pointer-events: none;
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(900px, 140vw);
+      height: 320px;
+      background: radial-gradient(ellipse at center, rgba(104, 225, 253, 0.12) 0%, transparent 65%);
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+      font-weight: 700;
+      max-width: 18ch;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      color: var(--text-2);
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      max-width: 36rem;
+      margin-bottom: 28px;
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    section { padding: 72px 0; border-top: 1px solid var(--line); }
+    .section-kicker {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 12px;
+    }
+    .section-line {
+      color: var(--text-2);
+      max-width: 42rem;
+      margin-bottom: 40px;
+    }
+
+    .offers-grid {
+      display: grid;
+      gap: 20px;
+    }
+    @media (min-width: 720px) {
+      .offers-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .offer-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .offer-card:hover {
+      border-color: rgba(104, 225, 253, 0.35);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    .offer-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+    .offer-card h3 { font-size: 1.35rem; }
+    .offer-tagline { color: var(--text-2); font-size: 15px; font-weight: 500; }
+    .offer-copy { color: var(--text-2); font-size: 15px; flex-grow: 1; }
+    .trust-line {
+      font-size: 13px;
+      color: var(--text-3);
+      font-style: italic;
+      border-left: 2px solid var(--cyan);
+      padding-left: 12px;
+      margin-top: 4px;
+    }
+    .offer-card .btn {
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .why-block {
+      max-width: 40rem;
+    }
+    .why-block p + p { margin-top: 16px; color: var(--text-2); }
+
+    .cta-panel {
+      background: linear-gradient(145deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 40px 28px;
+      text-align: center;
+    }
+    .cta-panel h2 { margin-bottom: 12px; }
+    .cta-panel > p { color: var(--text-2); max-width: 36rem; margin: 0 auto 24px; text-align: left; }
+    .cta-panel .hero-cta { justify-content: center; }
+
+    .site-footer-line {
+      padding: 48px 0 80px;
+      text-align: center;
+      color: var(--text-3);
+      font-size: 14px;
+      line-height: 1.65;
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+    .site-footer-line strong { color: var(--text-2); display: block; margin-bottom: 8px; font-size: 15px; }
+  </style>
 </head>
 <body>
-    <!-- Language Switcher -->
-    <div class="lang-switcher">
-        <a href="/" class="lang-btn active" title="English">🇺🇸</a>
-        <a href="/ru/" class="lang-btn" title="Русский">🇷🇺</a>
-        <a href="/he/" class="lang-btn lang-he" title="עברית">🇮🇱</a>
+  <nav>
+    <a href="/" class="nav-brand">Lead Agents <span>Studio</span></a>
+    <div class="nav-links">
+      <a href="#offers">Offers</a>
+      <a href="/smartline/">SmartLine</a>
+      <a href="/ugc/">Full Walkthrough</a>
+      <a href="/ai-creative-offer.html">Creative</a>
+      <a href="/about.html">About</a>
+      <a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer">Book a Call</a>
     </div>
+  </nav>
 
-    <!-- Animated Light Beams -->
-    <div class="light-beams">
-        <div class="beam beam-cyan"></div>
-        <div class="beam beam-pink"></div>
-        <div class="beam beam-blue"></div>
+  <header id="hero" class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <p class="eyebrow">AI systems, creative, and conversion tools</p>
+      <h1>Five ways to make your business faster, smarter, and easier to buy from.</h1>
+      <p class="hero-sub">
+        Choose the offer that solves your biggest bottleneck first — conversations, leads, creative, ads, or a full growth system.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#offers">Explore the 5 Offers</a>
+        <a class="btn btn-ghost" href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer">Book a Call</a>
+      </div>
     </div>
+  </header>
 
-    <!-- Video Background (subtle) -->
-    <div class="video-bg-container">
-        <video class="video-bg" autoplay muted loop playsinline>
-            <source src="/assets/bg-video.mp4" type="video/mp4">
-        </video>
-        <div class="video-overlay"></div>
+  <section id="offers">
+    <div class="container">
+      <p class="section-kicker">Where to start</p>
+      <h2 class="section-title">Start with the leak that costs you the most.</h2>
+      <p class="section-line">
+        Each offer solves a different bottleneck. Pick the one that fits where your business is losing time, leads, trust, or momentum.
+      </p>
+
+      <div class="offers-grid">
+        <article class="offer-card">
+          <span class="offer-num">Offer 1</span>
+          <h3>SmartLine</h3>
+          <p class="offer-tagline">Your AI voice agent for calls, SMS, and WhatsApp.</p>
+          <p class="offer-copy">
+            Answers leads, follows up, qualifies, and keeps warm conversations from dying while your team is busy, closed, or off the clock.
+          </p>
+          <p class="trust-line">Powered by ChatGPT. Trained on your business.</p>
+          <a class="btn btn-primary" href="/smartline/">See SmartLine</a>
+        </article>
+
+        <article class="offer-card">
+          <span class="offer-num">Offer 2</span>
+          <h3>SmartLine for Agencies</h3>
+          <p class="offer-tagline">A white-label AI voice agent offer under your brand.</p>
+          <p class="offer-copy">
+            Give every client their own voice agent with client accounts under your agency, so you stop selling one-off AI builds and start selling a cleaner recurring offer.
+          </p>
+          <p class="trust-line">Give every client a ChatGPT-powered voice agent under your brand.</p>
+          <a class="btn btn-primary" href="/agency/">See Agency Offer</a>
+        </article>
+
+        <article class="offer-card">
+          <span class="offer-num">Offer 3</span>
+          <h3>SmartLine for Real Estate</h3>
+          <p class="offer-tagline">The AI voice agent built for buyer and seller inquiries.</p>
+          <p class="offer-copy">
+            Answers property questions, follows up fast, qualifies interest, books next steps, and helps stop commissions from slipping away in silence.
+          </p>
+          <p class="trust-line">Powered by ChatGPT and trained on your listings, market, and process.</p>
+          <a class="btn btn-primary" href="/smartline/real-estate.html">See Real Estate Offer</a>
+        </article>
+
+        <article class="offer-card">
+          <span class="offer-num">Offer 4</span>
+          <h3>Lead Agents Studio</h3>
+          <p class="offer-tagline">A done-for-you AI growth system.</p>
+          <p class="offer-copy">
+            Combines avatar video, UGC-style creative, ad assets, and SmartLine follow-up into one system that helps businesses attract more attention and convert more of it.
+          </p>
+          <a class="btn btn-primary" href="/ugc/">See Lead Agents Studio</a>
+        </article>
+
+        <article class="offer-card" style="grid-column: 1 / -1;">
+          <span class="offer-num">Offer 5</span>
+          <h3>AI Creative + Ad Packs</h3>
+          <p class="offer-tagline">Premium creative for brands that need stronger visuals and better ads.</p>
+          <p class="offer-copy">
+            Exclusive creative direction by a Paris-trained artist with top-brand experience — for brand photoshoots, ad creative, and ongoing content systems.
+          </p>
+          <a class="btn btn-primary" href="/ai-creative-offer.html">See Creative Offer</a>
+        </article>
+      </div>
     </div>
+  </section>
 
-    <!-- Sticky Top Bar -->
-    <div class="sticky-bar">
-        <div class="sticky-bar-content">
-            <span class="sticky-text">Creative + SmartLine follow-up in one growth system.</span>
-            <span class="sticky-cta">Run the live demo on your phone → WhatsApp / SMS / Call.</span>
-            <button class="btn btn-sticky" onclick="scrollToDemo()">
-                <span class="btn-glow"></span>
-                Run the Free Demo
-            </button>
-        </div>
+  <section id="why">
+    <div class="container">
+      <h2 class="section-title">Not AI for the sake of AI. AI that fixes the bottleneck.</h2>
+      <div class="why-block">
+        <p style="color: var(--text-2);">
+          Some businesses need faster conversations.<br />
+          Some need a better agency offer.<br />
+          Some need a stronger real-estate front line.<br />
+          Some need a full growth engine.<br />
+          Some need better creative and ads.
+        </p>
+        <p>The point is not to buy more tools.</p>
+        <p>The point is to make the business more modern where it matters most.</p>
+      </div>
     </div>
+  </section>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="brand-badge">
-                    <span class="badge-icon">◆</span>
-                    <span>Lead Agents Studio</span>
-                </div>
-                <h1 class="hero-headline">
-                    <span class="line-1">Turn attention into conversations.</span>
-                    <span class="line-2">Turn conversations into <em class="gradient-text">booked business</em>.</span>
-                </h1>
-                <p class="hero-subhead" style="max-width: 36rem; margin-left: auto; margin-right: auto;">
-                    Lead Agents Studio combines avatar video, UGC-style ad creative, and SmartLine voice follow-up into one <strong>AI growth system</strong> tailored to the way your business sells.
-                </p>
-                <p class="hub-tagline">
-                    We build custom AI offers for businesses and agencies that do not want to get left behind: voice agents, done-for-you growth systems, white-label agency platforms, AI creative, and targeted prospect intelligence.
-                </p>
-                <div class="pipeline-note" style="margin-top: 0.5rem;">
-                    <strong>Lead Agents Studio</strong> — a done-for-you AI growth system that combines avatar video, UGC-style ad creative, and SmartLine voice follow-up—so businesses can attract more attention, respond faster, and convert more of the leads they generate.
-                </div>
-                <div class="hero-tags">
-                    <span class="tag">Avatar video</span>
-                    <span class="tag">UGC-style ads</span>
-                    <span class="tag">SmartLine voice / SMS / WhatsApp</span>
-                    <span class="tag">Qualification &amp; booking logic</span>
-                    <span class="tag">Agency white-label</span>
-                </div>
-                <div class="hero-cta-group">
-                    <button class="btn btn-primary btn-xl" onclick="document.getElementById('lead-agents-studio').scrollIntoView({behavior:'smooth'})">
-                        <span class="btn-shine"></span>
-                        <span class="btn-icon">◆</span>
-                        See Lead Agents Studio
-                    </button>
-                    <button class="btn btn-outline btn-xl" onclick="scrollToDemo()" style="margin-top: 0.75rem;">
-                        <span class="btn-icon">▶</span>
-                        Run the Free Demo
-                    </button>
-                    <p class="cta-microcopy">The demo triggers real messages and/or a demo call. Opt out anytime (STOP).<br>Booking + qualification workflows only (not medical advice).</p>
-                </div>
-                <button class="btn btn-ghost" onclick="document.getElementById('what-we-build').scrollIntoView({behavior:'smooth'})">
-                    Explore all offers
-                    <span class="arrow">→</span>
-                </button>
-            </div>
-            <div class="hero-video hero-video-large">
-                <div class="video-container-hero">
-                    <!-- Video 1: 9:16 Main Video -->
-                    <video class="hero-main-video" autoplay muted loop playsinline controls>
-                        <source src="https://cdn.leadagentsstudio.com/ENG/Strawberry ENG 1.1.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
+  <section id="cta">
+    <div class="container">
+      <div class="cta-panel">
+        <h2 class="section-title" style="margin-bottom: 16px;">Not sure where to start?</h2>
+        <p>
+          If leads are going cold, start with SmartLine.<br />
+          If you run an agency, start with the agency offer.<br />
+          If you sell property, start with real estate.<br />
+          If you need creative plus follow-up, start with Lead Agents Studio.<br />
+          If you need stronger visuals and ads, start with the creative offer.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer">Book a Call</a>
+          <a class="btn btn-ghost" href="#offers">Explore the 5 Offers</a>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-mouse">
-                <div class="scroll-wheel"></div>
-            </div>
-            <span>Scroll to explore</span>
-        </div>
-    </section>
-
-    <!-- What we build — all offers -->
-    <section class="hub-cards-section" id="what-we-build">
-        <div class="container">
-            <h2 class="section-title center">What we build</h2>
-            <p class="section-subtitle center" style="max-width: 40rem; margin-left: auto; margin-right: auto;">
-                Three ways to work with us—plus creative and prospect intelligence when you need the front end or targeting sharpened first.
-            </p>
-            <div class="hub-cards-grid" style="margin-top: 2rem;">
-                <a class="hub-card" href="/smartline/">
-                    <span class="hub-card-label">Voice agent</span>
-                    <h3>SmartLine</h3>
-                    <p>AI voice agent for businesses—calls, SMS, and WhatsApp follow-up, qualification, and handoff when a human should step in.</p>
-                    <span class="hub-card-cta">Open SmartLine →</span>
-                </a>
-                <a class="hub-card" href="https://smartline.leadagentsstudio.com/agency/">
-                    <span class="hub-card-label">White-label</span>
-                    <h3>SmartLine for Agencies</h3>
-                    <p>White-label client-account version for agencies: your brand, your client accounts, rebilling-ready positioning.</p>
-                    <span class="hub-card-cta">See agency offer →</span>
-                </a>
-                <a class="hub-card" href="#lead-agents-studio">
-                    <span class="hub-card-label">Full system</span>
-                    <h3>Lead Agents Studio</h3>
-                    <p>A done-for-you AI growth system that combines avatar video, UGC-style ad creative, custom campaign assets, and SmartLine voice follow-up—adapted to the way your business attracts, responds, and converts.</p>
-                    <span class="hub-card-cta">See Lead Agents Studio →</span>
-                </a>
-                <a class="hub-card" href="/ugc/">
-                    <span class="hub-card-label">Creative</span>
-                    <h3>UGC &amp; avatar ads</h3>
-                    <p>Owner-avatar video, UGC-style hooks, custom b-roll, and product placement—fresh AI-generated creative per campaign, not stock talent shared across accounts.</p>
-                    <span class="hub-card-cta">See UGC offer →</span>
-                </a>
-                <a class="hub-card" href="mailto:support@leadagentsstudio.com?subject=Lead%20Intelligence%20Packs%20inquiry">
-                    <span class="hub-card-label">Targeting</span>
-                    <h3>Lead Intelligence Packs</h3>
-                    <p>Targeted prospect discovery and structured intelligence so your outbound and ads start from better lists, not guesswork.</p>
-                    <span class="hub-card-cta">Email about intelligence →</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lead Agents Studio — deep positioning -->
-    <section class="las-section" id="lead-agents-studio">
-        <div class="container">
-            <div class="las-inner">
-                <p class="las-eyebrow">For businesses that need more than just leads</p>
-                <h2 class="section-title center">Ads get attention. Follow-up closes the gap. SmartLine keeps the conversation alive.</h2>
-                <div class="las-body">
-                    <p>Lead Agents Studio is not just creative.</p>
-                    <p>It is a full AI growth system built for businesses that need the front end and the follow-up to work together.</p>
-                    <p>Because most businesses do not just have a lead problem.</p>
-                    <p><strong>They have a system problem.</strong></p>
-                    <p>The ad gets seen.<br>The lead comes in.<br>The reply is slow.<br>The follow-up is weak.<br>The conversation dies.</p>
-                    <p>Lead Agents Studio fixes that by combining the pieces that actually move the sale:</p>
-                    <ul class="las-list">
-                        <li>avatar video</li>
-                        <li>UGC-style ad creative</li>
-                        <li>custom ad assets</li>
-                        <li>SmartLine voice / SMS / WhatsApp follow-up</li>
-                        <li>qualification logic</li>
-                        <li>booking or next-step logic</li>
-                    </ul>
-                    <p>So instead of buying disconnected services, the business gets one system designed to bring attention in, respond faster, and keep the lead moving.</p>
-                    <p><strong>What it includes</strong></p>
-                    <ul class="las-list">
-                        <li>avatar video built around the founder, owner, or brand</li>
-                        <li>UGC-style ad creatives for hooks, offers, and testing</li>
-                        <li>custom campaign visuals</li>
-                        <li>SmartLine voice agent follow-up</li>
-                        <li>SMS / WhatsApp continuation</li>
-                        <li>qualification and next-step logic</li>
-                        <li>business-specific adaptation based on how you sell</li>
-                    </ul>
-                </div>
-                <p class="las-support-line">Creative brings the lead in. SmartLine helps convert it.</p>
-                <div style="text-align: center; margin-top: 2rem;">
-                    <button class="btn btn-primary btn-xl" onclick="scrollToDemo()">
-                        <span class="btn-shine"></span>
-                        <span class="btn-icon">▶</span>
-                        See Lead Agents Studio — run the demo
-                    </button>
-                </div>
-                <p class="section-subtitle center" style="margin-top: 1.5rem; font-size: 0.95rem;">
-                    Prefer the tighter line: <em>The AI growth system for businesses that need better creative and faster follow-up.</em> Same system—avatar + UGC + SmartLine in one engine.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Not sure where to start -->
-    <section class="start-here-section" id="start-here">
-        <div class="container">
-            <h2 class="section-title center">Start with the leak that costs you the most.</h2>
-            <div class="start-here-body">
-                <p>If warm leads are disappearing, start with <strong><a href="/smartline/" style="color:#00d4ff;">SmartLine</a></strong>.</p>
-                <p>If you run an agency, start with the <strong><a href="https://smartline.leadagentsstudio.com/agency/" style="color:#00d4ff;">agency system</a></strong>.</p>
-                <p>If you need creative plus follow-up working together, start with <strong><a href="#lead-agents-studio" style="color:#00d4ff;">Lead Agents Studio</a></strong>.</p>
-                <p>If your brand needs better visuals, start with the <strong><a href="/ugc/" style="color:#00d4ff;">UGC &amp; avatar offer</a></strong>.</p>
-                <p>If your team needs better targets, start with <strong><a href="mailto:support@leadagentsstudio.com?subject=Lead%20Intelligence%20Packs" style="color:#00d4ff;">Lead Intelligence</a></strong>.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video #1 Block: System Overview -->
-    <section class="video-section" id="video-walkthrough">
-        <div class="container">
-            <h2 class="section-title center">See the growth system in 90 seconds.</h2>
-            <p class="section-subtitle center">90 seconds</p>
-            <div class="video-container-large">
-                <div class="video-placeholder-large">
-                    <!-- Video 2: Product Placement -->
-                    <video autoplay muted loop playsinline controls>
-                        <source src="https://cdn.leadagentsstudio.com/ENG/PRODUCT PLACEMENT ENG (2).mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="video-caption">A quick walkthrough of the three engines: owner‑avatar content, UGC creatives + custom b‑roll, and the follow‑up loop that turns inquiries into booked next steps.</p>
-        </div>
-    </section>
-
-    <!-- Pain Story Section -->
-    <section class="pain-story" id="pain">
-        <div class="container">
-            <div class="story-content">
-                <p class="story-lead">If you run a real business with real leads, you know these two moments:</p>
-                <div class="pain-moments">
-                    <div class="pain-moment">
-                        <h3>Moment #1 — Ads get tired.</h3>
-                        <p>Your creatives start to look familiar. Cost per lead rises. You need fresh videos… but filming is slow, expensive, and never ends.</p>
-                    </div>
-                    <div class="pain-moment">
-                        <h3>Moment #2 — The lead comes in.</h3>
-                        <p>They're warm. They're curious. They ask timing and price range.<br><br>Then… your team is busy. It's after hours. Someone replies "later."<br><br>So the lead does what every human does: <strong>they reach out to the next option — and whoever replies first wins the conversation.</strong></p>
-                    </div>
-                </div>
-                <div class="expensive-truth">
-                    <p>The expensive truth: <em>creative freshness and follow‑up speed are the new location.</em></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mechanism Section -->
-    <section class="mechanism" id="mechanism">
-        <div class="container">
-            <div class="mechanism-header">
-                <h2 class="section-title center">We don't sell "a chatbot."</h2>
-                <p class="section-subtitle large center">We install a creative‑plus‑follow‑up pipeline that books your next step.</p>
-            </div>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-light"></div>
-                    <div class="step-number">01</div>
-                    <h3>Fresh creative on demand (no filming)</h3>
-                    <p>Owner‑avatar videos + UGC‑style variations + custom b‑roll + product placement for any offer, any time.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-light"></div>
-                    <div class="step-number">02</div>
-                    <h3>Instant response (WhatsApp/SMS)</h3>
-                    <p>Every lead gets a reply immediately — day, night, weekends.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-light"></div>
-                    <div class="step-number">03</div>
-                    <h3>Qualification (polite, minimal)</h3>
-                    <p>The system asks only what matters: interest, timing, constraints, readiness.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-light"></div>
-                    <div class="step-number">04</div>
-                    <h3>Booking &amp; next steps (no back‑and‑forth)</h3>
-                    <p>It offers time windows, confirms, and sends reminders + easy reschedule—adapted to how you sell.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-light"></div>
-                    <div class="step-number">05</div>
-                    <h3>Quiet leads don't disappear</h3>
-                    <p>If they go silent, the system follows up across channels in a human way — then stops. When a human is needed, it hands off with full context.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section class="demo-section" id="demo">
-        <div class="container">
-            <div class="demo-wrapper">
-                <div class="demo-header">
-                    <h2 class="section-title center">Try it like a real lead.</h2>
-                    <p class="section-subtitle center">Then view it like an owner.</p>
-                    <p class="demo-description">Enter your phone + email. You'll receive the exact experience your prospects get.<br>After the demo, you'll see the Owner View: what the system captured, tagged, scored, and scheduled.</p>
-                </div>
-                <div class="demo-form-container">
-                    <div class="form-light"></div>
-                    <form class="demo-form" id="demoForm">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Anna" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+1 / +972 / etc." required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="you@business.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Choose your demo channel</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="channel" value="whatsapp" checked>
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-label">WhatsApp <span class="recommended">(recommended)</span></span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="channel" value="sms">
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-label">SMS</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="channel" value="call">
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-label">Phone call <span class="duration">(60 seconds)</span></span>
-                                </label>
-                            </div>
-                            <div class="ai-character-note">
-                                Every ad gets a newly generated AI character — never shared across accounts.<br>
-                                <strong>Not stock creators. Fresh AI talent for every campaign.</strong>
-                            </div>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-option">
-                                <input type="checkbox" name="consent">
-                                <span class="checkbox-custom"></span>
-                                <span class="checkbox-label">I consent to receive demo messages and/or a demo call from Lead Agents Studio. Reply STOP to opt out. This is booking & qualification only (not medical advice).</span>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-xl btn-full">
-                            <span class="btn-shine"></span>
-                            <span class="btn-icon">◆</span>
-                            Start the free demo
-                        </button>
-                        <p class="form-microcopy">You'll get the first message in under a minute. Reply naturally — like a real inquiry.<br><br>If the demo pauses due to temporary channel limits, your demo is saved and your credit remains active. You can resume or switch channels without paying again.</p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video #2 Section: Owner Product Placement -->
-    <section class="video-section alt" id="video-ugc">
-        <div class="container">
-            <h2 class="section-title center">"Here's how we generate new ads around our real products."</h2>
-            <p class="section-subtitle center">60–75 sec</p>
-            <div class="video-container-large">
-                <div class="video-placeholder-large">
-                    <!-- Video 3: Testimonial 1 - Maya -->
-                    <video autoplay muted loop playsinline controls>
-                        <source src="https://cdn.leadagentsstudio.com/ENG/Maya ENG.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="video-caption">Watch the owner drop products into new ad creatives, generate variations fast, and send every lead into the same booking pipeline.</p>
-        </div>
-    </section>
-
-    <!-- Video #3 Section: UGC Client Story -->
-    <section class="video-section" id="video-testimonial">
-        <div class="container">
-            <h2 class="section-title center">"This felt like concierge-level service."</h2>
-            <p class="section-subtitle center">UGC‑style, 60–75 sec</p>
-            <div class="video-container-large">
-                <div class="video-placeholder-large">
-                    <!-- Video 4: Testimonial 2 - Patricia -->
-                    <video autoplay muted loop playsinline controls>
-                        <source src="https://cdn.leadagentsstudio.com/ENG/Patricia ENG.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <p class="video-caption">Starts like a client story — then shows why it converts: fresh UGC creatives + instant follow‑up + quiet‑lead recovery.<br>UGC‑style creatives use AI-generated actors and dramatized scenarios. Booking + qualification workflows only (not medical advice).</p>
-        </div>
-    </section>
-
-    <!-- What's Included Section -->
-    <section class="included" id="included">
-        <div class="container">
-            <h2 class="section-title center">What's included in the $5,000 installation</h2>
-            <div class="included-grid">
-                <div class="included-card">
-                    <div class="card-header">
-                        <span class="card-letter">A</span>
-                        <h3>Creative Engine Setup</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Private owner-avatar setup (your brand's look + tone)</li>
-                        <li>UGC-style ad system + custom b‑roll generation</li>
-                        <li>Product placement templates (so ads look like YOUR business)</li>
-                        <li>Hook library + angles + variations for your offers</li>
-                    </ul>
-                </div>
-                <div class="included-card">
-                    <div class="card-header">
-                        <span class="card-letter">B</span>
-                        <h3>Follow‑Up + Booking Engine Setup</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>WhatsApp + SMS + phone call flows installed</li>
-                        <li>Qualification scripts tailored to services + tone</li>
-                        <li>Booking logic (slots, confirmations, reminders, reschedules)</li>
-                        <li>Quiet-lead recovery sequences (multi-touch, then stop)</li>
-                        <li>Clean consent + opt-out messaging</li>
-                        <li>Owner View + handoff notes for your team</li>
-                    </ul>
-                </div>
-                <div class="included-card">
-                    <div class="card-header">
-                        <span class="card-letter">C</span>
-                        <h3>Testing + Launch</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Edge-case testing (no reply, price objection, "who is the doctor?", "I'll think about it")</li>
-                        <li>Soft launch + reporting setup</li>
-                        <li>Go-live checklist for your admin team</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Timeline Section -->
-    <section class="timeline" id="timeline">
-        <div class="container">
-            <h2 class="section-title center">Go live in 7 days.</h2>
-            <div class="timeline-track">
-                <div class="timeline-item">
-                    <div class="day">Day 1</div>
-                    <p>Capture your offers + tone + boundaries</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="day">Day 2–3</div>
-                    <p>Connect channels + booking rules</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="day">Day 4–5</div>
-                    <p>Test conversations + edge cases</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="day">Day 6</div>
-                    <p>Soft launch</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="day">Day 7</div>
-                    <p>Full launch + reporting</p>
-                </div>
-            </div>
-            <p class="timeline-note">No disruption. Your team keeps working. The system starts catching what you currently miss.</p>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="pricing-hero">
-                <div class="price-light"></div>
-                <h2 class="price-amount">$5,000</h2>
-                <p class="price-label">one-time installation</p>
-            </div>
-            <div class="pricing-cta">
-                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-xxl">
-                    <span class="btn-shine"></span>
-                    <span class="btn-icon">◆</span>
-                    Pay $5,000 setup
-                </a>
-                <p class="bnpl-note">Installments may be available <strong>at checkout</strong> via <strong>Affirm / Afterpay / Klarna</strong> (eligibility/region dependent).</p>
-                <div class="escrow-option">
-                    <p>Prefer maximum safety?</p>
-                    <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Pay via Escrow</a>
-                </div>
-            </div>
-
-            <!-- Ongoing Monthly Cost -->
-            <div class="pricing-details">
-                <div class="pricing-block">
-                    <h3>Monthly running costs <span class="badge-small">pay-as-you-go</span></h3>
-                    <p class="pricing-intro">Monthly running costs are usage‑based (pay only for what you use).</p>
-                    <div class="usage-includes">
-                        <h4>Included in usage billing</h4>
-                        <ul>
-                            <li>Messaging + calls (WhatsApp / SMS / phone minutes)</li>
-                            <li>Conversation automation processing (qualification + scripting)</li>
-                            <li>Video generation seconds (new creatives)</li>
-                            <li>Avatar video generation (owner-avatar content)</li>
-                        </ul>
-                        <p class="margin-note"><strong>Important:</strong> Usage items are billed at vendor list price <strong>+ 20% platform margin</strong> (covers orchestration, monitoring, error handling, and consolidated billing).</p>
-                    </div>
-                </div>
-
-                <!-- Two ways to run it -->
-                <div class="pricing-block">
-                    <h3>Two ways to run it</h3>
-                    <div class="management-options">
-                        <div class="option-card">
-                            <div class="option-header">
-                                <span class="option-badge">Option 1</span>
-                                <span class="option-price">Included</span>
-                            </div>
-                            <h4>Self-Managed</h4>
-                            <p>You get the system, scripts, and reporting. Your team runs day-to-day.</p>
-                        </div>
-                        <div class="option-card featured">
-                            <div class="option-header">
-                                <span class="option-badge">Option 2</span>
-                                <span class="option-price">+$500/mo</span>
-                            </div>
-                            <h4>Managed by us</h4>
-                            <ul>
-                                <li>Weekly tuning of questions, follow-ups, and conversion paths</li>
-                                <li>Deliverability checks (delivered vs blocked)</li>
-                                <li>Continuous improvements for objections</li>
-                                <li>Reporting + fixes</li>
-                            </ul>
-                            <p class="option-note">You can enable Managed anytime after installation.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customizations -->
-                <div class="customizations-note">
-                    <h3>Customizations (Add‑On)</h3>
-                    <p>Need CRM integration, special booking rules, multi-location routing, custom lead sources, or bespoke workflows?<br>We can build it as an add‑on (quoted based on complexity).</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rate Card Section -->
-    <section class="rate-card" id="rates">
-        <div class="container">
-            <h2 class="section-title center">Usage Rate Card</h2>
-            <p class="section-subtitle center">Simple + transparent (platform margin included)</p>
-            
-            <div class="rates-grid">
-                <div class="rate-category">
-                    <h3>Messaging & Calls</h3>
-                    <div class="rate-items">
-                        <div class="rate-item">
-                            <span class="rate-name">WhatsApp messages</span>
-                            <span class="rate-price">$0.006 <span class="rate-unit">per message</span></span>
-                            <span class="rate-note">Sent or received. Network fees may apply outside service window; varies by country/use case.</span>
-                        </div>
-                        <div class="rate-item">
-                            <span class="rate-name">SMS (US example)</span>
-                            <span class="rate-price">~$0.01 <span class="rate-unit">per message</span></span>
-                            <span class="rate-note">International rates vary significantly.</span>
-                        </div>
-                        <div class="rate-item">
-                            <span class="rate-name">Voice calls (outbound)</span>
-                            <span class="rate-price">~$0.017 <span class="rate-unit">per minute</span></span>
-                        </div>
-                        <div class="rate-item">
-                            <span class="rate-name">Voice calls (inbound)</span>
-                            <span class="rate-price">~$0.010 <span class="rate-unit">per minute</span></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rate-category">
-                    <h3>Conversation Processing</h3>
-                    <div class="rate-items">
-                        <div class="rate-item">
-                            <span class="rate-name">Input tokens</span>
-                            <span class="rate-price">$0.30 <span class="rate-unit">per 1M tokens</span></span>
-                        </div>
-                        <div class="rate-item">
-                            <span class="rate-name">Output tokens</span>
-                            <span class="rate-price">$2.40 <span class="rate-unit">per 1M tokens</span></span>
-                            <span class="rate-note">Tokens are the units used to generate replies. Usage is visible in your dashboard.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rate-category">
-                    <h3>Video Generation</h3>
-                    <div class="rate-items">
-                        <div class="rate-item">
-                            <span class="rate-name">AI video (720p)</span>
-                            <span class="rate-price">$0.12 <span class="rate-unit">per second</span></span>
-                        </div>
-                        <div class="rate-item">
-                            <span class="rate-name">Higher quality tiers</span>
-                            <span class="rate-price">$0.36–$0.60 <span class="rate-unit">per second</span></span>
-                            <span class="rate-note">Depends on output quality selected.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rate-category">
-                    <h3>Owner‑Avatar Video</h3>
-                    <div class="rate-items">
-                        <div class="rate-item">
-                            <span class="rate-name">Avatar video generation</span>
-                            <span class="rate-price">$1.20 <span class="rate-unit">per minute</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Optional Zoom Section -->
-    <section class="zoom-section" id="zoom">
-        <div class="container">
-            <h2 class="section-title center">Prefer a human confirmation?</h2>
-            <p class="zoom-description">Book a 15-minute implementation review (not a sales pitch):<br>we'll confirm your offers, tone, and booking rules.</p>
-            <a href="https://calendly.com/aumi4-support/30min" class="btn btn-outline btn-lg">Book implementation review</a>
-            <p class="zoom-note">Only if you want it. Most teams start after the live demo.</p>
-        </div>
-    </section>
-
-    <!-- Support Section -->
-    <section class="support-section" id="support">
-        <div class="container">
-            <div class="support-card">
-                <div class="support-icon">💬</div>
-                <h2 class="section-title center">Need Help? Contact Support Anytime</h2>
-                <p class="support-text">Questions about the demo, installation, or billing? Our team is here to help.</p>
-                <a href="mailto:support@leadagentsstudio.com" class="btn btn-secondary btn-lg">
-                    <span class="btn-shine"></span>
-                    Email support@leadagentsstudio.com
-                </a>
-                <p class="support-response">We typically respond within 24 hours.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq" id="faq">
-        <div class="container">
-            <h2 class="section-title center">FAQ</h2>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h3>Is this AI-generated?</h3>
-                    <p>Yes. The system uses AI for video generation (owner-avatar + UGC-style creatives) and for automated qualification/booking.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Are UGC videos real patients?</h3>
-                    <p>UGC-style creatives use AI-generated actors and dramatized scenarios — designed to feel real without being deceptive.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Will it feel robotic?</h3>
-                    <p>No. It's written like a great front desk: short, polite, clear — and escalates to humans when needed.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Can we control usage spend?</h3>
-                    <p>Yes. We can set a monthly usage cap and alerts, and you'll get a monthly usage summary.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Can it handle multiple services / languages?</h3>
-                    <p>Yes. Scripts branch by service and language.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final Close Section -->
-    <section class="final-close" id="close">
-        <div class="container">
-            <div class="close-light"></div>
-            <h2 class="close-headline">Run the demo — or jump straight to setup.</h2>
-            <p class="close-subline">If it doesn't feel like your future content engine plus follow-up layer, walk away.</p>
-            <button class="btn btn-primary btn-xxl" onclick="scrollToDemo()">
-                <span class="btn-shine"></span>
-                <span class="btn-icon">▶</span>
-                Run Live Demo
-            </button>
-            <p style="margin-top: 1.25rem;">
-                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-outline btn-lg">See Lead Agents Studio — Pay $5,000 setup</a>
-            </p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-brand">
-                <span class="brand-icon">◆</span>
-                <span>Lead Agents Studio</span>
-            </div>
-            <div class="footer-links">
-                <a href="/smartline/">SmartLine</a>
-                <a href="https://smartline.leadagentsstudio.com/agency/">Agency</a>
-                <a href="/privacy.html">Privacy</a>
-                <a href="/terms.html">Terms</a>
-                <a href="/billing.html">Billing</a>
-                <a href="/refund.html">Refund</a>
-            </div>
-            <p class="footer-disclaimer">Demonstration of booking &amp; qualification workflows only. Not medical advice.</p>
-            <p class="footer-support">Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
-        </div>
-    </footer>
-
-    <!-- Post-Submit Demo Panel -->
-    <div class="demo-panel" id="demoPanel">
-        <div class="panel-content">
-            <button class="panel-close" onclick="closeDemoPanel()">×</button>
-            <div class="panel-icon">✅</div>
-            <h2>Demo started. Check your phone.</h2>
-            <div class="panel-steps">
-                <div class="panel-step">
-                    <span class="step-num">1</span>
-                    <p>Check WhatsApp/SMS (or answer the call). First message arrives in under a minute.</p>
-                </div>
-                <div class="panel-step">
-                    <span class="step-num">2</span>
-                    <p>Reply like a real lead (short answers are perfect).</p>
-                </div>
-                <div class="panel-step">
-                    <span class="step-num">3</span>
-                    <p>After the booking moment, type <strong>SHOW OWNER VIEW</strong>.</p>
-                </div>
-                <div class="panel-step">
-                    <span class="step-num">4</span>
-                    <p>Ready to start? Pay the <strong>$5,000 installation</strong> (Stripe) or use <strong>Escrow</strong>.</p>
-                </div>
-            </div>
-            <p class="panel-pause-note">If the demo pauses due to temporary limits: your demo is saved. Resume or switch channels — you won't be charged twice.</p>
-            <div class="panel-cta">
-                <a href="https://buy.stripe.com/9B600ib8k6jQdNpaqkaIM01" class="btn btn-primary btn-lg">Pay $5,000 setup</a>
-                <a href="https://www.escrow.com/checkout?token=2dae7d7a-7a8e-4361-ad7d-163cd0605cf1" class="btn btn-outline">Pay via Escrow</a>
-            </div>
-            <p class="panel-support">Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
-        </div>
+      </div>
     </div>
+  </section>
 
-    <script src="/assets/script.js?v=4"></script>
+  <footer class="container site-footer-line">
+    <strong>Lead Agents Studio</strong>
+    AI systems, voice agents, creative, and growth infrastructure for businesses that do not want to get left behind.
+  </footer>
 </body>
 </html>
