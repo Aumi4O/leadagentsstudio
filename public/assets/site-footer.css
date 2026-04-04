@@ -54,6 +54,21 @@
   background: rgba(184, 255, 92, 0.2);
   text-decoration: none;
 }
+/* Footer <nav> must never inherit page-level sticky header rules */
+.las-site-footer nav {
+  position: static;
+  inset: auto;
+  top: auto;
+  left: auto;
+  right: auto;
+  z-index: auto;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  border-bottom: none;
+}
 .las-site-footer__nav,
 .las-site-footer__policies {
   display: flex;

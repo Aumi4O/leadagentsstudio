@@ -89,9 +89,9 @@
     }
 
     /* ─────────────────────────────────────────
-       NAV
+       NAV (scoped — footer also uses <nav>; must not inherit fixed header)
     ───────────────────────────────────────── */
-    nav {
+    nav.sl-main-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 16px 24px;
       background: rgba(6,11,22,.85);
@@ -1022,7 +1022,7 @@
 <!-- ═══════════════════════════════════════════
      NAV
 ═══════════════════════════════════════════ -->
-<nav>
+<nav class="sl-main-nav" aria-label="Primary">
   <div class="nav-brand-row">
     <a href="/smartline/real-estate.html" class="nav-logo">Smart<span>Line</span><span style="font-size:11px;font-weight:600;color:var(--text-3);letter-spacing:.06em;margin-left:8px;vertical-align:middle">REAL ESTATE</span></a>
     <a href="/about.html" class="nav-about">About</a>
