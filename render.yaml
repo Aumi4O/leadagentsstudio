@@ -1,0 +1,40 @@
+# Lead Agents Studio — Next.js app (account, /survey, auth, APIs)
+# https://render.com/docs/blueprint-spec
+#
+# After first deploy: set secrets in Render → Environment (see DEPLOYMENT.md).
+
+version: "1"
+services:
+  - type: web
+    name: lead-agents-studio-account
+    runtime: node
+    region: oregon
+    rootDir: account
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # Secrets — set in dashboard (Blueprint “sync: false” or override after deploy)
+      - key: NOTION_INTERNAL_TOKEN
+        sync: false
+      - key: NOTION_SURVEY_DATABASE_ID
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: NEXTAUTH_URL
+        sync: false
+      # Public URLs (inlined at build; set before build / available at build time on Render)
+      - key: NEXT_PUBLIC_CALENDLY_URL
+        sync: false
+      - key: NEXT_PUBLIC_SURVEY_OFFER_URL
+        sync: false
+      - key: NEXT_PUBLIC_SURVEY_DEMO_URL
+        sync: false
+      - key: NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SURVEY_PORTFOLIO_URL
+        sync: false

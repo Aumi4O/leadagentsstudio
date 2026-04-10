@@ -1,0 +1,322 @@
+/* Lead Agents Studio — V3 Light Theme (must be before @tailwind so @import stays first) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme Colors */
+    --white: #ffffff;
+    --gray-50: #f5f5f7;
+    --gray-100: #e8e8ed;
+    --gray-200: #d2d2d7;
+    --gray-300: #b0b0b5;
+    --gray-400: #86868b;
+    --gray-500: #6e6e73;
+    --gray-600: #515154;
+    --gray-700: #3a3a3c;
+    --gray-800: #2c2c2e;
+    --gray-900: #1d1d1f;
+    
+    /* Accent Colors */
+    --cyan: #00d4ff;
+    --cyan-light: #7df3ff;
+    --cyan-glow: rgba(0, 212, 255, 0.4);
+    
+    --pink: #ff3b8b;
+    --pink-light: #ff7eb3;
+    --pink-glow: rgba(255, 59, 139, 0.4);
+    
+    --blue: #3b82f6;
+    --blue-glow: rgba(59, 130, 246, 0.3);
+    
+    /* Gradients */
+    --gradient-accent: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 100%);
+    
+    /* Tailwind overrides */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+/* Animated Light Beams Background */
+.light-beams {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.beam {
+  position: absolute;
+  width: 300px;
+  height: 150vh;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: beam-move 15s ease-in-out infinite;
+}
+
+.beam-cyan {
+  background: linear-gradient(180deg, transparent 0%, var(--cyan) 30%, var(--cyan) 70%, transparent 100%);
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.beam-pink {
+  background: linear-gradient(180deg, transparent 0%, var(--pink) 30%, var(--pink) 70%, transparent 100%);
+  right: 15%;
+  animation-delay: -5s;
+}
+
+.beam-blue {
+  background: linear-gradient(180deg, transparent 0%, var(--blue) 30%, var(--blue) 70%, transparent 100%);
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: -10s;
+  opacity: 0.2;
+}
+
+@keyframes beam-move {
+  0%, 100% {
+    transform: translateY(-30%) rotate(-15deg);
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(30%) rotate(15deg);
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.5;
+  }
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effects */
+.glow-cyan {
+  box-shadow: 0 0 40px var(--cyan-glow);
+}
+
+.glow-pink {
+  box-shadow: 0 0 40px var(--pink-glow);
+}
+
+/* Card with gradient border */
+.card-gradient {
+  position: relative;
+  background: var(--white);
+  border-radius: 1rem;
+}
+
+.card-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: var(--gradient-accent);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-gradient:hover::before {
+  opacity: 1;
+}
+
+/* Credit Display */
+.credit-display {
+  position: relative;
+  padding: 2rem;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.credit-glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--cyan-glow) 0%, transparent 50%);
+  animation: credit-pulse 4s ease-in-out infinite;
+}
+
+@keyframes credit-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.credit-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+/* Package Cards */
+.package-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cyan);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 40px var(--cyan-glow);
+}
+
+.package-card.popular {
+  border-color: var(--cyan);
+  box-shadow: 0 0 30px var(--cyan-glow);
+}
+
+.package-card.popular::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradient-accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--gray-900);
+  color: var(--white);
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 0 40px var(--cyan-glow);
+}
+
+.btn-gradient {
+  background: var(--gradient-accent);
+  color: white;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--gray-300);
+  color: var(--gray-900);
+}
+
+.btn-outline:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px var(--cyan-glow);
+}
+
+/* Activity Log */
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.activity-icon.purchase {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.activity-icon.usage {
+  background: rgba(255, 59, 139, 0.1);
+}
+
+/* Selection */
+::selection {
+  background: var(--cyan);
+  color: var(--white);
+}

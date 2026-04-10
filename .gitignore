@@ -1,6 +1,11 @@
 .DS_Store
 .cursor/
 
+# Local secrets (never commit)
+.env
+.env.local
+.env.*.local
+
 # Local archives / heavy media (repo root only — public/assets copies ship with Pages)
 leadagentsstudio-site.zip
 SMARTLINE_LEA_DIALOGUE_FINAL.mp4
