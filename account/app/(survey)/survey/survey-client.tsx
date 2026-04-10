@@ -18,29 +18,14 @@ import {
 const BROWSER_SURVEY_ID_KEY = "fit-check-session-id"
 const NOTION_ROW_ID_KEY = "fit-check-notion-page-id"
 
-/** In-memory fallback when sessionStorage is blocked (some private modes). */
-let memorySessionId: string | null = null
-
-function newSurveySessionId(): string {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID()
-  }
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
-}
-
 function getOrCreateBrowserSurveyId(): string {
   if (typeof window === "undefined") return ""
-  try {
-    let id = sessionStorage.getItem(BROWSER_SURVEY_ID_KEY)
-    if (!id) {
-      id = newSurveySessionId()
-      sessionStorage.setItem(BROWSER_SURVEY_ID_KEY, id)
-    }
-    return id
-  } catch {
-    if (!memorySessionId) memorySessionId = newSurveySessionId()
-    return memorySessionId
+  let id = sessionStorage.getItem(BROWSER_SURVEY_ID_KEY)
+  if (!id) {
+    id = crypto.randomUUID()
+    sessionStorage.setItem(BROWSER_SURVEY_ID_KEY, id)
   }
+  return id
 }
 
 function getStoredNotionPageId(): string | null {
@@ -49,11 +34,7 @@ function getStoredNotionPageId(): string | null {
 }
 
 function setStoredNotionPageId(id: string) {
-  try {
-    sessionStorage.setItem(NOTION_ROW_ID_KEY, id)
-  } catch {
-    /* ignore — sync still works for current tab via returned id */
-  }
+  sessionStorage.setItem(NOTION_ROW_ID_KEY, id)
 }
 
 type Step = number
@@ -85,24 +66,12 @@ export function SurveyClient() {
     async (lastStep: string, nextAnswers: SurveyAnswers, isComplete: boolean) => {
       setSyncing(true)
       setSyncError(null)
-      const controller = new AbortController()
-      const t =
-        typeof window !== "undefined"
-          ? window.setTimeout(() => controller.abort(), 25_000)
-          : 0
       try {
         const sessionId = getOrCreateBrowserSurveyId()
-        if (!sessionId || sessionId.length < 8) {
-          setSyncError(
-            "Could not start session in this browser — try another tab or window."
-          )
-          return
-        }
         const notionPageId = getStoredNotionPageId()
         const res = await fetch("/api/survey/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          signal: controller.signal,
           body: JSON.stringify({
             sessionId,
             notionPageId: notionPageId ?? undefined,
@@ -111,10 +80,7 @@ export function SurveyClient() {
             isComplete,
           }),
         })
-        const data = (await res.json().catch(() => ({}))) as {
-          error?: string
-          notionPageId?: string
-        }
+        const data = await res.json()
         if (!res.ok) {
           setSyncError(data.error ?? "Save failed")
           return
@@ -122,15 +88,9 @@ export function SurveyClient() {
         if (data.notionPageId && typeof data.notionPageId === "string") {
           setStoredNotionPageId(data.notionPageId)
         }
-      } catch (e) {
-        const aborted = e instanceof Error && e.name === "AbortError"
-        setSyncError(
-          aborted
-            ? "Save timed out — you can keep going; we’ll retry on the next step."
-            : "Connection issue — you can keep going; we’ll retry when you’re online."
-        )
+      } catch {
+        setSyncError("Connection issue — you can keep going; we’ll retry when you’re online.")
       } finally {
-        if (typeof window !== "undefined" && t) window.clearTimeout(t)
         setSyncing(false)
       }
     },
@@ -147,16 +107,16 @@ export function SurveyClient() {
 
   const questionIndex = step >= 1 && step <= 9 ? step : 0
 
-  const goNext = (nextStep: Step, lastStep: string, nextAnswers: SurveyAnswers) => {
+  const goNext = async (nextStep: Step, lastStep: string, nextAnswers: SurveyAnswers) => {
     setAnswers(nextAnswers)
+    await sync(lastStep, nextAnswers, false)
     setStep(nextStep)
-    void sync(lastStep, nextAnswers, false)
   }
 
-  const finish = (nextAnswers: SurveyAnswers) => {
+  const finish = async (nextAnswers: SurveyAnswers) => {
     setAnswers(nextAnswers)
+    await sync("complete", nextAnswers, true)
     setStep(10)
-    void sync("complete", nextAnswers, true)
   }
 
   const primaryThankYouFirst =
@@ -190,9 +150,9 @@ export function SurveyClient() {
         <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-8">
           {step === 0 && (
             <Intro
-              onStart={() => {
+              onStart={async () => {
+                await sync("after_intro", {}, false)
                 setStep(1)
-                void sync("after_intro", {}, false)
               }}
               syncing={syncing}
             />
