@@ -44,6 +44,14 @@ Copy the printed database ID into `NOTION_SURVEY_DATABASE_ID` on Render. Open th
 
 **zsh:** the `\` at end of a line must be the last character (no space after it).
 
+### Black terminal: “APPLICATION LOADING” / “SERVICE WAKING UP”
+
+On **Render’s free tier**, the web service **spins down** when idle. The **first** visit after that shows Render’s **loading terminal** (not your Next.js page) while the instance **allocates compute, starts Node, and runs `next start`**. That can take **~30–90+ seconds**. When the app is up, the same URL (`…/survey`) shows the real survey — **wait and refresh**, or open **Render → Logs** and confirm you see Next listening.
+
+**If it never leaves that screen:** open **Render → your service → Logs** and look for build/runtime errors (e.g. failed `npm run build`, missing `DATABASE_URL` if the app crashes on boot).
+
+**If you need the survey to open instantly for customers:** use a **paid** Render instance (no spin-down), or keep the free service warm by pinging **`/api/health`** every ~10 minutes with [UptimeRobot](https://uptimerobot.com), [cron-job.org](https://cron-job.org), or similar.
+
 ## Related docs
 
 - Subdomains & custom domains on Cloudflare: `SUBDOMAIN_SETUP.md`, `smartline/SMARTLINE_DEPLOY.md`
