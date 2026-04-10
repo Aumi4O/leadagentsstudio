@@ -32,6 +32,8 @@ services:
         sync: false
       - key: NEXT_PUBLIC_SURVEY_OFFER_URL
         sync: false
+      - key: NEXT_PUBLIC_SURVEY_OFFER_CODE
+        sync: false
       - key: NEXT_PUBLIC_SURVEY_DEMO_URL
         sync: false
       - key: NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL

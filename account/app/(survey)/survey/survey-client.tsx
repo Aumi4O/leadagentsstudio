@@ -47,8 +47,9 @@ export function SurveyClient() {
   const [syncError, setSyncError] = useState<string | null>(null)
   const [syncing, setSyncing] = useState(false)
 
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? ""
-  const offerUrl = process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? ""
+  const calendlyUrl = (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim()
+  const offerUrl = (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim()
+  const offerCode = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
   const demoUrl = process.env.NEXT_PUBLIC_SURVEY_DEMO_URL ?? ""
   const agencyPageUrl = process.env.NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL ?? ""
   const portfolioUrl = process.env.NEXT_PUBLIC_SURVEY_PORTFOLIO_URL ?? ""
@@ -358,6 +359,7 @@ export function SurveyClient() {
               primaryFirst={primaryThankYouFirst}
               calendlyUrl={calendlyUrl}
               offerUrl={offerUrl}
+              offerCode={offerCode}
               contextLabel={ctx.linkLabel}
               contextHref={contextHref}
               choice={answers.q8}
@@ -513,10 +515,20 @@ function NavRow({
   )
 }
 
+function isValidHttpUrl(url: string): boolean {
+  try {
+    const u = new URL(url)
+    return u.protocol === "http:" || u.protocol === "https:"
+  } catch {
+    return false
+  }
+}
+
 function ThankYou({
   primaryFirst,
   calendlyUrl,
   offerUrl,
+  offerCode,
   contextLabel,
   contextHref,
   choice,
@@ -524,29 +536,77 @@ function ThankYou({
   primaryFirst: boolean
   calendlyUrl: string
   offerUrl: string
+  offerCode: string
   contextLabel: string
   contextHref: string
   choice: string | undefined
 }) {
-  const book = (
+  const [copied, setCopied] = useState(false)
+  const hasCalendly = isValidHttpUrl(calendlyUrl)
+  const hasOfferLink = isValidHttpUrl(offerUrl)
+  const showCode = offerCode.length > 0
+
+  const copyCode = () => {
+    void navigator.clipboard.writeText(offerCode).then(() => {
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  const isDev = process.env.NODE_ENV === "development"
+
+  const book = hasCalendly ? (
     <a
-      href={calendlyUrl || "#"}
+      href={calendlyUrl}
       target="_blank"
       rel="noreferrer"
       className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-neutral-800"
     >
       Book a 15-minute session
     </a>
+  ) : isDev ? (
+    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+      <p className="font-medium">Calendly URL missing (dev).</p>
+      <p className="mt-1 text-amber-900/90">
+        Set{" "}
+        <code className="rounded bg-amber-100/80 px-1 text-xs">
+          NEXT_PUBLIC_CALENDLY_URL
+        </code>{" "}
+        to your share link, e.g.{" "}
+        <span className="whitespace-nowrap">https://calendly.com/you/30min</span>
+      </p>
+    </div>
+  ) : (
+    <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+      If you left contact details, we’ll email you a link to book a short call.
+    </p>
   )
-  const offer = (
+
+  const offer = hasOfferLink ? (
     <a
-      href={offerUrl || "#"}
+      href={offerUrl}
       target="_blank"
       rel="noreferrer"
       className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
     >
       Claim the thank-you offer
     </a>
+  ) : showCode ? null : isDev ? (
+    <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+      Set{" "}
+      <code className="rounded bg-white px-1 text-xs">
+        NEXT_PUBLIC_SURVEY_OFFER_URL
+      </code>{" "}
+      and/or{" "}
+      <code className="rounded bg-white px-1 text-xs">
+        NEXT_PUBLIC_SURVEY_OFFER_CODE
+      </code>
+      .
+    </div>
+  ) : (
+    <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+      Offer details can be sent to the contact you shared.
+    </p>
   )
 
   return (
@@ -554,14 +614,40 @@ function ThankYou({
       <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
         Thank you — here’s what to do next.
       </h2>
-      {choice === "calendly" && calendlyUrl && (
+
+      {showCode && (
+        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+          <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            Your thank-you code
+          </p>
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-mono text-xl font-semibold tracking-wide text-neutral-900">
+              {offerCode}
+            </p>
+            <button
+              type="button"
+              onClick={copyCode}
+              className="shrink-0 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-100"
+            >
+              {copied ? "Copied" : "Copy code"}
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-neutral-500">
+            Enter this code at checkout or mention it when you book.
+          </p>
+        </div>
+      )}
+
+      {choice === "calendly" && hasCalendly && (
         <p className="text-sm text-neutral-600">
           You asked for a short call — use the button below when you’re ready.
         </p>
       )}
-      {choice === "discount" && offerUrl && (
+      {choice === "discount" && (hasOfferLink || showCode) && (
         <p className="text-sm text-neutral-600">
-          You asked for the thank-you offer — it’s on the next page.
+          {hasOfferLink
+            ? "You asked for the thank-you offer — open the link below."
+            : "You asked for the thank-you offer — use your code above."}
         </p>
       )}
       <div className="flex flex-col gap-3 pt-1">
