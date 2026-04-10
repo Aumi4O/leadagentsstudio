@@ -4,7 +4,7 @@
   "description": "Lead Agents Studio - Account & Credits System",
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "db:push": "prisma db push",
     "db:studio": "prisma studio"
@@ -24,7 +24,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "prisma": "^5.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -33,7 +34,6 @@
     "@types/react-dom": "^18.2.8",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
-    "prisma": "^5.0.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2"
   },

@@ -6,7 +6,7 @@
 |-------|----------|-----------------------------|
 | **Static site** — `leadagentsstudio.com`, subdomains (`smartline.…`, `he.…`), `/smartline/`, etc. | **Cloudflare Pages** | Cloudflare → **Pages** → your project → latest deployment |
 | **Backend API** — e.g. `lead-agents-api.onrender.com` | **Render** | Render → your **web service** (not Pages) → deploy logs |
-| **Account app + Quick Fit survey** — Next.js in `account/` | **Render** (optional second service) | Same as above; public survey URL is `https://<your-service>.onrender.com/survey` |
+| **Account app + Quick Fit survey** — Next.js in `account/` | **Render** (often **Ungrouped services**, not inside “My project”) | Public survey URL: `https://<your-service>.onrender.com/survey` — e.g. **`lead-agents-survey`** |
 
 Git pushes to the repo connected to **Cloudflare Pages** update the public site. Pushes to the **separate API repo** (if different) update Render.
 
@@ -51,6 +51,16 @@ On **Render’s free tier**, the web service **spins down** when idle. The **fir
 **If it never leaves that screen:** open **Render → your service → Logs** and look for build/runtime errors (e.g. failed `npm run build`, missing `DATABASE_URL` if the app crashes on boot).
 
 The app uses **split Auth.js config** (`auth.config.ts` vs `auth.ts`) so **middleware never imports Prisma** (Edge-incompatible). If middleware pulled in `PrismaClient`, the service could fail to become healthy and you’d see the loading screen forever.
+
+### “I don’t see the survey on Render” / **Failed deploy**
+
+- **Different service:** The survey app is usually a **separate** Web Service (e.g. **`lead-agents-survey`**) from **`lead-agents-api`**. On the dashboard, check **Ungrouped services** as well as projects — it may not be inside “My project”.
+- **Open the failed service → Logs:** The red **Failed deploy** row is the real answer. Typical fixes:
+  - **`DATABASE_URL`** — Required for `prisma generate` during **`npm run build`**. Add a Postgres URL (e.g. create **Render Postgres**, copy **Internal Database URL** into the Web Service env). Without it, the build often exits with Prisma env errors.
+  - **`AUTH_SECRET`** — Set a long random string (Auth.js expects it in production).
+  - **Root directory** must be **`account`**, **Build** `npm install && npm run build`, **Start** `npm run start`.
+
+`package.json` runs **`prisma generate` before `next build`** so the Prisma client exists on Render. **`prisma`** is listed under **dependencies** so install never skips the CLI.
 
 **If you need the survey to open instantly for customers:** use a **paid** Render instance (no spin-down), or keep the free service warm by pinging **`/api/health`** every ~10 minutes with [UptimeRobot](https://uptimerobot.com), [cron-job.org](https://cron-job.org), or similar.
 
