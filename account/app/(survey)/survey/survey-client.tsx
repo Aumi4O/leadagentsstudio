@@ -13,6 +13,7 @@ import {
   type SurveyAnswers,
   type VerticalId,
 } from "@/lib/survey-data"
+import { SITE_CALENDLY_URL, SITE_SURVEY_THANK_YOU_CODE } from "@/lib/site-urls"
 
 /** Anonymous browser id for Notion sync (not a user login / account). */
 const BROWSER_SURVEY_ID_KEY = "fit-check-session-id"
@@ -47,9 +48,10 @@ export function SurveyClient() {
   const [syncError, setSyncError] = useState<string | null>(null)
   const [syncing, setSyncing] = useState(false)
 
-  const calendlyUrl = (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim()
+  const calendlyUrl =
+    (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim() || SITE_CALENDLY_URL
   const offerUrl = (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim()
-  const offerCode = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
+  const offerCodeEnv = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
   const demoUrl = process.env.NEXT_PUBLIC_SURVEY_DEMO_URL ?? ""
   const agencyPageUrl = process.env.NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL ?? ""
   const portfolioUrl = process.env.NEXT_PUBLIC_SURVEY_PORTFOLIO_URL ?? ""
@@ -122,6 +124,17 @@ export function SurveyClient() {
 
   const primaryThankYouFirst =
     answers.q8 === "calendly" || answers.q8 === "discount"
+
+  const thankYouModalCode = useMemo(() => {
+    if (offerCodeEnv) return offerCodeEnv
+    if (answers.q8 === "discount") return SITE_SURVEY_THANK_YOU_CODE
+    return ""
+  }, [offerCodeEnv, answers.q8])
+
+  const [thankYouModalOpen, setThankYouModalOpen] = useState(false)
+  useEffect(() => {
+    if (step === 10 && thankYouModalCode) setThankYouModalOpen(true)
+  }, [step, thankYouModalCode])
 
   return (
     <main className="mx-auto max-w-xl px-5 py-10 sm:py-14">
@@ -355,15 +368,26 @@ export function SurveyClient() {
           )}
 
           {step === 10 && (
-            <ThankYou
-              primaryFirst={primaryThankYouFirst}
-              calendlyUrl={calendlyUrl}
-              offerUrl={offerUrl}
-              offerCode={offerCode}
-              contextLabel={ctx.linkLabel}
-              contextHref={contextHref}
-              choice={answers.q8}
-            />
+            <>
+              <ThankYouCodeModal
+                open={thankYouModalOpen}
+                onClose={() => setThankYouModalOpen(false)}
+                code={thankYouModalCode}
+              />
+              <ThankYou
+                primaryFirst={primaryThankYouFirst}
+                calendlyUrl={calendlyUrl}
+                offerUrl={offerUrl}
+                contextLabel={ctx.linkLabel}
+                contextHref={contextHref}
+                choice={answers.q8}
+                onShowCodeAgain={
+                  thankYouModalCode
+                    ? () => setThankYouModalOpen(true)
+                    : undefined
+                }
+              />
+            </>
           )}
         </div>
     </main>
@@ -524,36 +548,103 @@ function isValidHttpUrl(url: string): boolean {
   }
 }
 
-function ThankYou({
-  primaryFirst,
-  calendlyUrl,
-  offerUrl,
-  offerCode,
-  contextLabel,
-  contextHref,
-  choice,
+function ThankYouCodeModal({
+  open,
+  onClose,
+  code,
 }: {
-  primaryFirst: boolean
-  calendlyUrl: string
-  offerUrl: string
-  offerCode: string
-  contextLabel: string
-  contextHref: string
-  choice: string | undefined
+  open: boolean
+  onClose: () => void
+  code: string
 }) {
   const [copied, setCopied] = useState(false)
-  const hasCalendly = isValidHttpUrl(calendlyUrl)
-  const hasOfferLink = isValidHttpUrl(offerUrl)
-  const showCode = offerCode.length > 0
 
-  const copyCode = () => {
-    void navigator.clipboard.writeText(offerCode).then(() => {
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [open, onClose])
+
+  if (!open || !code) return null
+
+  const copy = () => {
+    void navigator.clipboard.writeText(code).then(() => {
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
     })
   }
 
-  const isDev = process.env.NODE_ENV === "development"
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/45 p-4 sm:items-center"
+      role="presentation"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="thank-you-code-title"
+        className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p
+          id="thank-you-code-title"
+          className="text-xs font-medium uppercase tracking-wide text-neutral-500"
+        >
+          Thank you — your code
+        </p>
+        <p className="mt-3 text-lg font-semibold text-neutral-900">
+          Here’s your thank-you discount
+        </p>
+        <p className="mt-1 text-sm text-neutral-600">
+          Copy and use at checkout or mention when you book.
+        </p>
+        <p className="mt-5 font-mono text-2xl font-semibold tracking-wide text-neutral-900">
+          {code}
+        </p>
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={copy}
+            className="rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+          >
+            {copied ? "Copied" : "Copy code"}
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ThankYou({
+  primaryFirst,
+  calendlyUrl,
+  offerUrl,
+  contextLabel,
+  contextHref,
+  choice,
+  onShowCodeAgain,
+}: {
+  primaryFirst: boolean
+  calendlyUrl: string
+  offerUrl: string
+  contextLabel: string
+  contextHref: string
+  choice: string | undefined
+  onShowCodeAgain?: () => void
+}) {
+  const hasCalendly = isValidHttpUrl(calendlyUrl)
+  const hasOfferLink = isValidHttpUrl(offerUrl)
 
   const book = hasCalendly ? (
     <a
@@ -564,23 +655,7 @@ function ThankYou({
     >
       Book a 15-minute session
     </a>
-  ) : isDev ? (
-    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-      <p className="font-medium">Calendly URL missing (dev).</p>
-      <p className="mt-1 text-amber-900/90">
-        Set{" "}
-        <code className="rounded bg-amber-100/80 px-1 text-xs">
-          NEXT_PUBLIC_CALENDLY_URL
-        </code>{" "}
-        to your share link, e.g.{" "}
-        <span className="whitespace-nowrap">https://calendly.com/you/30min</span>
-      </p>
-    </div>
-  ) : (
-    <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
-      If you left contact details, we’ll email you a link to book a short call.
-    </p>
-  )
+  ) : null
 
   const offer = hasOfferLink ? (
     <a
@@ -591,65 +666,40 @@ function ThankYou({
     >
       Claim the thank-you offer
     </a>
-  ) : showCode ? null : isDev ? (
-    <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
-      Set{" "}
-      <code className="rounded bg-white px-1 text-xs">
-        NEXT_PUBLIC_SURVEY_OFFER_URL
-      </code>{" "}
-      and/or{" "}
-      <code className="rounded bg-white px-1 text-xs">
-        NEXT_PUBLIC_SURVEY_OFFER_CODE
-      </code>
-      .
-    </div>
-  ) : (
-    <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
-      Offer details can be sent to the contact you shared.
-    </p>
-  )
+  ) : null
 
   return (
     <div className="space-y-5 text-left">
       <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
-        Thank you — here’s what to do next.
+        You’re all set — thank you.
       </h2>
+      <p className="text-sm text-neutral-600">
+        {choice === "calendly"
+          ? "When you’re ready, book a short call below."
+          : choice === "discount"
+            ? "Your code appeared in the pop-up. Use the link below if you need it again."
+            : onShowCodeAgain
+              ? "Your code appeared in the pop-up — open it again with the link below if needed."
+              : "Next steps are below when you’re ready."}
+      </p>
 
-      {showCode && (
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-            Your thank-you code
-          </p>
-          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-mono text-xl font-semibold tracking-wide text-neutral-900">
-              {offerCode}
-            </p>
-            <button
-              type="button"
-              onClick={copyCode}
-              className="shrink-0 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-neutral-100"
-            >
-              {copied ? "Copied" : "Copy code"}
-            </button>
-          </div>
-          <p className="mt-2 text-xs text-neutral-500">
-            Enter this code at checkout or mention it when you book.
-          </p>
-        </div>
-      )}
+      {onShowCodeAgain ? (
+        <button
+          type="button"
+          onClick={onShowCodeAgain}
+          className="text-sm font-medium text-neutral-700 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
+        >
+          Show code again
+        </button>
+      ) : null}
 
-      {choice === "calendly" && hasCalendly && (
+      {choice === "calendly" && hasCalendly ? (
         <p className="text-sm text-neutral-600">
-          You asked for a short call — use the button below when you’re ready.
+          Same calendar link we use across the site — pick a time that works for
+          you.
         </p>
-      )}
-      {choice === "discount" && (hasOfferLink || showCode) && (
-        <p className="text-sm text-neutral-600">
-          {hasOfferLink
-            ? "You asked for the thank-you offer — open the link below."
-            : "You asked for the thank-you offer — use your code above."}
-        </p>
-      )}
+      ) : null}
+
       <div className="flex flex-col gap-3 pt-1">
         {primaryFirst ? (
           <>
