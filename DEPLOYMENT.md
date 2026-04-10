@@ -22,7 +22,7 @@ The **Quick Fit Check** survey (`/survey`) and **`POST /api/survey/progress`** r
 | Variable | Required for survey → Notion | Notes |
 |----------|-------------------------------|--------|
 | `NOTION_INTERNAL_TOKEN` | Yes | Notion integration **Internal** secret |
-| `NOTION_SURVEY_DATABASE_ID` | Yes | Target database ID; connect the integration to that DB in Notion |
+| `NOTION_SURVEY_DATABASE_ID` | Yes | Survey database ID (see below; not the same as your generic “leads” database) |
 | `NEXT_PUBLIC_CALENDLY_URL` | No | Thank-you “Book” button |
 | `NEXT_PUBLIC_SURVEY_OFFER_URL` | No | Thank-you “THANKYOU offer” button |
 | `NEXT_PUBLIC_SURVEY_DEMO_URL` | No | Context link (default verticals) |
@@ -33,6 +33,16 @@ The **Quick Fit Check** survey (`/survey`) and **`POST /api/survey/progress`** r
 | `DATABASE_URL` | If you use Prisma/auth DB | Postgres (e.g. Render Postgres) |
 
 `NEXT_PUBLIC_*` values are baked in at **build** time. After changing them on Render, trigger a **manual deploy** (clear build cache if needed) so the thank-you links update.
+
+**Create the survey database in Notion:** The app expects properties **Name, Session ID, Progress, Last step, Q1–Q9, Tags** (see `account/lib/notion-survey.ts`). Your existing lead page with Email / Lead ID / Channel is a different shape.
+
+**Internal integrations** cannot create a database at workspace root; Notion requires a **parent page** that is connected to the integration. Create a page (e.g. “Quick Fit — data”), **⋯ → Connect to → Lead Agents Studio**, then from `account/` run:
+
+`NOTION_INTERNAL_TOKEN=… NOTION_PARENT_PAGE_ID="<Copy link from that page>" node scripts/create-notion-survey-database.mjs`
+
+Copy the printed database ID into `NOTION_SURVEY_DATABASE_ID` on Render. Open the **new database** in Notion → **Connections** and add the same integration so the live app can write rows.
+
+**zsh:** the `\` at end of a line must be the last character (no space after it).
 
 ## Related docs
 

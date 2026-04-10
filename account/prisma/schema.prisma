@@ -1,0 +1,111 @@
+// Lead Agents Studio - Database Schema
+// Account + Credits (Stripe Payment Links - no API)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================
+// Auth.js Required Models
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials login (hashed)
+  
+  // Credit System (manually updated after Stripe payment confirmation)
+  credits       Int       @default(0)
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  creditLogs    CreditLog[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================
+// Credit Log (simple tracking)
+// ============================================
+
+model CreditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int      // +10, +50, +200 (purchase) or -1 (demo used)
+  reason    String   // "Purchased 10 credits" or "Demo: WhatsApp"
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+// ============================================
+// Demo Requests (submitted before Stripe payment)
+// ============================================
+
+model DemoRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  channel   String   // whatsapp, sms, call
+  status    String   @default("pending") // pending, paid, completed, cancelled
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+  @@index([status])
+}
+
+// ============================================
+// Credit Packages (Stripe Payment Links)
+// ============================================
+// Demo:      1 credit   = $5    → STRIPE_DEMO_LINK
+// Starter:  10 credits  = $50   → STRIPE_LINK_10
+// Growth:   50 credits  = $200  → STRIPE_LINK_50
+// Scale:   200 credits  = $600  → STRIPE_LINK_200

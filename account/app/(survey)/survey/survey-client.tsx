@@ -1,8 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import {
   Q1_OPTIONS,
@@ -16,26 +14,27 @@ import {
   type VerticalId,
 } from "@/lib/survey-data"
 
-const SESSION_KEY = "fit-check-session-id"
-const PAGE_KEY = "fit-check-notion-page-id"
+/** Anonymous browser id for Notion sync (not a user login / account). */
+const BROWSER_SURVEY_ID_KEY = "fit-check-session-id"
+const NOTION_ROW_ID_KEY = "fit-check-notion-page-id"
 
-function getOrCreateSessionId(): string {
+function getOrCreateBrowserSurveyId(): string {
   if (typeof window === "undefined") return ""
-  let id = sessionStorage.getItem(SESSION_KEY)
+  let id = sessionStorage.getItem(BROWSER_SURVEY_ID_KEY)
   if (!id) {
     id = crypto.randomUUID()
-    sessionStorage.setItem(SESSION_KEY, id)
+    sessionStorage.setItem(BROWSER_SURVEY_ID_KEY, id)
   }
   return id
 }
 
-function getStoredPageId(): string | null {
+function getStoredNotionPageId(): string | null {
   if (typeof window === "undefined") return null
-  return sessionStorage.getItem(PAGE_KEY)
+  return sessionStorage.getItem(NOTION_ROW_ID_KEY)
 }
 
-function setStoredPageId(id: string) {
-  sessionStorage.setItem(PAGE_KEY, id)
+function setStoredNotionPageId(id: string) {
+  sessionStorage.setItem(NOTION_ROW_ID_KEY, id)
 }
 
 type Step = number
@@ -68,8 +67,8 @@ export function SurveyClient() {
       setSyncing(true)
       setSyncError(null)
       try {
-        const sessionId = getOrCreateSessionId()
-        const notionPageId = getStoredPageId()
+        const sessionId = getOrCreateBrowserSurveyId()
+        const notionPageId = getStoredNotionPageId()
         const res = await fetch("/api/survey/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,10 +86,10 @@ export function SurveyClient() {
           return
         }
         if (data.notionPageId && typeof data.notionPageId === "string") {
-          setStoredPageId(data.notionPageId)
+          setStoredNotionPageId(data.notionPageId)
         }
       } catch {
-        setSyncError("Network error — progress saved locally until connection works.")
+        setSyncError("Connection issue — you can keep going; we’ll retry when you’re online.")
       } finally {
         setSyncing(false)
       }
@@ -99,7 +98,7 @@ export function SurveyClient() {
   )
 
   useEffect(() => {
-    getOrCreateSessionId()
+    getOrCreateBrowserSurveyId()
   }, [])
 
   useEffect(() => {
@@ -124,25 +123,18 @@ export function SurveyClient() {
     answers.q8 === "calendly" || answers.q8 === "discount"
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <div className="light-beams" aria-hidden>
-        <div className="beam beam-cyan" />
-        <div className="beam beam-pink" />
-        <div className="beam beam-blue" />
-      </div>
-
-      <main className="relative z-10 mx-auto max-w-2xl px-4 py-12 sm:py-16">
+    <main className="mx-auto max-w-xl px-5 py-10 sm:py-14">
         {step > 0 && step < 10 && (
           <div className="mb-8">
-            <div className="mb-2 flex justify-between text-xs text-muted-foreground">
+            <div className="mb-2 flex justify-between text-xs text-neutral-500">
               <span>
                 Question {questionIndex} of {TOTAL_QUESTIONS}
               </span>
               <span>{Math.round((questionIndex / TOTAL_QUESTIONS) * 100)}%</span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+            <div className="h-1 overflow-hidden rounded-full bg-neutral-200">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#00d4ff] to-[#ff3b8b] transition-all duration-300"
+                className="h-full rounded-full bg-neutral-800 transition-[width] duration-200 ease-out"
                 style={{ width: `${(questionIndex / TOTAL_QUESTIONS) * 100}%` }}
               />
             </div>
@@ -150,15 +142,12 @@ export function SurveyClient() {
         )}
 
         {syncError && (
-          <p
-            className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900"
-            role="status"
-          >
+          <p className="mb-4 text-center text-xs text-neutral-500" role="status">
             {syncError}
           </p>
         )}
 
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+        <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-8">
           {step === 0 && (
             <Intro
               onStart={async () => {
@@ -334,18 +323,20 @@ export function SurveyClient() {
           )}
 
           {step === 9 && (
-            <QuestionBlock title="Best email and, if useful, phone or WhatsApp?">
-              <p className="mb-3 text-sm text-muted-foreground">
-                Only if you want a follow-up.
+            <QuestionBlock title="Where should we send your next step? (optional)">
+              <p className="mb-3 text-sm text-neutral-500">
+                This is the only place we ask for contact info. No password or sign-in
+                — leave blank if you prefer not to share.
               </p>
-              <Input
+              <input
                 type="text"
-                className="mb-3"
-                placeholder="Email, phone, or WhatsApp (optional)"
+                className="mb-4 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+                placeholder="Email, phone, or WhatsApp"
                 value={answers.q9 ?? ""}
                 onChange={(e) =>
                   setAnswers((a) => ({ ...a, q9: e.target.value }))
                 }
+                autoComplete="email"
               />
               <NavRow
                 onBack={() => setStep(8)}
@@ -373,36 +364,37 @@ export function SurveyClient() {
             />
           )}
         </div>
-      </main>
-    </div>
+    </main>
   )
 }
 
 function Intro({ onStart, syncing }: { onStart: () => void; syncing: boolean }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Quick Fit Check — so I can point you to the right offer
+        <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+          2-minute check-in
+        </p>
+        <h1 className="mt-2 text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
+          Quick Fit Check
         </h1>
+        <p className="mt-1 text-sm text-neutral-600">
+          So we can point you to the right next step.
+        </p>
       </div>
-      <p className="text-muted-foreground">
-        This takes about 2 minutes.
-        <br />
-        <br />
-        I’ll use your answers to point you to the most relevant offer and, if it
-        makes sense, send you the best next step — demo, pricing, a thank-you
-        discount, or a short call.
+      <p className="text-sm leading-relaxed text-neutral-600">
+        No sign-in or account needed. Your answers help us match you to the most
+        relevant next step — demo, pricing, a thank-you offer, or a short call when
+        it makes sense.
       </p>
-      <Button
+      <button
         type="button"
-        className="w-full bg-[#1d1d1f] text-white hover:bg-black sm:w-auto"
-        size="lg"
+        className="w-full rounded-lg bg-neutral-900 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-60 sm:w-auto sm:min-w-[8rem]"
         disabled={syncing}
         onClick={() => onStart()}
       >
         {syncing ? "Starting…" : "Start"}
-      </Button>
+      </button>
     </div>
   )
 }
@@ -417,10 +409,12 @@ function QuestionBlock({
   children: React.ReactNode
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-semibold leading-snug sm:text-2xl">{title}</h2>
-        {hint && <p className="mt-2 text-sm text-muted-foreground">{hint}</p>}
+        <h2 className="text-lg font-semibold leading-snug text-neutral-900 sm:text-xl">
+          {title}
+        </h2>
+        {hint && <p className="mt-2 text-sm text-neutral-500">{hint}</p>}
       </div>
       {children}
     </div>
@@ -444,10 +438,10 @@ function OptionList({
             type="button"
             onClick={() => onChange(o.id)}
             className={cn(
-              "w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors sm:text-base",
+              "w-full rounded-lg border px-4 py-3 text-left text-sm transition-colors sm:text-[15px]",
               value === o.id
-                ? "border-[#00d4ff] bg-cyan-50/80 ring-2 ring-[#00d4ff]/30"
-                : "border-border hover:border-muted-foreground/40 hover:bg-muted/50"
+                ? "border-neutral-900 bg-neutral-50"
+                : "border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50/80"
             )}
           >
             {o.label}
@@ -472,9 +466,9 @@ function OpenField({
   return (
     <textarea
       className={cn(
-        "flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-        "ring-offset-background placeholder:text-muted-foreground",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        "min-h-[120px] w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900",
+        "placeholder:text-neutral-400",
+        "focus:border-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
       )}
       style={{ minHeight: `${minRows * 1.5}rem` }}
       value={value}
@@ -498,18 +492,23 @@ function NavRow({
   syncing: boolean
 }) {
   return (
-    <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:justify-end">
-      <Button type="button" variant="outline" onClick={onBack} disabled={syncing}>
-        Back
-      </Button>
-      <Button
+    <div className="flex flex-col-reverse gap-3 pt-6 sm:flex-row sm:justify-end">
+      <button
         type="button"
-        className="bg-[#1d1d1f] text-white hover:bg-black"
+        className="rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 disabled:opacity-50"
+        onClick={onBack}
+        disabled={syncing}
+      >
+        Back
+      </button>
+      <button
+        type="button"
+        className="rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-40"
         disabled={nextDisabled || syncing}
         onClick={onNext}
       >
         {syncing ? "Saving…" : nextLabel}
-      </Button>
+      </button>
     </div>
   )
 }
@@ -530,41 +529,42 @@ function ThankYou({
   choice: string | undefined
 }) {
   const book = (
-    <Button
-      asChild
-      size="lg"
-      className="w-full bg-gradient-to-r from-[#00d4ff] to-[#ff3b8b] text-white hover:opacity-95"
+    <a
+      href={calendlyUrl || "#"}
+      target="_blank"
+      rel="noreferrer"
+      className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-neutral-800"
     >
-      <a href={calendlyUrl || "#"} target="_blank" rel="noreferrer">
-        Book a 15-Minute Session
-      </a>
-    </Button>
+      Book a 15-minute session
+    </a>
   )
   const offer = (
-    <Button asChild variant="outline" size="lg" className="w-full border-2">
-      <a href={offerUrl || "#"} target="_blank" rel="noreferrer">
-        Claim the THANKYOU Offer
-      </a>
-    </Button>
+    <a
+      href={offerUrl || "#"}
+      target="_blank"
+      rel="noreferrer"
+      className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
+    >
+      Claim the thank-you offer
+    </a>
   )
 
   return (
-    <div className="space-y-6 text-center sm:text-left">
-      <h2 className="text-2xl font-bold leading-tight sm:text-3xl">
-        Thanks — based on what you shared, I can point you to the fastest next
-        step.
+    <div className="space-y-5 text-left">
+      <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
+        Thank you — here’s what to do next.
       </h2>
       {choice === "calendly" && calendlyUrl && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-neutral-600">
           You asked for a short call — use the button below when you’re ready.
         </p>
       )}
       {choice === "discount" && offerUrl && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-neutral-600">
           You asked for the thank-you offer — it’s on the next page.
         </p>
       )}
-      <div className="flex flex-col gap-3 pt-2">
+      <div className="flex flex-col gap-3 pt-1">
         {primaryFirst ? (
           <>
             {choice === "discount" ? (
@@ -587,23 +587,17 @@ function ThankYou({
         )}
       </div>
       {contextHref ? (
-        <p className="pt-4 text-sm">
+        <p className="pt-2 text-sm">
           <a
             href={contextHref}
             target="_blank"
             rel="noreferrer"
-            className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
           >
             {contextLabel}
           </a>
         </p>
-      ) : (
-        <p className="pt-4 text-sm text-muted-foreground">
-          {contextLabel} — add{" "}
-          <code className="rounded bg-muted px-1 text-xs">NEXT_PUBLIC_SURVEY_DEMO_URL</code>{" "}
-          (and vertical URLs if needed) in env.
-        </p>
-      )}
+      ) : null}
     </div>
   )
 }

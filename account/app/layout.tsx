@@ -1,6 +1,18 @@
 import "./globals.css"
 import type { Metadata } from "next"
-import { SessionProvider } from "next-auth/react"
+import { Inter, Space_Grotesk } from "next/font/google"
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Lead Agents Studio - Account",
@@ -9,12 +21,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en">
-      <body>
-        <SessionProvider>
-          {children}
-        </SessionProvider>
-      </body>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

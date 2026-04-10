@@ -6,6 +6,11 @@
 .env.local
 .env.*.local
 
+# Next.js account app build artifacts
+account/node_modules/
+account/.next/
+account/tsconfig.tsbuildinfo
+
 # Local archives / heavy media (repo root only — public/assets copies ship with Pages)
 leadagentsstudio-site.zip
 SMARTLINE_LEA_DIALOGUE_FINAL.mp4

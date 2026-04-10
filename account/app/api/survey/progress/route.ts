@@ -98,7 +98,7 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error("survey/progress:", e)
     return NextResponse.json(
-      { error: "Could not save progress. Answers are still on this device." },
+      { error: "Couldn’t sync this step — you can still continue." },
       { status: 500 }
     )
   }

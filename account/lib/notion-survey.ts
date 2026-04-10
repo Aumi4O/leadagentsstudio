@@ -8,7 +8,7 @@
  * - Tags (Text) — newline-separated automation tags
  */
 
-const NOTION_VERSION = "2022-06-28"
+const NOTION_VERSION = "2025-09-03"
 
 export const NOTION_SURVEY_PROPERTIES = {
   title: "Name",
