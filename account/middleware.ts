@@ -1,12 +1,15 @@
-export { auth as middleware } from "auth"
+import NextAuth from "next-auth"
+import authConfig from "./auth.config"
 
-// Or like this if you need to do something here.
-// export default auth((req) => {
-//   console.log(req.auth) //  { session: { user: { ... } } }
-// })
+/**
+ * Must NOT import `auth` from `./auth` — that file loads Prisma (Node-only).
+ * This lightweight instance is safe on the Edge runtime.
+ * @see https://authjs.dev/guides/edge-compatibility
+ */
+const { auth } = NextAuth(authConfig)
 
-// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-/** Only run auth on routes that need it — keeps /survey and other public pages fast. */
+export default auth
+
 export const config = {
   matcher: ["/dashboard/:path*", "/account/:path*"],
 }

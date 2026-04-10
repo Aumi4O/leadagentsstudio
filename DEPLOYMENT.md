@@ -50,6 +50,8 @@ On **Render’s free tier**, the web service **spins down** when idle. The **fir
 
 **If it never leaves that screen:** open **Render → your service → Logs** and look for build/runtime errors (e.g. failed `npm run build`, missing `DATABASE_URL` if the app crashes on boot).
 
+The app uses **split Auth.js config** (`auth.config.ts` vs `auth.ts`) so **middleware never imports Prisma** (Edge-incompatible). If middleware pulled in `PrismaClient`, the service could fail to become healthy and you’d see the loading screen forever.
+
 **If you need the survey to open instantly for customers:** use a **paid** Render instance (no spin-down), or keep the free service warm by pinging **`/api/health`** every ~10 minutes with [UptimeRobot](https://uptimerobot.com), [cron-job.org](https://cron-job.org), or similar.
 
 ## Related docs
