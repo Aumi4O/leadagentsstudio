@@ -15,6 +15,7 @@ import {
   notionUpdateSurveyPage,
   type NotionSurveyPayload,
 } from "@/lib/notion-survey"
+import { normalizeNotionDatabaseId } from "@/lib/notion-ids"
 
 const VERTICAL_IDS: VerticalId[] = [
   "medspa",
@@ -73,14 +74,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid session" }, { status: 400 })
     }
 
-    const token = process.env.NOTION_INTERNAL_TOKEN
-    const databaseId = process.env.NOTION_SURVEY_DATABASE_ID
+    const token = process.env.NOTION_INTERNAL_TOKEN?.trim()
+    const databaseIdRaw = process.env.NOTION_SURVEY_DATABASE_ID?.trim()
+    const databaseId = databaseIdRaw
+      ? normalizeNotionDatabaseId(databaseIdRaw)
+      : ""
 
     if (!token || !databaseId) {
-      console.warn("survey/progress: Notion not configured (missing NOTION_INTERNAL_TOKEN or NOTION_SURVEY_DATABASE_ID)")
+      console.warn(
+        "survey/progress: Notion not configured (set NOTION_INTERNAL_TOKEN + NOTION_SURVEY_DATABASE_ID on Render, redeploy)"
+      )
       return NextResponse.json({
         ok: true,
         skipped: true,
+        notionReady: false,
         notionPageId: notionPageId ?? null,
       })
     }

@@ -108,9 +108,19 @@ export function SurveyClient() {
             isComplete,
           }),
         })
-        const data = await res.json()
+        const data = (await res.json()) as {
+          error?: string
+          skipped?: boolean
+          notionPageId?: string | null
+        }
         if (!res.ok) {
           setSyncError(data.error ?? "Save failed")
+          return
+        }
+        if (data.skipped === true) {
+          setSyncError(
+            "Answers aren’t being saved — Notion isn’t connected. On Render, set NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID, open the database in Notion → Connections → add your integration, then redeploy. Check /api/health — notionSurvey.ready should be true."
+          )
           return
         }
         if (data.notionPageId && typeof data.notionPageId === "string") {
