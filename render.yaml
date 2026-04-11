@@ -22,7 +22,8 @@ services:
     region: oregon
     rootDir: account
     buildCommand: npm install && npm run build
-    startCommand: node .next/standalone/server.js
+    # Use npm start so HOSTNAME is forced to 0.0.0.0 (see scripts/run-standalone.js)
+    startCommand: npm run start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
@@ -30,6 +31,9 @@ services:
       - key: HOSTNAME
         value: "0.0.0.0"
       - key: NEXTAUTH_URL
+        value: https://lead-agents-survey.onrender.com
+      # Auth.js v5 reads AUTH_URL; set in dashboard if different from NEXTAUTH_URL
+      - key: AUTH_URL
         value: https://lead-agents-survey.onrender.com
       - key: DATABASE_URL
         sync: false
