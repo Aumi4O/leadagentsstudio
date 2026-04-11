@@ -12,8 +12,8 @@ import {
 } from "@/lib/survey-data"
 import {
   notionCreateSurveyPage,
+  notionPrepareSurveyDatabase,
   notionUpdateSurveyPage,
-  notionVerifySurveyDatabase,
   type NotionSurveyPayload,
 } from "@/lib/notion-survey"
 import { getNotionSurveyConfig } from "@/lib/notion-auto-db"
@@ -27,8 +27,8 @@ const VERTICAL_IDS: VerticalId[] = [
   "creative",
 ]
 
-/** Avoid verifying the same database on every step (Notion rate limits). */
-const verifiedDatabaseIds = new Set<string>()
+/** Prepare schema once per DB id (Notion rate limits). */
+const preparedSurveyDatabases = new Map<string, { titlePropertyName: string }>()
 
 function isVerticalId(v: string | undefined): v is VerticalId {
   return !!v && VERTICAL_IDS.includes(v as VerticalId)
@@ -101,26 +101,33 @@ export async function POST(request: Request) {
 
     const { token, databaseId } = notionConfig
 
-    if (!verifiedDatabaseIds.has(databaseId)) {
-      const verify = await notionVerifySurveyDatabase(token, databaseId)
-      if (!verify.ok) {
-        console.error("survey/progress: database verify failed:", verify.message)
+    let prep = preparedSurveyDatabases.get(databaseId)
+    if (!prep) {
+      const ready = await notionPrepareSurveyDatabase(token, databaseId)
+      if (!ready.ok) {
+        console.error("survey/progress: Notion database prepare failed:", ready.message)
         return NextResponse.json({
           ok: true,
           skipped: true,
           notionReady: false,
-          error: verify.message,
+          error: ready.message,
           notionPageId: notionPageId ?? null,
         })
       }
-      verifiedDatabaseIds.add(databaseId)
+      prep = { titlePropertyName: ready.titlePropertyName }
+      preparedSurveyDatabases.set(databaseId, prep)
     }
 
     const progress: "In progress" | "Complete" = isComplete ? "Complete" : "In progress"
     const payload = buildPayload(sessionId, lastStep, answers, progress)
 
     if (!notionPageId) {
-      const { id } = await notionCreateSurveyPage(token, databaseId, payload)
+      const { id } = await notionCreateSurveyPage(
+        token,
+        databaseId,
+        payload,
+        prep.titlePropertyName
+      )
       return NextResponse.json({ ok: true, notionPageId: id, notionReady: true })
     }
 

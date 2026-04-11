@@ -78,6 +78,11 @@ function buildProperties(p: NotionSurveyPayload): Record<string, unknown> {
   return props
 }
 
+const DB_ACCESS_HINT =
+  "NOTION_SURVEY_DATABASE_ID must be the survey *database* (table), not a parent page. " +
+  "In Notion: open the database as a full page → copy link → use the 32-character id from the URL. " +
+  "Then: ⋯ on that database → Connections → add your integration."
+
 /**
  * Confirms the id is a database the integration can write to.
  * Common mistake: pasting a parent *page* id instead of the survey *database* id.
@@ -95,20 +100,114 @@ export async function notionVerifySurveyDatabase(
   if (res.ok) return { ok: true }
   const body = await res.text()
   const short = body.slice(0, 400)
-  const hint =
-    "NOTION_SURVEY_DATABASE_ID must be the survey *database* (table), not a parent page. " +
-    "In Notion: open the database as a full page → copy link → use the 32-character id from the URL. " +
-    "Then: ⋯ on that database → Connections → add your integration."
   return {
     ok: false,
-    message: `${hint} (Notion ${res.status}: ${short})`,
+    message: `${DB_ACCESS_HINT} (Notion ${res.status}: ${short})`,
   }
+}
+
+type NotionDbProps = Record<string, { id: string; name?: string; type: string }>
+
+function surveyPropertyAdditions(existing: NotionDbProps): Record<string, unknown> {
+  const has = (name: string) => Object.prototype.hasOwnProperty.call(existing, name)
+  const add: Record<string, unknown> = {}
+
+  if (!has(NOTION_SURVEY_PROPERTIES.sessionId)) {
+    add[NOTION_SURVEY_PROPERTIES.sessionId] = { rich_text: {} }
+  }
+  if (!has(NOTION_SURVEY_PROPERTIES.progress)) {
+    add[NOTION_SURVEY_PROPERTIES.progress] = {
+      select: {
+        options: [
+          { name: "In progress", color: "yellow" },
+          { name: "Complete", color: "green" },
+        ],
+      },
+    }
+  }
+  if (!has(NOTION_SURVEY_PROPERTIES.lastStep)) {
+    add[NOTION_SURVEY_PROPERTIES.lastStep] = { rich_text: {} }
+  }
+  for (const k of ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"] as const) {
+    const name = NOTION_SURVEY_PROPERTIES[k]
+    if (!has(name)) add[name] = { rich_text: {} }
+  }
+  if (!has(NOTION_SURVEY_PROPERTIES.tags)) {
+    add[NOTION_SURVEY_PROPERTIES.tags] = { rich_text: {} }
+  }
+  return add
+}
+
+/**
+ * Ensures the database has every column the survey writer expects. Notion returns
+ * validation_error if properties are missing; many workspaces link an empty or
+ * template DB — we PATCH missing schema in one call.
+ */
+export async function notionPrepareSurveyDatabase(
+  token: string,
+  databaseId: string
+): Promise<{ ok: true; titlePropertyName: string } | { ok: false; message: string }> {
+  const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": NOTION_API_VERSION,
+    },
+  })
+  if (!res.ok) {
+    const body = await res.text()
+    return {
+      ok: false,
+      message: `${DB_ACCESS_HINT} (Notion ${res.status}: ${body.slice(0, 400)})`,
+    }
+  }
+
+  const data = (await res.json()) as { properties: NotionDbProps }
+  const props = data.properties ?? {}
+
+  const titleEntry = Object.entries(props).find(([, v]) => v.type === "title")
+  if (!titleEntry) {
+    return {
+      ok: false,
+      message:
+        "This Notion database has no title property. Every Notion database needs one title column — create a new database or fix the schema in Notion.",
+    }
+  }
+  const titlePropertyName = titleEntry[1].name ?? titleEntry[0]
+
+  const additions = surveyPropertyAdditions(props)
+  if (Object.keys(additions).length === 0) {
+    return { ok: true, titlePropertyName }
+  }
+
+  const patchRes = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "Notion-Version": NOTION_API_VERSION,
+    },
+    body: JSON.stringify({ properties: additions }),
+  })
+
+  if (!patchRes.ok) {
+    const err = await patchRes.text()
+    return {
+      ok: false,
+      message:
+        `Could not add required survey columns to your Notion database (${patchRes.status}). ` +
+        `Add them manually in Notion (exact names): Session ID, Progress (select: In progress, Complete), ` +
+        `Last step, Q1–Q9 (text), Tags. Notion said: ${err.slice(0, 500)}`,
+    }
+  }
+
+  return { ok: true, titlePropertyName }
 }
 
 export async function notionCreateSurveyPage(
   token: string,
   databaseId: string,
-  payload: NotionSurveyPayload
+  payload: NotionSurveyPayload,
+  titlePropertyName: string
 ): Promise<{ id: string }> {
   const short = payload.sessionId.slice(0, 8)
   const name = `Quick Fit — ${short}`
@@ -122,7 +221,7 @@ export async function notionCreateSurveyPage(
     body: JSON.stringify({
       parent: { database_id: databaseId },
       properties: {
-        [NOTION_SURVEY_PROPERTIES.title]: titleProp(name),
+        [titlePropertyName]: titleProp(name),
         ...buildProperties(payload),
       },
     }),
