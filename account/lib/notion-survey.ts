@@ -8,7 +8,7 @@
  * - Tags (Text) — newline-separated automation tags
  */
 
-const NOTION_VERSION = "2025-09-03"
+export const NOTION_API_VERSION = "2025-09-03"
 
 export const NOTION_SURVEY_PROPERTIES = {
   title: "Name",
@@ -78,6 +78,33 @@ function buildProperties(p: NotionSurveyPayload): Record<string, unknown> {
   return props
 }
 
+/**
+ * Confirms the id is a database the integration can write to.
+ * Common mistake: pasting a parent *page* id instead of the survey *database* id.
+ */
+export async function notionVerifySurveyDatabase(
+  token: string,
+  databaseId: string
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": NOTION_API_VERSION,
+    },
+  })
+  if (res.ok) return { ok: true }
+  const body = await res.text()
+  const short = body.slice(0, 400)
+  const hint =
+    "NOTION_SURVEY_DATABASE_ID must be the survey *database* (table), not a parent page. " +
+    "In Notion: open the database as a full page → copy link → use the 32-character id from the URL. " +
+    "Then: ⋯ on that database → Connections → add your integration."
+  return {
+    ok: false,
+    message: `${hint} (Notion ${res.status}: ${short})`,
+  }
+}
+
 export async function notionCreateSurveyPage(
   token: string,
   databaseId: string,
@@ -90,7 +117,7 @@ export async function notionCreateSurveyPage(
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      "Notion-Version": NOTION_VERSION,
+      "Notion-Version": NOTION_API_VERSION,
     },
     body: JSON.stringify({
       parent: { database_id: databaseId },
@@ -118,7 +145,7 @@ export async function notionUpdateSurveyPage(
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-      "Notion-Version": NOTION_VERSION,
+      "Notion-Version": NOTION_API_VERSION,
     },
     body: JSON.stringify({
       properties: buildProperties(payload),

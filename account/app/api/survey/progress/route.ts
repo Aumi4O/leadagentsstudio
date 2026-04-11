@@ -13,6 +13,7 @@ import {
 import {
   notionCreateSurveyPage,
   notionUpdateSurveyPage,
+  notionVerifySurveyDatabase,
   type NotionSurveyPayload,
 } from "@/lib/notion-survey"
 import { getNotionSurveyConfig } from "@/lib/notion-auto-db"
@@ -25,6 +26,9 @@ const VERTICAL_IDS: VerticalId[] = [
   "growth_system",
   "creative",
 ]
+
+/** Avoid verifying the same database on every step (Notion rate limits). */
+const verifiedDatabaseIds = new Set<string>()
 
 function isVerticalId(v: string | undefined): v is VerticalId {
   return !!v && VERTICAL_IDS.includes(v as VerticalId)
@@ -58,6 +62,11 @@ function buildPayload(
   }
 }
 
+function notionErrorMessage(e: unknown): string {
+  if (e instanceof Error) return e.message
+  return String(e)
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
@@ -78,32 +87,56 @@ export async function POST(request: Request) {
 
     if (!notionConfig) {
       console.warn(
-        "survey/progress: Notion not configured. Set NOTION_INTERNAL_TOKEN + either NOTION_SURVEY_DATABASE_ID or NOTION_PARENT_PAGE_ID on Render, then redeploy."
+        "survey/progress: Notion not configured. Set NOTION_INTERNAL_TOKEN + NOTION_SURVEY_DATABASE_ID (or NOTION_PARENT_PAGE_ID)."
       )
       return NextResponse.json({
         ok: true,
         skipped: true,
         notionReady: false,
+        error:
+          "Notion is not configured on the server. Add NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID on Render.",
         notionPageId: notionPageId ?? null,
       })
     }
 
     const { token, databaseId } = notionConfig
+
+    if (!verifiedDatabaseIds.has(databaseId)) {
+      const verify = await notionVerifySurveyDatabase(token, databaseId)
+      if (!verify.ok) {
+        console.error("survey/progress: database verify failed:", verify.message)
+        return NextResponse.json({
+          ok: true,
+          skipped: true,
+          notionReady: false,
+          error: verify.message,
+          notionPageId: notionPageId ?? null,
+        })
+      }
+      verifiedDatabaseIds.add(databaseId)
+    }
+
     const progress: "In progress" | "Complete" = isComplete ? "Complete" : "In progress"
     const payload = buildPayload(sessionId, lastStep, answers, progress)
 
     if (!notionPageId) {
       const { id } = await notionCreateSurveyPage(token, databaseId, payload)
-      return NextResponse.json({ ok: true, notionPageId: id })
+      return NextResponse.json({ ok: true, notionPageId: id, notionReady: true })
     }
 
     await notionUpdateSurveyPage(token, notionPageId, payload)
-    return NextResponse.json({ ok: true, notionPageId })
+    return NextResponse.json({ ok: true, notionPageId, notionReady: true })
   } catch (e) {
-    console.error("survey/progress:", e)
+    const msg = notionErrorMessage(e)
+    console.error("survey/progress:", msg)
     return NextResponse.json(
-      { error: "Couldn't sync this step — you can still continue." },
-      { status: 500 }
+      {
+        error:
+          "Could not save to Notion. Check NOTION_SURVEY_DATABASE_ID (must be the database table id) and that the integration is connected to that database. " +
+          msg.slice(0, 500),
+        notionReady: false,
+      },
+      { status: 502 }
     )
   }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import {
   Q1_OPTIONS,
@@ -9,16 +9,13 @@ import {
   Q5_OPTIONS,
   Q6_OPTIONS,
   Q8_OPTIONS,
-  thankYouContext,
   type SurveyAnswers,
   type VerticalId,
 } from "@/lib/survey-data"
 import {
   SITE_CALENDLY_URL,
-  SITE_SURVEY_OFFER_FALLBACK,
   SITE_SURVEY_THANK_YOU_CODE,
   SITE_SURVEY_DISCOUNT_PERCENT,
-  siteDefaultContextUrl,
 } from "@/lib/site-urls"
 
 function isValidHttpUrl(url: string | undefined): boolean {
@@ -65,30 +62,9 @@ export function SurveyClient() {
 
   const calendlyUrl =
     (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim() || SITE_CALENDLY_URL
-  const offerUrlRaw = (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim()
-  const offerUrlResolved = useMemo(() => {
-    if (isValidHttpUrl(offerUrlRaw)) return offerUrlRaw.trim()
-    return SITE_SURVEY_OFFER_FALLBACK
-  }, [offerUrlRaw])
-
   const offerCodeEnv = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
-  const demoUrl = (process.env.NEXT_PUBLIC_SURVEY_DEMO_URL ?? "").trim()
-  const agencyPageUrl = (process.env.NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL ?? "").trim()
-  const portfolioUrl = (process.env.NEXT_PUBLIC_SURVEY_PORTFOLIO_URL ?? "").trim()
 
   const vertical = answers.q1
-  const ctx = thankYouContext(vertical)
-
-  const contextHref = useMemo(() => {
-    const fromEnv =
-      ctx.pathKey === "page"
-        ? agencyPageUrl || demoUrl
-        : ctx.pathKey === "portfolio"
-          ? portfolioUrl || demoUrl
-          : demoUrl
-    if (isValidHttpUrl(fromEnv)) return fromEnv.trim()
-    return siteDefaultContextUrl(ctx.pathKey)
-  }, [ctx.pathKey, agencyPageUrl, portfolioUrl, demoUrl])
 
   const sync = useCallback(
     async (lastStep: string, nextAnswers: SurveyAnswers, isComplete: boolean) => {
@@ -112,6 +88,7 @@ export function SurveyClient() {
           error?: string
           skipped?: boolean
           notionPageId?: string | null
+          notionReady?: boolean
         }
         if (!res.ok) {
           setSyncError(data.error ?? "Save failed")
@@ -119,7 +96,9 @@ export function SurveyClient() {
         }
         if (data.skipped === true) {
           setSyncError(
-            "Answers aren\u2019t being saved \u2014 Notion isn\u2019t connected. On Render, set NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID (or NOTION_PARENT_PAGE_ID for auto-creation), then redeploy."
+            typeof data.error === "string" && data.error.trim().length > 0
+              ? data.error
+              : "Answers aren\u2019t being saved \u2014 Notion isn\u2019t connected. On Render, set NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID (the database table id, not a parent page), connect the integration to that database, then redeploy."
           )
           return
         }
@@ -149,13 +128,11 @@ export function SurveyClient() {
 
   const finish = async (nextAnswers: SurveyAnswers) => {
     setAnswers(nextAnswers)
-    setStep(10)
     await sync("complete", nextAnswers, true)
+    setStep(10)
   }
 
-  const thankYouModalCode = offerCodeEnv || SITE_SURVEY_THANK_YOU_CODE
-
-  const [thankYouModalOpen, setThankYouModalOpen] = useState(false)
+  const thankYouDiscountCode = offerCodeEnv || SITE_SURVEY_THANK_YOU_CODE
 
   return (
     <main className="mx-auto max-w-xl px-5 py-10 sm:py-14">
@@ -176,11 +153,14 @@ export function SurveyClient() {
           </div>
         )}
 
-        {syncError && (
-          <p className="mb-4 text-center text-xs text-neutral-500" role="status">
+        {syncError ? (
+          <p
+            className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-xs text-amber-950"
+            role="status"
+          >
             {syncError}
           </p>
-        )}
+        ) : null}
 
         <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:p-8">
           {step === 0 && (
@@ -401,23 +381,10 @@ export function SurveyClient() {
           )}
 
           {step === 10 && (
-            <>
-              <ThankYouCodeModal
-                open={thankYouModalOpen}
-                onClose={() => setThankYouModalOpen(false)}
-                code={thankYouModalCode}
-                calendlyUrl={calendlyUrl}
-                offerPageUrl={offerUrlResolved}
-              />
-              <ThankYou
-                calendlyUrl={calendlyUrl}
-                offerUrl={offerUrlResolved}
-                contextLabel={ctx.linkLabel}
-                contextHref={contextHref}
-                discountCode={thankYouModalCode}
-                onShowCodeAgain={() => setThankYouModalOpen(true)}
-              />
-            </>
+            <ThankYou
+              calendlyUrl={calendlyUrl}
+              discountCode={thankYouDiscountCode}
+            />
           )}
         </div>
     </main>
@@ -569,33 +536,23 @@ function NavRow({
   )
 }
 
-function ThankYouCodeModal({
-  open,
-  onClose,
-  code,
+function ThankYou({
   calendlyUrl,
-  offerPageUrl,
+  discountCode,
 }: {
-  open: boolean
-  onClose: () => void
-  code: string
   calendlyUrl: string
-  offerPageUrl: string
+  discountCode: string
 }) {
+  const bookHref = isValidHttpUrl(calendlyUrl)
+    ? calendlyUrl.trim()
+    : SITE_CALENDLY_URL
+
   const [copied, setCopied] = useState(false)
+  const code =
+    (discountCode && discountCode.trim()) || SITE_SURVEY_THANK_YOU_CODE || "SURVEY"
+  const pct = SITE_SURVEY_DISCOUNT_PERCENT
 
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  }, [open, onClose])
-
-  if (!open || !code) return null
-
-  const copy = () => {
+  const copyCode = () => {
     void navigator.clipboard.writeText(code).then(() => {
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
@@ -603,139 +560,73 @@ function ThankYouCodeModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/45 p-4 sm:items-center"
-      role="presentation"
-      onClick={onClose}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="thank-you-code-title"
-        className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-4 rounded-lg bg-emerald-50 p-4 text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
-            Survey Exclusive
-          </p>
-          <p className="mt-1 text-2xl font-bold text-emerald-800">
-            {SITE_SURVEY_DISCOUNT_PERCENT}% OFF
-          </p>
-        </div>
-        <p
-          id="thank-you-code-title"
-          className="text-lg font-semibold text-neutral-900"
-        >
-          Your discount code
-        </p>
-        <p className="mt-1 text-sm text-neutral-600">
-          Copy and use at checkout, or mention it when you book a call.
-        </p>
-        <div className="mt-4 flex items-center justify-between rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 px-4 py-3">
-          <p className="font-mono text-2xl font-bold tracking-wider text-neutral-900">
-            {code}
-          </p>
-          <button
-            type="button"
-            onClick={copy}
-            className="ml-3 shrink-0 rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-800"
-          >
-            {copied ? "Copied!" : "Copy"}
-          </button>
-        </div>
-        <div className="mt-6 flex flex-col gap-2">
-          {isValidHttpUrl(calendlyUrl) && (
-            <a
-              href={calendlyUrl.trim()}
-              target="_blank"
-              rel="noreferrer"
-              className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
-            >
-              Book a 15-min call & use your code
-            </a>
-          )}
-          {isValidHttpUrl(offerPageUrl) && (
-            <a
-              href={offerPageUrl.trim()}
-              target="_blank"
-              rel="noreferrer"
-              className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
-            >
-              View the offer page
-            </a>
-          )}
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-1 text-sm text-neutral-500 hover:text-neutral-700"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function ThankYou({
-  calendlyUrl,
-  onShowCodeAgain,
-}: {
-  calendlyUrl: string
-  offerUrl: string
-  contextLabel: string
-  contextHref: string
-  discountCode: string
-  onShowCodeAgain: () => void
-}) {
-  const bookHref = isValidHttpUrl(calendlyUrl)
-    ? calendlyUrl.trim()
-    : SITE_CALENDLY_URL
-
-  return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-black" style={{ color: "#0a0a0a" }}>
       <div className="text-center">
-        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-          <svg className="h-7 w-7 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+        <div
+          className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100"
+          aria-hidden
+        >
+          <svg
+            className="h-7 w-7 text-emerald-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
-          {"You\u2019re all set \u2014 thank you!"}
+        <h2 className="text-xl font-semibold leading-snug sm:text-2xl" style={{ color: "#0a0a0a" }}>
+          Thank you — you are all set.
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">
-          Your answers have been saved. Pick your next step:
+        <p className="mt-2 text-sm" style={{ color: "#404040" }}>
+          Your answers have been saved.
         </p>
       </div>
 
-      <div className="flex flex-col gap-4">
-        {/* Button 1: Calendly */}
-        <a
-          href={bookHref}
-          target="_blank"
-          rel="noreferrer"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-5 py-4 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-neutral-800"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-          </svg>
-          Book a Free 15-Minute Call
-        </a>
+      <section
+        className="rounded-xl border-2 border-emerald-600 bg-emerald-50 p-5 text-center shadow-sm"
+        aria-labelledby="survey-coupon-heading"
+      >
+        <h3 id="survey-coupon-heading" className="sr-only">
+          Your survey discount
+        </h3>
+        <p className="text-base font-medium leading-relaxed" style={{ color: "#0a0a0a" }}>
+          Your coupon code is <strong className="font-mono">{code}</strong> for{" "}
+          <strong>{pct}%</strong> off, as a thank-you for helping with this survey.
+        </p>
+        <div className="mt-4 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+          <div
+            className="rounded-lg border-2 border-dashed border-emerald-700 bg-white px-4 py-3 font-mono text-xl font-bold tracking-widest"
+            style={{ color: "#0a0a0a" }}
+          >
+            {code}
+          </div>
+          <button
+            type="button"
+            onClick={copyCode}
+            className="rounded-lg px-5 py-3 text-sm font-semibold text-white"
+            style={{ backgroundColor: "#047857" }}
+          >
+            {copied ? "Copied!" : "Copy coupon code"}
+          </button>
+        </div>
+      </section>
 
-        {/* Button 2: SURVEY 10% Discount popup */}
-        <button
-          type="button"
-          onClick={onShowCodeAgain}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-emerald-300 bg-gradient-to-r from-emerald-50 to-white px-5 py-4 text-center text-sm font-semibold text-emerald-800 shadow-sm transition-colors hover:border-emerald-400 hover:from-emerald-100"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-          </svg>
-          Get Your SURVEY {SITE_SURVEY_DISCOUNT_PERCENT}% Discount Code
-        </button>
-      </div>
+      <a
+        href={bookHref}
+        target="_blank"
+        rel="noreferrer"
+        className="flex w-full flex-col items-center justify-center gap-1 rounded-xl px-5 py-4 text-center shadow-sm"
+        style={{ backgroundColor: "#171717", color: "#ffffff" }}
+      >
+        <span className="flex items-center gap-2 text-sm font-semibold">
+          Book a free 15-minute call (Calendly)
+        </span>
+        <span className="text-xs" style={{ color: "#d4d4d4" }}>
+          Mention code {code} for your {pct}% survey discount when you book.
+        </span>
+      </a>
     </div>
   )
 }
