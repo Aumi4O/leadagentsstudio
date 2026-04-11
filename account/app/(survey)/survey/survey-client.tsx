@@ -13,7 +13,22 @@ import {
   type SurveyAnswers,
   type VerticalId,
 } from "@/lib/survey-data"
-import { SITE_CALENDLY_URL, SITE_SURVEY_THANK_YOU_CODE } from "@/lib/site-urls"
+import {
+  SITE_CALENDLY_URL,
+  SITE_SURVEY_OFFER_FALLBACK,
+  SITE_SURVEY_THANK_YOU_CODE,
+  siteDefaultContextUrl,
+} from "@/lib/site-urls"
+
+function isValidHttpUrl(url: string | undefined): boolean {
+  if (!url?.trim()) return false
+  try {
+    const u = new URL(url.trim())
+    return u.protocol === "http:" || u.protocol === "https:"
+  } catch {
+    return false
+  }
+}
 
 /** Anonymous browser id for Notion sync (not a user login / account). */
 const BROWSER_SURVEY_ID_KEY = "fit-check-session-id"
@@ -50,19 +65,29 @@ export function SurveyClient() {
 
   const calendlyUrl =
     (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim() || SITE_CALENDLY_URL
-  const offerUrl = (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim()
+  const offerUrlRaw = (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim()
+  const offerUrlResolved = useMemo(() => {
+    if (isValidHttpUrl(offerUrlRaw)) return offerUrlRaw.trim()
+    return SITE_SURVEY_OFFER_FALLBACK
+  }, [offerUrlRaw])
+
   const offerCodeEnv = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
-  const demoUrl = process.env.NEXT_PUBLIC_SURVEY_DEMO_URL ?? ""
-  const agencyPageUrl = process.env.NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL ?? ""
-  const portfolioUrl = process.env.NEXT_PUBLIC_SURVEY_PORTFOLIO_URL ?? ""
+  const demoUrl = (process.env.NEXT_PUBLIC_SURVEY_DEMO_URL ?? "").trim()
+  const agencyPageUrl = (process.env.NEXT_PUBLIC_SURVEY_AGENCY_PAGE_URL ?? "").trim()
+  const portfolioUrl = (process.env.NEXT_PUBLIC_SURVEY_PORTFOLIO_URL ?? "").trim()
 
   const vertical = answers.q1
   const ctx = thankYouContext(vertical)
 
   const contextHref = useMemo(() => {
-    if (ctx.pathKey === "page") return agencyPageUrl || demoUrl
-    if (ctx.pathKey === "portfolio") return portfolioUrl || demoUrl
-    return demoUrl
+    const fromEnv =
+      ctx.pathKey === "page"
+        ? agencyPageUrl || demoUrl
+        : ctx.pathKey === "portfolio"
+          ? portfolioUrl || demoUrl
+          : demoUrl
+    if (isValidHttpUrl(fromEnv)) return fromEnv.trim()
+    return siteDefaultContextUrl(ctx.pathKey)
   }, [ctx.pathKey, agencyPageUrl, portfolioUrl, demoUrl])
 
   const sync = useCallback(
@@ -373,11 +398,13 @@ export function SurveyClient() {
                 open={thankYouModalOpen}
                 onClose={() => setThankYouModalOpen(false)}
                 code={thankYouModalCode}
+                calendlyUrl={calendlyUrl}
+                offerPageUrl={offerUrlResolved}
               />
               <ThankYou
                 primaryFirst={primaryThankYouFirst}
                 calendlyUrl={calendlyUrl}
-                offerUrl={offerUrl}
+                offerUrl={offerUrlResolved}
                 contextLabel={ctx.linkLabel}
                 contextHref={contextHref}
                 choice={answers.q8}
@@ -539,23 +566,18 @@ function NavRow({
   )
 }
 
-function isValidHttpUrl(url: string): boolean {
-  try {
-    const u = new URL(url)
-    return u.protocol === "http:" || u.protocol === "https:"
-  } catch {
-    return false
-  }
-}
-
 function ThankYouCodeModal({
   open,
   onClose,
   code,
+  calendlyUrl,
+  offerPageUrl,
 }: {
   open: boolean
   onClose: () => void
   code: string
+  calendlyUrl: string
+  offerPageUrl: string
 }) {
   const [copied, setCopied] = useState(false)
 
@@ -621,6 +643,35 @@ function ThankYouCodeModal({
             Got it
           </button>
         </div>
+        {(isValidHttpUrl(calendlyUrl) || isValidHttpUrl(offerPageUrl)) && (
+          <div className="mt-5 border-t border-neutral-100 pt-4 text-center text-sm">
+            {isValidHttpUrl(calendlyUrl) ? (
+              <a
+                href={calendlyUrl.trim()}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-600"
+              >
+                Book a 15-minute call
+              </a>
+            ) : null}
+            {isValidHttpUrl(calendlyUrl) && isValidHttpUrl(offerPageUrl) ? (
+              <span className="mx-2 text-neutral-300" aria-hidden>
+                ·
+              </span>
+            ) : null}
+            {isValidHttpUrl(offerPageUrl) ? (
+              <a
+                href={offerPageUrl.trim()}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-600"
+              >
+                Open thank-you / offer page
+              </a>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -722,18 +773,16 @@ function ThankYou({
           </>
         )}
       </div>
-      {contextHref ? (
-        <p className="pt-2 text-sm">
-          <a
-            href={contextHref}
-            target="_blank"
-            rel="noreferrer"
-            className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
-          >
-            {contextLabel}
-          </a>
-        </p>
-      ) : null}
+      <p className="pt-2 text-sm">
+        <a
+          href={contextHref}
+          target="_blank"
+          rel="noreferrer"
+          className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
+        >
+          {contextLabel}
+        </a>
+      </p>
     </div>
   )
 }

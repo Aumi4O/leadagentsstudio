@@ -8,6 +8,9 @@ services:
   - type: web
     name: lead-agents-studio-account
     runtime: node
+    # Free tier spins down after idle (30–90s+ black loading on first hit).
+    # Starter+ stays warm for immediate page loads; add a card in Render Billing.
+    plan: starter
     region: oregon
     rootDir: account
     buildCommand: npm install && npm run build
@@ -28,6 +31,8 @@ services:
       - key: NEXTAUTH_URL
         sync: false
       # Public URLs (inlined at build; set before build / available at build time on Render)
+      - key: NEXT_PUBLIC_SITE_MARKETING_BASE
+        sync: false
       - key: NEXT_PUBLIC_CALENDLY_URL
         sync: false
       - key: NEXT_PUBLIC_SURVEY_OFFER_URL
