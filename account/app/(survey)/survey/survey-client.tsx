@@ -14,6 +14,7 @@ import {
 } from "@/lib/survey-data"
 import {
   SITE_CALENDLY_URL,
+  SITE_SURVEY_OFFER_FALLBACK,
   SITE_SURVEY_THANK_YOU_CODE,
   SITE_SURVEY_DISCOUNT_PERCENT,
 } from "@/lib/site-urls"
@@ -63,6 +64,9 @@ export function SurveyClient() {
   const calendlyUrl =
     (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim() || SITE_CALENDLY_URL
   const offerCodeEnv = (process.env.NEXT_PUBLIC_SURVEY_OFFER_CODE ?? "").trim()
+  const offerUrl =
+    (process.env.NEXT_PUBLIC_SURVEY_OFFER_URL ?? "").trim() ||
+    SITE_SURVEY_OFFER_FALLBACK
 
   const vertical = answers.q1
 
@@ -384,6 +388,7 @@ export function SurveyClient() {
             <ThankYou
               calendlyUrl={calendlyUrl}
               discountCode={thankYouDiscountCode}
+              offerUrl={offerUrl}
             />
           )}
         </div>
@@ -539,9 +544,11 @@ function NavRow({
 function ThankYou({
   calendlyUrl,
   discountCode,
+  offerUrl,
 }: {
   calendlyUrl: string
   discountCode: string
+  offerUrl: string
 }) {
   const bookHref = isValidHttpUrl(calendlyUrl)
     ? calendlyUrl.trim()
@@ -625,6 +632,19 @@ function ThankYou({
         </span>
         <span className="text-xs" style={{ color: "#d4d4d4" }}>
           Mention code {code} for your {pct}% survey discount when you book.
+        </span>
+      </a>
+
+      <a
+        href={isValidHttpUrl(offerUrl) ? offerUrl.trim() : SITE_SURVEY_OFFER_FALLBACK}
+        target="_blank"
+        rel="noreferrer"
+        className="flex w-full items-center justify-center rounded-xl border-2 border-neutral-900 bg-white px-4 py-4 text-center shadow-sm transition-colors hover:bg-neutral-50"
+        style={{ color: "#0a0a0a" }}
+      >
+        <span className="text-sm font-medium leading-snug">
+          Use Code <strong className="font-semibold">{code}</strong> for {pct}% discount as my
+          gratitude for taking this survey.
         </span>
       </a>
     </div>
