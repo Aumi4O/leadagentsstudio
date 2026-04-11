@@ -694,30 +694,42 @@ function ThankYou({
   choice: string | undefined
   onShowCodeAgain?: () => void
 }) {
-  const hasCalendly = isValidHttpUrl(calendlyUrl)
-  const hasOfferLink = isValidHttpUrl(offerUrl)
+  /** Never use `#` or relative junk — always absolute https (matches main marketing site). */
+  const ABSOLUTE_OFFER_FALLBACK = "https://leadagentsstudio.com/"
+  const bookHref = isValidHttpUrl(calendlyUrl)
+    ? calendlyUrl.trim()
+    : SITE_CALENDLY_URL
+  const offerHref = (() => {
+    const o = offerUrl.trim()
+    if (isValidHttpUrl(o)) return o
+    const fb = SITE_SURVEY_OFFER_FALLBACK.trim()
+    if (isValidHttpUrl(fb)) return fb
+    return ABSOLUTE_OFFER_FALLBACK
+  })()
+  const contextSafe =
+    isValidHttpUrl(contextHref) ? contextHref.trim() : siteDefaultContextUrl("demo")
 
-  const book = hasCalendly ? (
+  const book = (
     <a
-      href={calendlyUrl}
+      href={bookHref}
       target="_blank"
       rel="noreferrer"
       className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-neutral-800"
     >
       Book a 15-minute session
     </a>
-  ) : null
+  )
 
-  const offer = hasOfferLink ? (
+  const offer = (
     <a
-      href={offerUrl}
+      href={offerHref}
       target="_blank"
       rel="noreferrer"
       className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
     >
       Claim the thank-you offer
     </a>
-  ) : null
+  )
 
   return (
     <div className="space-y-5 text-left">
@@ -744,7 +756,7 @@ function ThankYou({
         </button>
       ) : null}
 
-      {choice === "calendly" && hasCalendly ? (
+      {choice === "calendly" ? (
         <p className="text-sm text-neutral-600">
           Same calendar link we use across the site — pick a time that works for
           you.
@@ -775,7 +787,7 @@ function ThankYou({
       </div>
       <p className="pt-2 text-sm">
         <a
-          href={contextHref}
+          href={contextSafe}
           target="_blank"
           rel="noreferrer"
           className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
