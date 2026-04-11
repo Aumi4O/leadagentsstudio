@@ -28,7 +28,10 @@ const VERTICAL_IDS: VerticalId[] = [
 ]
 
 /** Prepare schema once per DB id (Notion rate limits). */
-const preparedSurveyDatabases = new Map<string, { titlePropertyName: string }>()
+const preparedSurveyDatabases = new Map<
+  string,
+  { titlePropertyName: string; dataSourceId: string | null }
+>()
 
 function isVerticalId(v: string | undefined): v is VerticalId {
   return !!v && VERTICAL_IDS.includes(v as VerticalId)
@@ -114,7 +117,10 @@ export async function POST(request: Request) {
           notionPageId: notionPageId ?? null,
         })
       }
-      prep = { titlePropertyName: ready.titlePropertyName }
+      prep = {
+        titlePropertyName: ready.titlePropertyName,
+        dataSourceId: ready.dataSourceId,
+      }
       preparedSurveyDatabases.set(databaseId, prep)
     }
 
@@ -126,7 +132,8 @@ export async function POST(request: Request) {
         token,
         databaseId,
         payload,
-        prep.titlePropertyName
+        prep.titlePropertyName,
+        prep.dataSourceId
       )
       return NextResponse.json({ ok: true, notionPageId: id, notionReady: true })
     }

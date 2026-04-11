@@ -108,6 +108,104 @@ export async function notionVerifySurveyDatabase(
 
 type NotionDbProps = Record<string, { id: string; name?: string; type: string }>
 
+/**
+ * Notion 2025-09-03: GET /databases/:id no longer returns `properties`; schema
+ * lives on GET /data_sources/:data_source_id. PATCH schema via PATCH /data_sources/:id
+ * using explicit `type` on each new property.
+ */
+async function fetchSurveyDbProperties(
+  token: string,
+  databaseId: string
+): Promise<
+  | { ok: true; properties: NotionDbProps; dataSourceId: string | null }
+  | { ok: false; message: string }
+> {
+  const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": NOTION_API_VERSION,
+    },
+  })
+  if (!res.ok) {
+    const body = await res.text()
+    return {
+      ok: false,
+      message: `${DB_ACCESS_HINT} (Notion ${res.status}: ${body.slice(0, 400)})`,
+    }
+  }
+
+  const data = (await res.json()) as {
+    properties?: NotionDbProps
+    data_sources?: { id: string; name?: string }[]
+  }
+
+  const legacy = data.properties
+  if (legacy && Object.keys(legacy).length > 0) {
+    return { ok: true, properties: legacy, dataSourceId: null }
+  }
+
+  const sources = data.data_sources
+  if (!sources?.length) {
+    return {
+      ok: false,
+      message:
+        "Notion returned this database without a property schema (API 2025-09-03). " +
+        "Open the database in Notion → ⋯ → Manage data sources → ensure a data source exists and the integration is connected.",
+    }
+  }
+
+  const dsId = sources[0].id
+  const dsRes = await fetch(`https://api.notion.com/v1/data_sources/${dsId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": NOTION_API_VERSION,
+    },
+  })
+  if (!dsRes.ok) {
+    const err = await dsRes.text()
+    return {
+      ok: false,
+      message: `Could not load Notion data source schema (${dsRes.status}): ${err.slice(0, 400)}`,
+    }
+  }
+
+  const dsJson = (await dsRes.json()) as { properties?: NotionDbProps }
+  const props = dsJson.properties ?? {}
+  return { ok: true, properties: props, dataSourceId: dsId }
+}
+
+function findTitlePropertyName(props: NotionDbProps): string | null {
+  for (const [key, v] of Object.entries(props)) {
+    if (!v || typeof v !== "object") continue
+    if (v.type === "title") return v.name ?? key
+  }
+  return null
+}
+
+/** PATCH /data_sources expects `type` + config per property (2025-09-03). */
+function toDataSourceSchemaAdditions(
+  additions: Record<string, unknown>
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const [key, v] of Object.entries(additions)) {
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      const o = v as Record<string, unknown>
+      if ("rich_text" in o) {
+        out[key] = { type: "rich_text", rich_text: o.rich_text ?? {} }
+      } else if ("select" in o) {
+        out[key] = { type: "select", select: o.select }
+      } else if ("title" in o) {
+        out[key] = { type: "title", title: o.title ?? {} }
+      } else {
+        out[key] = v
+      }
+    } else {
+      out[key] = v
+    }
+  }
+  return out
+}
+
 function surveyPropertyAdditions(existing: NotionDbProps): Record<string, unknown> {
   const has = (name: string) => Object.prototype.hasOwnProperty.call(existing, name)
   const add: Record<string, unknown> = {}
@@ -142,51 +240,52 @@ function surveyPropertyAdditions(existing: NotionDbProps): Record<string, unknow
  * Ensures the database has every column the survey writer expects. Notion returns
  * validation_error if properties are missing; many workspaces link an empty or
  * template DB — we PATCH missing schema in one call.
+ *
+ * With Notion-Version 2025-09-03, schema is read/updated on the **data source**,
+ * not the database object.
  */
 export async function notionPrepareSurveyDatabase(
   token: string,
   databaseId: string
-): Promise<{ ok: true; titlePropertyName: string } | { ok: false; message: string }> {
-  const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Notion-Version": NOTION_API_VERSION,
-    },
-  })
-  if (!res.ok) {
-    const body = await res.text()
-    return {
-      ok: false,
-      message: `${DB_ACCESS_HINT} (Notion ${res.status}: ${body.slice(0, 400)})`,
-    }
-  }
+): Promise<
+  { ok: true; titlePropertyName: string; dataSourceId: string | null } | { ok: false; message: string }
+> {
+  const loaded = await fetchSurveyDbProperties(token, databaseId)
+  if (!loaded.ok) return loaded
 
-  const data = (await res.json()) as { properties: NotionDbProps }
-  const props = data.properties ?? {}
-
-  const titleEntry = Object.entries(props).find(([, v]) => v.type === "title")
-  if (!titleEntry) {
+  const { properties: props, dataSourceId } = loaded
+  const titlePropertyName = findTitlePropertyName(props)
+  if (!titlePropertyName) {
     return {
       ok: false,
       message:
-        "This Notion database has no title property. Every Notion database needs one title column — create a new database or fix the schema in Notion.",
+        "This Notion database/data source has no title column. In Notion, every table needs one title property — add it in the database schema or use a new database.",
     }
   }
-  const titlePropertyName = titleEntry[1].name ?? titleEntry[0]
 
   const additions = surveyPropertyAdditions(props)
   if (Object.keys(additions).length === 0) {
-    return { ok: true, titlePropertyName }
+    return { ok: true, titlePropertyName, dataSourceId }
   }
 
-  const patchRes = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+  const patchBody =
+    dataSourceId !== null
+      ? { properties: toDataSourceSchemaAdditions(additions) }
+      : { properties: additions }
+
+  const patchUrl =
+    dataSourceId !== null
+      ? `https://api.notion.com/v1/data_sources/${dataSourceId}`
+      : `https://api.notion.com/v1/databases/${databaseId}`
+
+  const patchRes = await fetch(patchUrl, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       "Notion-Version": NOTION_API_VERSION,
     },
-    body: JSON.stringify({ properties: additions }),
+    body: JSON.stringify(patchBody),
   })
 
   if (!patchRes.ok) {
@@ -194,23 +293,28 @@ export async function notionPrepareSurveyDatabase(
     return {
       ok: false,
       message:
-        `Could not add required survey columns to your Notion database (${patchRes.status}). ` +
+        `Could not add required survey columns (${patchRes.status}). ` +
         `Add them manually in Notion (exact names): Session ID, Progress (select: In progress, Complete), ` +
         `Last step, Q1–Q9 (text), Tags. Notion said: ${err.slice(0, 500)}`,
     }
   }
 
-  return { ok: true, titlePropertyName }
+  return { ok: true, titlePropertyName, dataSourceId }
 }
 
 export async function notionCreateSurveyPage(
   token: string,
   databaseId: string,
   payload: NotionSurveyPayload,
-  titlePropertyName: string
+  titlePropertyName: string,
+  dataSourceId: string | null
 ): Promise<{ id: string }> {
   const short = payload.sessionId.slice(0, 8)
   const name = `Quick Fit — ${short}`
+  const parent =
+    dataSourceId !== null
+      ? { type: "data_source_id" as const, data_source_id: dataSourceId }
+      : { database_id: databaseId }
   const res = await fetch("https://api.notion.com/v1/pages", {
     method: "POST",
     headers: {
@@ -219,7 +323,7 @@ export async function notionCreateSurveyPage(
       "Notion-Version": NOTION_API_VERSION,
     },
     body: JSON.stringify({
-      parent: { database_id: databaseId },
+      parent,
       properties: {
         [titlePropertyName]: titleProp(name),
         ...buildProperties(payload),

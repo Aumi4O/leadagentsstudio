@@ -50,31 +50,34 @@ async function createDatabase(token: string, parentPageId: string): Promise<stri
     )
   }
 
+  // API 2025-09-03: table columns belong under initial_data_source.properties
   const body = {
     parent: { type: "page_id", page_id: pageId },
     title: [{ type: "text", text: { content: "Quick Fit Check — survey responses" } }],
-    properties: {
-      Name: { title: {} },
-      "Session ID": { rich_text: {} },
-      Progress: {
-        select: {
-          options: [
-            { name: "In progress", color: "yellow" },
-            { name: "Complete", color: "green" },
-          ],
+    initial_data_source: {
+      properties: {
+        Name: { title: {} },
+        "Session ID": { rich_text: {} },
+        Progress: {
+          select: {
+            options: [
+              { name: "In progress", color: "yellow" },
+              { name: "Complete", color: "green" },
+            ],
+          },
         },
+        "Last step": { rich_text: {} },
+        Q1: { rich_text: {} },
+        Q2: { rich_text: {} },
+        Q3: { rich_text: {} },
+        Q4: { rich_text: {} },
+        Q5: { rich_text: {} },
+        Q6: { rich_text: {} },
+        Q7: { rich_text: {} },
+        Q8: { rich_text: {} },
+        Q9: { rich_text: {} },
+        Tags: { rich_text: {} },
       },
-      "Last step": { rich_text: {} },
-      Q1: { rich_text: {} },
-      Q2: { rich_text: {} },
-      Q3: { rich_text: {} },
-      Q4: { rich_text: {} },
-      Q5: { rich_text: {} },
-      Q6: { rich_text: {} },
-      Q7: { rich_text: {} },
-      Q8: { rich_text: {} },
-      Q9: { rich_text: {} },
-      Tags: { rich_text: {} },
     },
   }
 
