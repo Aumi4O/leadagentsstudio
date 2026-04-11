@@ -1,0 +1,31 @@
+# Wake the Free-tier Render web service before an email blast (avoids a second Starter).
+# Render: https://render.com/docs/free#free-web-services
+#
+# How to use:
+#  1. Push this file to the default branch (e.g. main).
+# 2. GitHub → Actions → "Wake Render survey" → Run workflow (before you send mail).
+#   3. Wait ~45–90s after the run, then send — first clicks still might hit a warm instance.
+#
+# Optional: uncomment `schedule` to ping every 14 minutes during campaign days (UTC).
+# GitHub free minutes apply; keep cron sparse if you only need send days.
+
+name: Wake Render survey
+
+on:
+  workflow_dispatch:
+  # Uncomment for automatic pings (UTC). Example: every 14 minutes.
+  # schedule:
+  #   - cron: "*/14 * * * *"
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit health (wakes Free instance)
+        run: |
+          set -e
+          URL="https://lead-agents-survey.onrender.com/api/health"
+          echo "GET $URL"
+          curl -fsS --max-time 120 "$URL" || true
+          echo ""
+          echo "If Render was asleep, the first request can take ~30–90s. Run again or wait, then send email."

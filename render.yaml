@@ -1,36 +1,46 @@
-# Lead Agents Studio — Next.js app (account, /survey, auth, APIs)
+# Lead Agents Studio — Next.js app in account/ (survey, auth, APIs)
 # https://render.com/docs/blueprint-spec
 #
-# After first deploy: set secrets in Render → Environment (see DEPLOYMENT.md).
+# Matches your live Render service name: lead-agents-survey
+# Survey URL: https://lead-agents-survey.onrender.com/survey
+#
+# Plan: free — you already use Starter on lead-agents-api; this survey app is a
+# separate Web Service (Render bills per service). To avoid a second Starter,
+# keep this on Free (cold starts after idle) or merge API + Next into one repo/service.
+#
+# DATABASE_URL: In Render → lead-agents-survey → Environment, set this to your
+# Render Postgres "Internal Database URL" (create Postgres in dashboard if needed).
+# AUTH_SECRET: required — run: npx auth secret (or any long random string)
 
 version: "1"
+
 services:
   - type: web
-    name: lead-agents-studio-account
+    name: lead-agents-survey
     runtime: node
-    # Free tier spins down after idle (30–90s+ black loading on first hit).
-    # Starter+ stays warm for immediate page loads; add a card in Render Billing.
-    plan: starter
+    plan: free
     region: oregon
     rootDir: account
     buildCommand: npm install && npm run build
-    startCommand: npm run start
+    startCommand: node .next/standalone/server.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "20"
-      # Secrets — set in dashboard (Blueprint “sync: false” or override after deploy)
+      - key: HOSTNAME
+        value: "0.0.0.0"
+      - key: NEXTAUTH_URL
+        value: https://lead-agents-survey.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_SECRET
+        sync: false
       - key: NOTION_INTERNAL_TOKEN
         sync: false
       - key: NOTION_SURVEY_DATABASE_ID
         sync: false
-      - key: AUTH_SECRET
+      - key: NOTION_PARENT_PAGE_ID
         sync: false
-      - key: DATABASE_URL
-        sync: false
-      - key: NEXTAUTH_URL
-        sync: false
-      # Public URLs (inlined at build; set before build / available at build time on Render)
       - key: NEXT_PUBLIC_SITE_MARKETING_BASE
         sync: false
       - key: NEXT_PUBLIC_CALENDLY_URL

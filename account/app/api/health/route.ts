@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 
-/** Render / load balancer health check — keep fast and auth-free */
 export async function GET() {
   const hasNotionToken = Boolean(
     process.env.NOTION_INTERNAL_TOKEN?.trim().length
@@ -8,14 +7,19 @@ export async function GET() {
   const hasNotionDb = Boolean(
     process.env.NOTION_SURVEY_DATABASE_ID?.trim().length
   )
+  const hasParentPage = Boolean(
+    process.env.NOTION_PARENT_PAGE_ID?.trim().length
+  )
   return NextResponse.json(
     {
       ok: true,
       service: "account",
       notionSurvey: {
-        ready: hasNotionToken && hasNotionDb,
+        ready: hasNotionToken && (hasNotionDb || hasParentPage),
         hasToken: hasNotionToken,
         hasDatabaseId: hasNotionDb,
+        hasParentPageId: hasParentPage,
+        willAutoCreate: hasNotionToken && !hasNotionDb && hasParentPage,
       },
     },
     { status: 200 }

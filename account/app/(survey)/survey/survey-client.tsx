@@ -17,6 +17,7 @@ import {
   SITE_CALENDLY_URL,
   SITE_SURVEY_OFFER_FALLBACK,
   SITE_SURVEY_THANK_YOU_CODE,
+  SITE_SURVEY_DISCOUNT_PERCENT,
   siteDefaultContextUrl,
 } from "@/lib/site-urls"
 
@@ -30,7 +31,6 @@ function isValidHttpUrl(url: string | undefined): boolean {
   }
 }
 
-/** Anonymous browser id for Notion sync (not a user login / account). */
 const BROWSER_SURVEY_ID_KEY = "fit-check-session-id"
 const NOTION_ROW_ID_KEY = "fit-check-notion-page-id"
 
@@ -119,7 +119,7 @@ export function SurveyClient() {
         }
         if (data.skipped === true) {
           setSyncError(
-            "Answers aren’t being saved — Notion isn’t connected. On Render, set NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID, open the database in Notion → Connections → add your integration, then redeploy. Check /api/health — notionSurvey.ready should be true."
+            "Answers aren\u2019t being saved \u2014 Notion isn\u2019t connected. On Render, set NOTION_INTERNAL_TOKEN and NOTION_SURVEY_DATABASE_ID (or NOTION_PARENT_PAGE_ID for auto-creation), then redeploy."
           )
           return
         }
@@ -127,7 +127,7 @@ export function SurveyClient() {
           setStoredNotionPageId(data.notionPageId)
         }
       } catch {
-        setSyncError("Connection issue — you can keep going; we’ll retry when you’re online.")
+        setSyncError("Connection issue \u2014 you can keep going; we\u2019ll retry when you\u2019re online.")
       } finally {
         setSyncing(false)
       }
@@ -139,37 +139,23 @@ export function SurveyClient() {
     getOrCreateBrowserSurveyId()
   }, [])
 
-  useEffect(() => {
-    if (step === 3 && !vertical) setStep(1)
-  }, [step, vertical])
-
   const questionIndex = step >= 1 && step <= 9 ? step : 0
 
   const goNext = async (nextStep: Step, lastStep: string, nextAnswers: SurveyAnswers) => {
     setAnswers(nextAnswers)
-    await sync(lastStep, nextAnswers, false)
     setStep(nextStep)
+    await sync(lastStep, nextAnswers, false)
   }
 
   const finish = async (nextAnswers: SurveyAnswers) => {
     setAnswers(nextAnswers)
-    await sync("complete", nextAnswers, true)
     setStep(10)
+    await sync("complete", nextAnswers, true)
   }
 
-  const primaryThankYouFirst =
-    answers.q8 === "calendly" || answers.q8 === "discount"
-
-  const thankYouModalCode = useMemo(() => {
-    if (offerCodeEnv) return offerCodeEnv
-    if (answers.q8 === "discount") return SITE_SURVEY_THANK_YOU_CODE
-    return ""
-  }, [offerCodeEnv, answers.q8])
+  const thankYouModalCode = offerCodeEnv || SITE_SURVEY_THANK_YOU_CODE
 
   const [thankYouModalOpen, setThankYouModalOpen] = useState(false)
-  useEffect(() => {
-    if (step === 10 && thankYouModalCode) setThankYouModalOpen(true)
-  }, [step, thankYouModalCode])
 
   return (
     <main className="mx-auto max-w-xl px-5 py-10 sm:py-14">
@@ -245,26 +231,38 @@ export function SurveyClient() {
             </QuestionBlock>
           )}
 
-          {step === 3 && vertical && (
-            <QuestionBlock title="Which leak is costing you the most right now?">
-              <OptionList
-                options={Q3_BY_VERTICAL[vertical].map((o) => ({
-                  id: o.id,
-                  label: o.label,
-                }))}
-                value={answers.q3}
-                onChange={(id) => setAnswers((a) => ({ ...a, q3: id }))}
-              />
-              <NavRow
-                onBack={() => setStep(2)}
-                onNext={() => {
-                  if (!answers.q3) return
-                  void goNext(4, "after_q3", { ...answers, q3: answers.q3 })
-                }}
-                nextDisabled={!answers.q3}
-                syncing={syncing}
-              />
-            </QuestionBlock>
+          {step === 3 && (
+            vertical ? (
+              <QuestionBlock title="Which leak is costing you the most right now?">
+                <OptionList
+                  options={Q3_BY_VERTICAL[vertical].map((o) => ({
+                    id: o.id,
+                    label: o.label,
+                  }))}
+                  value={answers.q3}
+                  onChange={(id) => setAnswers((a) => ({ ...a, q3: id }))}
+                />
+                <NavRow
+                  onBack={() => setStep(2)}
+                  onNext={() => {
+                    if (!answers.q3) return
+                    void goNext(4, "after_q3", { ...answers, q3: answers.q3 })
+                  }}
+                  nextDisabled={!answers.q3}
+                  syncing={syncing}
+                />
+              </QuestionBlock>
+            ) : (
+              <QuestionBlock title="Let's go back one step.">
+                <NavRow
+                  onBack={() => setStep(1)}
+                  onNext={() => setStep(1)}
+                  nextDisabled={false}
+                  nextLabel="Pick your category"
+                  syncing={syncing}
+                />
+              </QuestionBlock>
+            )
           )}
 
           {step === 4 && (
@@ -288,7 +286,7 @@ export function SurveyClient() {
           )}
 
           {step === 5 && (
-            <QuestionBlock title="What would you most want help with in the next 30–90 days?">
+            <QuestionBlock title="What would you most want help with in the next 30\u201390 days?">
               <OptionList
                 options={Q5_OPTIONS.map((o) => ({ id: o.id, label: o.label }))}
                 value={answers.q5}
@@ -308,7 +306,7 @@ export function SurveyClient() {
 
           {step === 6 && (
             <QuestionBlock
-              title="For the right solution, what level of investment feels realistic in the next 30–60 days?"
+              title="For the right solution, what level of investment feels realistic in the next 30\u201360 days?"
               hint="Ranges get more honest answers than asking for an exact number."
             >
               <OptionList
@@ -375,7 +373,7 @@ export function SurveyClient() {
             <QuestionBlock title="Where should we send your next step? (optional)">
               <p className="mb-3 text-sm text-neutral-500">
                 This is the only place we ask for contact info. No password or sign-in
-                — leave blank if you prefer not to share.
+                {" \u2014 "}leave blank if you prefer not to share.
               </p>
               <input
                 type="text"
@@ -412,17 +410,12 @@ export function SurveyClient() {
                 offerPageUrl={offerUrlResolved}
               />
               <ThankYou
-                primaryFirst={primaryThankYouFirst}
                 calendlyUrl={calendlyUrl}
                 offerUrl={offerUrlResolved}
                 contextLabel={ctx.linkLabel}
                 contextHref={contextHref}
-                choice={answers.q8}
-                onShowCodeAgain={
-                  thankYouModalCode
-                    ? () => setThankYouModalOpen(true)
-                    : undefined
-                }
+                discountCode={thankYouModalCode}
+                onShowCodeAgain={() => setThankYouModalOpen(true)}
               />
             </>
           )}
@@ -447,7 +440,7 @@ function Intro({ onStart, syncing }: { onStart: () => void; syncing: boolean }) 
       </div>
       <p className="text-sm leading-relaxed text-neutral-600">
         No sign-in or account needed. Your answers help us match you to the most
-        relevant next step — demo, pricing, a thank-you offer, or a short call when
+        relevant next step {"\u2014"} demo, pricing, a thank-you offer, or a short call when
         it makes sense.
       </p>
       <button
@@ -456,7 +449,7 @@ function Intro({ onStart, syncing }: { onStart: () => void; syncing: boolean }) 
         disabled={syncing}
         onClick={() => onStart()}
       >
-        {syncing ? "Starting…" : "Start"}
+        {syncing ? "Starting\u2026" : "Start"}
       </button>
     </div>
   )
@@ -570,7 +563,7 @@ function NavRow({
         disabled={nextDisabled || syncing}
         onClick={onNext}
       >
-        {syncing ? "Saving…" : nextLabel}
+        {syncing ? "Saving\u2026" : nextLabel}
       </button>
     </div>
   )
@@ -622,189 +615,127 @@ function ThankYouCodeModal({
         className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="mb-4 rounded-lg bg-emerald-50 p-4 text-center">
+          <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+            Survey Exclusive
+          </p>
+          <p className="mt-1 text-2xl font-bold text-emerald-800">
+            {SITE_SURVEY_DISCOUNT_PERCENT}% OFF
+          </p>
+        </div>
         <p
           id="thank-you-code-title"
-          className="text-xs font-medium uppercase tracking-wide text-neutral-500"
+          className="text-lg font-semibold text-neutral-900"
         >
-          Thank you — your code
-        </p>
-        <p className="mt-3 text-lg font-semibold text-neutral-900">
-          Here’s your thank-you discount
+          Your discount code
         </p>
         <p className="mt-1 text-sm text-neutral-600">
-          Copy and use at checkout or mention when you book.
+          Copy and use at checkout, or mention it when you book a call.
         </p>
-        <p className="mt-5 font-mono text-2xl font-semibold tracking-wide text-neutral-900">
-          {code}
-        </p>
-        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-end">
+        <div className="mt-4 flex items-center justify-between rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 px-4 py-3">
+          <p className="font-mono text-2xl font-bold tracking-wider text-neutral-900">
+            {code}
+          </p>
           <button
             type="button"
             onClick={copy}
-            className="rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+            className="ml-3 shrink-0 rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-800"
           >
-            {copied ? "Copied" : "Copy code"}
+            {copied ? "Copied!" : "Copy"}
           </button>
+        </div>
+        <div className="mt-6 flex flex-col gap-2">
+          {isValidHttpUrl(calendlyUrl) && (
+            <a
+              href={calendlyUrl.trim()}
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
+            >
+              Book a 15-min call & use your code
+            </a>
+          )}
+          {isValidHttpUrl(offerPageUrl) && (
+            <a
+              href={offerPageUrl.trim()}
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-800 hover:bg-neutral-50"
+            >
+              View the offer page
+            </a>
+          )}
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
+            className="mt-1 text-sm text-neutral-500 hover:text-neutral-700"
           >
-            Got it
+            Close
           </button>
         </div>
-        {(isValidHttpUrl(calendlyUrl) || isValidHttpUrl(offerPageUrl)) && (
-          <div className="mt-5 border-t border-neutral-100 pt-4 text-center text-sm">
-            {isValidHttpUrl(calendlyUrl) ? (
-              <a
-                href={calendlyUrl.trim()}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-600"
-              >
-                Book a 15-minute call
-              </a>
-            ) : null}
-            {isValidHttpUrl(calendlyUrl) && isValidHttpUrl(offerPageUrl) ? (
-              <span className="mx-2 text-neutral-300" aria-hidden>
-                ·
-              </span>
-            ) : null}
-            {isValidHttpUrl(offerPageUrl) ? (
-              <a
-                href={offerPageUrl.trim()}
-                target="_blank"
-                rel="noreferrer"
-                className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-600"
-              >
-                Open thank-you / offer page
-              </a>
-            ) : null}
-          </div>
-        )}
       </div>
     </div>
   )
 }
 
 function ThankYou({
-  primaryFirst,
   calendlyUrl,
-  offerUrl,
-  contextLabel,
-  contextHref,
-  choice,
   onShowCodeAgain,
 }: {
-  primaryFirst: boolean
   calendlyUrl: string
   offerUrl: string
   contextLabel: string
   contextHref: string
-  choice: string | undefined
-  onShowCodeAgain?: () => void
+  discountCode: string
+  onShowCodeAgain: () => void
 }) {
-  /** Never use `#` or relative junk — always absolute https (matches main marketing site). */
-  const ABSOLUTE_OFFER_FALLBACK = "https://leadagentsstudio.com/"
   const bookHref = isValidHttpUrl(calendlyUrl)
     ? calendlyUrl.trim()
     : SITE_CALENDLY_URL
-  const offerHref = (() => {
-    const o = offerUrl.trim()
-    if (isValidHttpUrl(o)) return o
-    const fb = SITE_SURVEY_OFFER_FALLBACK.trim()
-    if (isValidHttpUrl(fb)) return fb
-    return ABSOLUTE_OFFER_FALLBACK
-  })()
-  const contextSafe =
-    isValidHttpUrl(contextHref) ? contextHref.trim() : siteDefaultContextUrl("demo")
-
-  const book = (
-    <a
-      href={bookHref}
-      target="_blank"
-      rel="noreferrer"
-      className="flex w-full items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-    >
-      Book a 15-minute session
-    </a>
-  )
-
-  const offer = (
-    <a
-      href={offerHref}
-      target="_blank"
-      rel="noreferrer"
-      className="flex w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-medium text-neutral-900 transition-colors hover:bg-neutral-50"
-    >
-      Claim the thank-you offer
-    </a>
-  )
 
   return (
-    <div className="space-y-5 text-left">
-      <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
-        You’re all set — thank you.
-      </h2>
-      <p className="text-sm text-neutral-600">
-        {choice === "calendly"
-          ? "When you’re ready, book a short call below."
-          : choice === "discount"
-            ? "Your code appeared in the pop-up. Use the link below if you need it again."
-            : onShowCodeAgain
-              ? "Your code appeared in the pop-up — open it again with the link below if needed."
-              : "Next steps are below when you’re ready."}
-      </p>
+    <div className="space-y-6">
+      <div className="text-center">
+        <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+          <svg className="h-7 w-7 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-semibold leading-snug text-neutral-900 sm:text-2xl">
+          {"You\u2019re all set \u2014 thank you!"}
+        </h2>
+        <p className="mt-2 text-sm text-neutral-600">
+          Your answers have been saved. Pick your next step:
+        </p>
+      </div>
 
-      {onShowCodeAgain ? (
+      <div className="flex flex-col gap-4">
+        {/* Button 1: Calendly */}
+        <a
+          href={bookHref}
+          target="_blank"
+          rel="noreferrer"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-5 py-4 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-neutral-800"
+        >
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          Book a Free 15-Minute Call
+        </a>
+
+        {/* Button 2: SURVEY 10% Discount popup */}
         <button
           type="button"
           onClick={onShowCodeAgain}
-          className="text-sm font-medium text-neutral-700 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-emerald-300 bg-gradient-to-r from-emerald-50 to-white px-5 py-4 text-center text-sm font-semibold text-emerald-800 shadow-sm transition-colors hover:border-emerald-400 hover:from-emerald-100"
         >
-          Show code again
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+          </svg>
+          Get Your SURVEY {SITE_SURVEY_DISCOUNT_PERCENT}% Discount Code
         </button>
-      ) : null}
-
-      {choice === "calendly" ? (
-        <p className="text-sm text-neutral-600">
-          Same calendar link we use across the site — pick a time that works for
-          you.
-        </p>
-      ) : null}
-
-      <div className="flex flex-col gap-3 pt-1">
-        {primaryFirst ? (
-          <>
-            {choice === "discount" ? (
-              <>
-                {offer}
-                {book}
-              </>
-            ) : (
-              <>
-                {book}
-                {offer}
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            {book}
-            {offer}
-          </>
-        )}
       </div>
-      <p className="pt-2 text-sm">
-        <a
-          href={contextSafe}
-          target="_blank"
-          rel="noreferrer"
-          className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
-        >
-          {contextLabel}
-        </a>
-      </p>
     </div>
   )
 }

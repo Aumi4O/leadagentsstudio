@@ -3,12 +3,10 @@ import "next-auth/jwt"
 
 import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
 import bcrypt from "bcryptjs"
 
 import authConfig from "./auth.config"
-
-const prisma = new PrismaClient()
+import { prisma } from "@/lib/prisma"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

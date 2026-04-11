@@ -6,7 +6,7 @@
 |-------|----------|-----------------------------|
 | **Static site** — `leadagentsstudio.com`, subdomains (`smartline.…`, `he.…`), `/smartline/`, etc. | **Cloudflare Pages** | Cloudflare → **Pages** → your project → latest deployment |
 | **Backend API** — e.g. `lead-agents-api.onrender.com` | **Render** | Render → your **web service** (not Pages) → deploy logs |
-| **Account app + Quick Fit survey** — Next.js in `account/` | **Render** (often **Ungrouped services**, not inside “My project”) | Public survey URL: `https://<your-service>.onrender.com/survey` — e.g. **`lead-agents-survey`** |
+| **Account app + Quick Fit survey** — Next.js in `account/` | **Render** — service **`lead-agents-survey`** (repo `leadagentsstudio`) | `https://lead-agents-survey.onrender.com/survey` (not `lead-agents-studio-account`; that name is not used) |
 
 Git pushes to the repo connected to **Cloudflare Pages** update the public site. Pushes to the **separate API repo** (if different) update Render.
 
@@ -16,7 +16,7 @@ The **Quick Fit Check** survey (`/survey`) and **`POST /api/survey/progress`** r
 
 1. **Blueprint (optional):** Repo root includes `render.yaml` with `rootDir: account`. In Render: **New → Blueprint** and connect this repo, or create a **Web Service** manually with root directory **`account`**, build **`npm install && npm run build`**, start **`npm run start`**.
 2. **Health check:** Set path to **`/api/health`** (returns JSON `{"ok":true}`).
-3. **Public survey link:** Use your Render URL, e.g. `https://lead-agents-studio-account.onrender.com/survey`. Link to it from Cloudflare Pages, emails, or ads (absolute URL). The browser must call the **same host** for `/api/survey/progress` (no cross-origin setup needed).
+3. **Public survey link:** `https://lead-agents-survey.onrender.com/survey`. Link to it from Cloudflare Pages, emails, or ads (absolute URL). The browser must call the **same host** for `/api/survey/progress` (no cross-origin setup needed).
 4. **Environment variables on Render** (Dashboard → your web service → **Environment**):
 
 | Variable | Required for survey → Notion | Notes |

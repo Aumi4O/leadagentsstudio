@@ -15,7 +15,7 @@ import {
   notionUpdateSurveyPage,
   type NotionSurveyPayload,
 } from "@/lib/notion-survey"
-import { normalizeNotionDatabaseId } from "@/lib/notion-ids"
+import { getNotionSurveyConfig } from "@/lib/notion-auto-db"
 
 const VERTICAL_IDS: VerticalId[] = [
   "medspa",
@@ -74,15 +74,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid session" }, { status: 400 })
     }
 
-    const token = process.env.NOTION_INTERNAL_TOKEN?.trim()
-    const databaseIdRaw = process.env.NOTION_SURVEY_DATABASE_ID?.trim()
-    const databaseId = databaseIdRaw
-      ? normalizeNotionDatabaseId(databaseIdRaw)
-      : ""
+    const notionConfig = await getNotionSurveyConfig()
 
-    if (!token || !databaseId) {
+    if (!notionConfig) {
       console.warn(
-        "survey/progress: Notion not configured (set NOTION_INTERNAL_TOKEN + NOTION_SURVEY_DATABASE_ID on Render, redeploy)"
+        "survey/progress: Notion not configured. Set NOTION_INTERNAL_TOKEN + either NOTION_SURVEY_DATABASE_ID or NOTION_PARENT_PAGE_ID on Render, then redeploy."
       )
       return NextResponse.json({
         ok: true,
@@ -92,6 +88,7 @@ export async function POST(request: Request) {
       })
     }
 
+    const { token, databaseId } = notionConfig
     const progress: "In progress" | "Complete" = isComplete ? "Complete" : "In progress"
     const payload = buildPayload(sessionId, lastStep, answers, progress)
 
@@ -105,7 +102,7 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error("survey/progress:", e)
     return NextResponse.json(
-      { error: "Couldn’t sync this step — you can still continue." },
+      { error: "Couldn't sync this step — you can still continue." },
       { status: 500 }
     )
   }
