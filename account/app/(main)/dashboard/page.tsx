@@ -188,7 +188,7 @@ export default async function DashboardPage() {
               <p className="text-gray-500 text-sm">Manage your account</p>
             </Link>
             <a 
-              href="mailto:support@leadagentsstudio.com"
+              href="mailto:support@smartlineagents.com"
               className="p-4 bg-white border border-gray-200 rounded-xl hover:border-cyan-400 hover:shadow-lg transition-all"
             >
               <span className="text-2xl mb-2 block">💬</span>

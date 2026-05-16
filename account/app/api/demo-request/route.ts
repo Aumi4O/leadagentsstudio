@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { addSubscriberToMailgunList } from "@/lib/mailgun"
 
 export async function POST(request: Request) {
   try {
-    const { name, email, phone, channel } = await request.json()
+    const { name, email, phone, channel, subscribe } = await request.json()
 
     // Validate input
     if (!name || !email || !phone || !channel) {
@@ -23,6 +24,18 @@ export async function POST(request: Request) {
         status: "pending", // Will be updated to "paid" after Stripe payment
       },
     })
+
+    if (subscribe) {
+      try {
+        await addSubscriberToMailgunList({
+          email,
+          name,
+          source: "demo-request",
+        })
+      } catch (error) {
+        console.error("Demo request subscribe error:", error)
+      }
+    }
 
     return NextResponse.json(
       { 

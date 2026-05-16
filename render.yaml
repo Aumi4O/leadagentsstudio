@@ -59,3 +59,9 @@ services:
         sync: false
       - key: NEXT_PUBLIC_SURVEY_PORTFOLIO_URL
         sync: false
+      - key: MAILGUN_API_KEY
+        sync: false
+      - key: MAILGUN_REGION
+        value: US
+      - key: MAILGUN_VISITOR_LIST_ADDRESS
+        value: support@smartlineagents.com

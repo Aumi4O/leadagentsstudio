@@ -190,11 +190,12 @@
             <p style="max-width: 560px; margin: 0 auto 1.5rem; text-align: center; color: var(--gray-600);">
                 Get the Restaurant Reservation Leakage Checklist — Where bookings quietly disappear — and what to automate first.
             </p>
-            <form class="demo-form" style="max-width: 400px; margin: 0 auto;" onsubmit="alert('Email capture - connect to your backend'); return false;">
+            <form class="demo-form optin-form" style="max-width: 400px; margin: 0 auto;" data-source="restaurant-checklist" data-endpoint="https://lead-agents-survey.onrender.com/api/subscribe">
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200);">
                 </div>
                 <button type="submit" class="btn btn-primary btn-full">Send it to me</button>
+                <p class="optin-status footnote" aria-live="polite" style="margin-top: 0.75rem;"></p>
             </form>
             <p class="footnote" style="margin-top: 0.5rem;">No spam. Just the checklist.</p>
         </div>
@@ -302,10 +303,46 @@
                 <a href="/privacy.html">Privacy</a>
                 <a href="/terms.html">Terms</a>
             </div>
-            <p class="footer-support">Support: <a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a></p>
+            <p class="footer-support">Support: <a href="mailto:support@smartlineagents.com">support@smartlineagents.com</a></p>
         </div>
     </footer>
 
+    <script>
+        document.querySelectorAll('.optin-form').forEach(function (form) {
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+                var status = form.querySelector('.optin-status');
+                var button = form.querySelector('button[type="submit"]');
+                var email = (new FormData(form).get('email') || '').trim();
+                var originalText = button.textContent;
+
+                status.textContent = '';
+                button.disabled = true;
+                button.textContent = 'Sending...';
+
+                try {
+                    var response = await fetch(form.dataset.endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email, source: form.dataset.source || 'website-opt-in' })
+                    });
+
+                    if (!response.ok) {
+                        var result = await response.json().catch(function () { return {}; });
+                        throw new Error(result.error || 'Please try again.');
+                    }
+
+                    form.reset();
+                    status.textContent = 'You are subscribed. Check your inbox soon.';
+                } catch (error) {
+                    status.textContent = error.message || 'Subscription failed. Please try again.';
+                } finally {
+                    button.disabled = false;
+                    button.textContent = originalText;
+                }
+            });
+        });
+    </script>
     <script src="/smartline/agent.js"></script>
 </body>
 </html>

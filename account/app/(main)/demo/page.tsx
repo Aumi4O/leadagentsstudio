@@ -9,6 +9,7 @@ export default function DemoPage() {
   const [phone, setPhone] = useState("")
   const [channel, setChannel] = useState("whatsapp")
   const [consent, setConsent] = useState(false)
+  const [subscribe, setSubscribe] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // $5 demo Stripe Payment Link (set in env or replace with your link)
@@ -29,7 +30,7 @@ export default function DemoPage() {
       const res = await fetch("/api/demo-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, channel }),
+        body: JSON.stringify({ name, email, phone, channel, subscribe }),
       })
 
       if (!res.ok) {
@@ -190,6 +191,21 @@ export default function DemoPage() {
                 <span className="text-sm text-gray-500">
                   I consent to receive demo messages and/or a demo call from Lead Agents Studio. 
                   Reply STOP to opt out. This is not medical advice.
+                </span>
+              </label>
+            </div>
+
+            {/* Marketing opt-in */}
+            <div className="mb-6">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={subscribe}
+                  onChange={(e) => setSubscribe(e.target.checked)}
+                  className="w-5 h-5 mt-0.5 text-cyan-500 rounded"
+                />
+                <span className="text-sm text-gray-500">
+                  Send me SmartLine setup notes, launch checklists, and useful updates. I can unsubscribe anytime.
                 </span>
               </label>
             </div>

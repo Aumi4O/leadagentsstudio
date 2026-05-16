@@ -12,7 +12,7 @@
     '<div class="las-site-footer__inner">' +
     '<div class="las-site-footer__brand">Lead Agents Studio</div>' +
     '<div class="las-site-footer__contact">' +
-    '<a href="mailto:support@leadagentsstudio.com">support@leadagentsstudio.com</a>' +
+    '<a href="mailto:support@smartlineagents.com">support@smartlineagents.com</a>' +
     '<a href="https://calendly.com/aumi4-support/30min" target="_blank" rel="noopener noreferrer" data-las-accent="1">Book a call</a>' +
     '</div>' +
     '<nav class="las-site-footer__nav" aria-label="Site pages">' +
