@@ -209,7 +209,7 @@
           ]
         });
 
-        session = new RealtimeSession(agent, { transport: 'webrtc', model: 'gpt-realtime', config: { audio: { output: { voice: 'shimmer' } } } });
+        session = new RealtimeSession(agent, { transport: 'webrtc', model: 'gpt-realtime2', config: { audio: { output: { voice: 'shimmer' } } } });
 
         const voiceTranscript = [];
         const onTranscript = (ev) => {
