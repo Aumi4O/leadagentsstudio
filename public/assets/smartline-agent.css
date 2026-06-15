@@ -1,0 +1,82 @@
+/* ============================================================================
+   SmartLine live-agent widget (agent.js) — shared skin.
+   Self-contained, black-on-white "studio" design. Used on every page that
+   embeds the agent so the demo looks identical everywhere. !important is used
+   deliberately so it wins over any page's legacy widget CSS.
+   ========================================================================== */
+
+.smartline-agent-widget, .agent-window.smartline-native {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  color: #14141a !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+}
+.agent-window.smartline-native { display: flex !important; flex-direction: column !important; padding: 0 !important; }
+
+/* Header */
+.agent-window-header { display: flex !important; align-items: center !important; gap: 12px !important; padding: 18px 20px !important; border-bottom: 1px solid rgba(20,20,26,.12) !important; background: transparent !important; }
+.agent-avatar { width: 40px !important; height: 40px !important; border-radius: 50% !important; background: #14141a !important; color: #f7f7f5 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: 'JetBrains Mono', ui-monospace, monospace !important; font-size: 13px !important; font-weight: 500 !important; flex: none !important; }
+.agent-info h3 { font-family: 'Instrument Serif', Georgia, serif !important; font-size: 1.2rem !important; font-weight: 400 !important; line-height: 1.1 !important; margin: 0 !important; letter-spacing: -0.01em !important; color: #14141a !important; }
+.agent-info span { font-size: 12px !important; color: rgba(20,20,26,.45) !important; }
+
+/* Waveform */
+.agent-waveform { display: flex !important; gap: 3px !important; align-items: center !important; justify-content: center !important; padding: 12px 0 !important; background: transparent !important; }
+.agent-waveform.idle { display: none !important; }
+.agent-waveform .bar { width: 3px !important; height: 16px !important; background: #1f2eaa !important; border-radius: 2px !important; animation: sl-bar 1s ease-in-out infinite !important; }
+@keyframes sl-bar { 0%,100%{transform:scaleY(.4)} 50%{transform:scaleY(1)} }
+
+/* Body + messages */
+.agent-window-body { display: flex !important; flex-direction: column !important; padding: 16px 20px 20px !important; }
+.agent-messages { min-height: 190px !important; max-height: 320px !important; overflow-y: auto !important; display: flex !important; flex-direction: column !important; gap: 10px !important; padding: 4px 0 !important; background: transparent !important; }
+.agent-msg { max-width: 86% !important; }
+.agent-msg p { margin: 0 !important; padding: 10px 14px !important; border-radius: 14px !important; font-size: 14px !important; line-height: 1.5 !important; }
+.agent-msg-user { align-self: flex-end !important; }
+.agent-msg-user p { background: #14141a !important; color: #f7f7f5 !important; border-bottom-right-radius: 4px !important; }
+.agent-msg-assistant { align-self: flex-start !important; }
+.agent-msg-assistant p { background: #eeeef0 !important; color: #14141a !important; border-bottom-left-radius: 4px !important; }
+
+/* Mic notice — hidden until JS sets inline display:block on voice start (no !important here) */
+.agent-mic-notice { display: none; font-size: 12px !important; line-height: 1.5 !important; color: rgba(20,20,26,.64) !important; background: rgba(31,46,170,.06) !important; border: 1px solid rgba(20,20,26,.12) !important; border-radius: 4px !important; padding: 12px 14px !important; margin: 12px 0 0 !important; }
+.agent-mic-notice p { margin: 0 !important; }
+
+/* Controls */
+.agent-controls { margin-top: 14px !important; display: flex !important; flex-direction: column !important; gap: 10px !important; }
+.agent-input-row { display: flex !important; gap: 8px !important; }
+.sl-chat-input { flex: 1 !important; min-width: 0 !important; height: 46px !important; padding: 0 14px !important; font: inherit !important; font-size: 15px !important; background: #f7f7f5 !important; border: 1px solid rgba(20,20,26,.22) !important; border-radius: 4px !important; color: #14141a !important; }
+.sl-chat-input:focus { outline: none !important; border-color: #1f2eaa !important; }
+
+.btn-send, .btn-voice, .btn-stop {
+  display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important;
+  height: 46px !important; padding: 0 16px !important; border-radius: 4px !important;
+  border: 1.5px solid #14141a !important; background: #14141a !important; color: #f7f7f5 !important;
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important; font-size: 11px !important; letter-spacing: 0.06em !important; text-transform: uppercase !important;
+  cursor: pointer !important; transition: background .2s, border-color .2s, color .2s !important; white-space: nowrap !important;
+}
+.btn-send:hover { background: #1f2eaa !important; border-color: #1f2eaa !important; }
+.agent-voice-row { display: flex !important; gap: 8px !important; }
+.btn-voice { flex: 1 !important; background: transparent !important; color: #14141a !important; border-color: rgba(20,20,26,.22) !important; }
+.btn-voice:hover { border-color: #1f2eaa !important; color: #1f2eaa !important; }
+.btn-stop { flex: 1 !important; background: #b23a48 !important; border-color: #b23a48 !important; color: #fff !important; }
+.btn-icon { width: 16px !important; height: 16px !important; flex: none !important; }
+
+.agent-status { font-size: 12px !important; color: rgba(20,20,26,.45) !important; margin-top: 10px !important; min-height: 1em !important; }
+.agent-status.error { color: #b23a48 !important; }
+
+/* ---- Demo layout (centered card + prompt chips) — identical on every page ---- */
+.sl-demo { max-width: 720px !important; margin: 0 auto !important; }
+.demo-mini-head { text-align: center !important; font-family: 'JetBrains Mono', ui-monospace, monospace !important; font-size: 11px !important; letter-spacing: 0.14em !important; text-transform: uppercase !important; color: rgba(20,20,26,.45) !important; margin: 0 0 24px !important; }
+.demo-agent-inline { border: 1px solid rgba(20,20,26,.12) !important; border-radius: 14px !important; overflow: hidden !important; background: #fdfdfc !important; box-shadow: 0 24px 60px -38px rgba(20,20,26,.45) !important; }
+.demo-agent-inline-head { display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 12px 18px !important; border-bottom: 1px solid rgba(20,20,26,.12) !important; }
+.demo-agent-inline-title { font-family: 'JetBrains Mono', ui-monospace, monospace !important; font-size: 11px !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; color: rgba(20,20,26,.64) !important; }
+.demo-agent-inline-status { display: inline-flex !important; align-items: center !important; gap: 7px !important; font-family: 'JetBrains Mono', ui-monospace, monospace !important; font-size: 10px !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; color: #1f2eaa !important; }
+.indicator-dot { width: 7px !important; height: 7px !important; border-radius: 50% !important; background: #1f2eaa !important; display: inline-block !important; }
+.demo-agent-inline-hint { text-align: center !important; font-size: 12px !important; color: rgba(20,20,26,.45) !important; padding: 12px 16px !important; border-top: 1px solid rgba(20,20,26,.12) !important; margin: 0 !important; }
+.demo-sub { text-align: center !important; color: rgba(20,20,26,.64) !important; font-size: 16px !important; line-height: 1.5 !important; max-width: 560px !important; margin: 26px auto 18px !important; }
+.prompt-chips { display: flex !important; flex-wrap: wrap !important; gap: 10px !important; justify-content: center !important; }
+.chip { background: #fdfdfc !important; border: 1px solid rgba(20,20,26,.22) !important; border-radius: 100px !important; padding: 9px 16px !important; font-family: 'Inter', -apple-system, sans-serif !important; font-size: 13px !important; color: #14141a !important; cursor: pointer !important; transition: border-color .2s, color .2s !important; }
+.chip:hover { border-color: #1f2eaa !important; color: #1f2eaa !important; }
+
+/* Hide the inactive voice/stop button — must come LAST to win the display battle */
+.sl-voice-off { display: none !important; }

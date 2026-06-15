@@ -468,6 +468,35 @@
       max-width: 52ch;
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style id="studio-reskin">
+    /* ===== Investment-bank black-on-white reskin ===== */
+    :root{
+      --bg:#f7f7f5; --surface:#fdfdfc; --surface-2:#eeeef0; --surface-3:#e7e7e9;
+      --text-1:#14141a; --text-2:rgba(20,20,26,.64); --text-3:rgba(20,20,26,.45);
+      --cyan:#1f2eaa; --lime:#1f2eaa; --violet:#1f2eaa; --rose:#b23a48; --gold:#1f2eaa; --line:rgba(20,20,26,.12);
+    }
+    body{ background:var(--bg) !important; color:var(--text-1) !important; }
+    h1,h2,h3,h4,.nav-logo{ font-family:'Instrument Serif',Georgia,serif !important; font-weight:400 !important; letter-spacing:-0.012em; }
+    h1,h2,h3,h4{ line-height:1.1; }
+    .eyebrow{ font-family:'JetBrains Mono',ui-monospace,monospace !important; font-weight:500 !important; }
+    .hero-h1,[class*="gradient-text"]{ background:none !important; -webkit-background-clip:border-box !important; -webkit-text-fill-color:var(--text-1) !important; background-clip:border-box !important; color:var(--text-1) !important; }
+    .btn-primary{ background:var(--text-1) !important; color:#f7f7f5 !important; box-shadow:none !important; }
+    .btn-primary:hover{ background:var(--cyan) !important; color:#fff !important; box-shadow:none !important; }
+    .btn-ghost{ border:1.5px solid rgba(20,20,26,.22) !important; color:var(--text-1) !important; box-shadow:none !important; }
+    .btn-ghost:hover{ border-color:var(--cyan) !important; color:var(--cyan) !important; }
+    .btn-cyan{ color:var(--cyan) !important; border:1.5px solid var(--cyan) !important; background:transparent !important; }
+    nav.sl-main-nav, nav{ background:color-mix(in srgb,#f7f7f5 84%,transparent) !important; }
+    nav.sl-main-nav{ border-bottom:1px solid var(--line) !important; }
+    .hero-glow,[class*="glow"]{ background:none !important; box-shadow:none !important; }
+    .las-site-footer{ background:var(--surface-2) !important; border-top:1px solid var(--line) !important; }
+    .las-site-footer, .las-site-footer__copy, .las-site-footer__contact, .las-site-footer__nav{ color:var(--text-2) !important; }
+    .las-site-footer__brand, .las-site-footer__label{ color:var(--text-1) !important; }
+    .las-site-footer a{ color:var(--text-2) !important; }
+    .las-site-footer a:hover{ color:var(--cyan) !important; }
+    [style*="rgba(15, 23, 40"], [style*="rgba(6, 11, 22"]{ background:var(--surface) !important; }
+  </style>
+
   <script src="/assets/site-analytics.js"></script>
 </head>
 <body>
