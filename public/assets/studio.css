@@ -124,6 +124,9 @@ section { position: relative; z-index: 2; padding: clamp(64px, 9vw, 128px) 0; }
 @media (min-width: 720px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 860px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 980px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+/* media sample rows: 2-up on phones, 3-up on desktop (never a single full-width block) */
+.grid--samples { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (min-width: 860px) { .grid--samples { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
 
 /* ---- Navigation ----------------------------------------------------------- */
 .nav {
