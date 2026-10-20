@@ -12,3 +12,16 @@
 # Main HTML: moderate cache
 /
   Cache-Control: public, max-age=300, stale-while-revalidate=600
+
+# Discovery files must stay text/plain or XML, never the homepage HTML.
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=3600

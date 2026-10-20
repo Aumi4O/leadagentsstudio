@@ -1,0 +1,23 @@
+# Lead Agents Studio — https://leadagentsstudio.com
+# Static file. Served as text/plain. Do not rewrite this path to index.html.
+
+User-agent: *
+Allow: /
+
+# AI search and training crawlers — explicitly allowed.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://leadagentsstudio.com/sitemap.xml
